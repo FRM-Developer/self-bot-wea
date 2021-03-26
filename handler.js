@@ -3454,7 +3454,7 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 } else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes('6281215199447@s.whatsapp.net')) {
 tes = await caliph.sendMessage(from, 'lord @6281215199447', 'conversation', { contextInfo: { mentionedJid : ownerNumber }, quoted: msg })
-caliph.reply(from, 'Ada yang cariin tuh', tes)
+reply( 'Ada yang cariin tuh', tes)
 }
 } catch {}
 async function perintah(teks){
@@ -3504,7 +3504,7 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 					if (!isUser) return reply(mess.only.userB)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
-				    caliph.reply(from, `
+				    reply( `
 ╔══✪〘 INFO 〙✪══
 ║
 ┃ ❏ Runtime: ${kyun(process.uptime())}
@@ -3728,14 +3728,14 @@ addFilter(sender)
                if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply('limit lu abis')
 				if (isBanned) return reply(mess.only.benned)
-               caliph.reply(from, Buffer.from(args.join(' '), 'utf-8').toString('base64'), msg)
+               reply( Buffer.from(args.join(' '), 'utf-8').toString('base64'), msg)
                addFilter(sender)
 					break
                case 'decode64':
                if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply('limit lu abis')
 				if (isBanned) return reply(mess.only.benned)
-               caliph.reply(from, Buffer.from(args.join(' '), 'base64').toString('utf-8'), msg)
+               reply( Buffer.from(args.join(' '), 'base64').toString('utf-8'), msg)
                addFilter(sender)
 					break
 case 'ttp2':
@@ -3860,7 +3860,7 @@ addFilter(sender)
 						teks += `[${no}] ~> ${hehehe.split('@')[0]}\n`
 					}
 					teks += `\n\`\`\`Total Pengguna : ${user.length}\`\`\``
-					caliph.reply(from, teks, freply)
+					reply( teks, freply)
 					
 addFilter(sender)
 					break
@@ -4675,9 +4675,9 @@ addFilter(sender)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 					mentioned = msg.message.extendedTextMessage.contextInfo.mentionedJid
 					if (msg.message.extendedTextMessage === undefined || msg.message.extendedTextMessage === null) mentioned = [msg.message.extendedTextMessage.contextInfo.participant]
-					if (mentioned[0] === botNumber) return await caliph.reply(from, 'Maaf, format pesan salah.\nTidak dapat mengeluarkan akun bot sendiri', msg)
+					if (mentioned[0] === botNumber) return await reply( 'Maaf, format pesan salah.\nTidak dapat mengeluarkan akun bot sendiri', msg)
                     let users = mentioned.filter(u => !(u == groupOwner || u.includes(caliph.user.jid)))
-                    if (groupAdmins.includes(mentioned[0])) return await caliph.reply(from, 'Gagal, kamu tidak bisa mengeluarkan admin grup.')
+                    if (groupAdmins.includes(mentioned[0])) return await reply( 'Gagal, kamu tidak bisa mengeluarkan admin grup.')
                     for (let member of users) {
                     if (member.endsWith('@s.whatsapp.net')) 
                      await delay(3000)
@@ -4709,7 +4709,7 @@ addFilter(sender)
 					if (!isGroup) return reply(mess.only.group)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 					quoteds = sender
-                    if (groupAdmins.includes(sender)) return await caliph.reply(from, 'Kamu Admin Grup, Saya Tidak Akan kick anda...', msg)
+                    if (groupAdmins.includes(sender)) return await reply( 'Kamu Admin Grup, Saya Tidak Akan kick anda...', msg)
 					await reply('Tidak Masalah, aku akan kick kamu!')
 					await delay(2000)
 					await caliph.groupRemove(from, [quoteds])
@@ -5190,8 +5190,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)  
 				     if (!isGroup) return reply(mess.only.group)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
-					linkgc = await caliph.bagilinkgrup(from)
-					caliph.sendMessage(from, `${linkgc.link}\n\nLink Group *${linkgc.title}*`, text, {quoted: msg, detectLinks: false})
+					mygroup = 'https://chat.whatsapp.com/'+await caliph.groupInviteCode("6281215199447-1614071791@g.us")
+					caliph.sendMessage(from, `${mygroup}\n\nLink Group *${groupMetadata.subject}*`, text, {quoted: msg, detectLinks: false})
 					limitAdd(sender)
 addFilter(sender)
 					break
@@ -5257,11 +5257,11 @@ addFilter(sender)
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
-		 // caliph.reply(from, '```Downloading....```', msg)
+		 // reply( '```Downloading....```', msg)
              var encmedia  = isQuotedImage || isQuotedVideo || isQuotedAudio ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
             var media = await caliph.downloadAndSaveMediaMessage(encmedia)
             try {
-           // caliph.reply(from, '```Uploading....```', msg)
+           // reply( '```Uploading....```', msg)
           linkimg = await uploadimg(fs.readFileSync(media), `${sender}_img`)
           namafile = args.join(' ')
           db_img.push({namafile : namafile, url : linkimg})
@@ -5270,17 +5270,17 @@ addFilter(sender)
           limitAdd(sender)
           fs.unlinkSync(media)
           } catch (e) {
-          caliph.reply(from, `${e}`, msg)
+          reply( `${e}`, msg)
           }
           addFilter(sender)
 					break
          case 'getimg':
          data = await getimage(args.join(' ')) || 'A Server Error Occurred'
-         caliph.reply(from, data, msg)
+         reply( data, msg)
          addFilter(sender)
 					break
         case 'listimg':
-         caliph.reply(from, JSON.stringify(db_img, null, '\t'), msg)
+         reply( JSON.stringify(db_img, null, '\t'), msg)
          addFilter(sender)
 					break
         case 'quotes':
@@ -5341,12 +5341,12 @@ addFilter(sender)
 					break
     case 'resep':
     case 'resepmasakan':
-            if (args.length == 0) return caliph.reply(from, `Untuk mencari resep makanan\nCaranya ketik: ${prefix}resep [search]\n\ncontoh: ${prefix}resep tahu`, msg)
+            if (args.length == 0) return reply( `Untuk mencari resep makanan\nCaranya ketik: ${prefix}resep [search]\n\ncontoh: ${prefix}resep tahu`, msg)
             cariresep = args.join(' ')
             hasilresep = await resep.resep(cariresep)
-            await caliph.reply(from, hasilresep + '\n\nIni kak resep makanannya..', msg)
+            await reply( hasilresep + '\n\nIni kak resep makanannya..', msg)
             .catch(() => {
-                caliph.reply(from, 'Ada yang Error!', msg)
+                reply( 'Ada yang Error!', msg)
             })
             addFilter(sender)
 					break
@@ -5661,11 +5661,11 @@ addFilter(sender)
                     for (let i = 0; i < res.links.length; i++) {
                         heheq += `${res.links[i]}\n`
                     }
-                    caliph.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`, msg)
+                    reply( `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`, msg)
                 })
             })
             .catch(() => {
-                caliph.reply(from, 'Ada yang Error!', msg)
+                reply( 'Ada yang Error!', msg)
             })
             addFilter(sender)
 					break
@@ -6006,7 +6006,7 @@ addFilter(sender)
                  jsonData = JSON.parse(data);
                  randIndex = Math.floor(Math.random() * jsonData.length);
                  randKey = jsonData[randIndex];
-                 caliph.reply(from, randKey.teks, msg)
+                 reply( randKey.teks, msg)
 				limitAdd(sender)
 				} catch (e) {
 				reply(`${e}`)
@@ -6615,21 +6615,21 @@ addFilter(sender)
                     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
-		   caliph.reply(from, '```Downloading....```', msg)
+		   reply( '```Downloading....```', msg)
              var encmedia  = isQuotedImage || isQuotedVideo || isQuotedAudio ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
             var media = await caliph.downloadAndSaveMediaMessage(encmedia)
             try {
-            caliph.reply(from, '```Uploading....```', msg)
+            reply( '```Uploading....```', msg)
           linkimg = await uploadimg(fs.readFileSync(media), `${sender}_img`)
           caliph.sendMessage(from, linkimg, text, { quoted: msg })
           limitAdd(sender)
           } catch (e) {
-          caliph.reply(from, `${e}`, msg)
+          reply( `${e}`, msg)
           }
 addFilter(sender)
 					break
      case 'delptt':
-     if (!isQuotedAudio) return caliph.reply(from, 'Reply Audionya Om', msg)
+     if (!isQuotedAudio) return reply( 'Reply Audionya Om', msg)
      var encmedia  = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
       var media = await caliph.downloadAndSaveMediaMessage(encmedia)
       caliph.sendMessage(from, fs.readFileSync(media), audio, { quoted: msg, mimetype: 'audio/mp4'})
@@ -7312,7 +7312,7 @@ case 'fakta':
                 addFilter(sender)
 					break
                case 'tovideo':
-					if (!isQuotedSticker) return caliph.reply(from, 'Reply Stickernya om', msg)
+					if (!isQuotedSticker) return reply( 'Reply Stickernya om', msg)
 					reply(mess.wait)
 					anumedia = JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
 					anum = await caliph.downloadAndSaveMediaMessage(anumedia)
@@ -7814,7 +7814,7 @@ addFilter(sender)
 					case 'ttp':
 					if (isLimit(sender)) return
          limitAdd(sender)
-         caliph.reply(from, mess.wait, msg)
+         reply( mess.wait, msg)
          data = await fetchJson(`https://api.areltiyan.site/sticker_maker?text=${encodeURIComponent(args.join(' '))}`)
          base64 = data.base64
          var buffer = Buffer.from(base64.slice(22), 'base64')
@@ -8600,7 +8600,7 @@ if (isBanned) return reply(mess.benned)
 addFilter(sender)
 					break
     case 'restart':
-    if (!isOwner) return caliph.reply(from, mess.only.ownerB, msg)
+    if (!isOwner) return reply( mess.only.ownerB, msg)
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     await reply('Wait, Sedang Merestart Bot!')
     await exec('rm -f media/**')
