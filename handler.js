@@ -404,9 +404,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-	caliph.on('message-new', async (msg) => {
-	simple.smsg(caliph, msg)
+	caliph.on('chat-update', async (chat) => {
 		try {
+                        if (!chat.hasNewMessage) return
+                        msg = JSON.parse(JSON.stringify(chat)).messages[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			//if (!msg.key.fromMe) return 
@@ -3461,7 +3462,8 @@ async function perintah(teks){
                 return eval(teks)
                 }
 			colors = ['red','white','blue','yellow','green']
-			rainbow = colors[Math.floor(Math.random() * (colors.length))]  	
+			rainbow = colors[Math.floor(Math.random() * (colors.length))]
+  	
 			const isMedia = (type === 'imageMessage' || type === 'videoMessage')
 			const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
@@ -3775,7 +3777,8 @@ case 'ttp2':
 						])
 					await delay(2000)
 					exec('cwebp -q 50 ' + './tmp/ttp.png' + ' -o tmp/' + 'stikergradient' + '.webp', (error, stdout, stderr) =>
-					{
+					{
+
 					let stik = fs.readFileSync('./tmp/' + 'stikergradient' + '.webp')
 				    caliph.sendMessage(from, stik, sticker, { quoted: msg } )
 					});
@@ -5379,7 +5382,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = apakah[Math.floor(Math.random() * (apakah.length))]  	
+               random = apakah[Math.floor(Math.random() * (apakah.length))]
+  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -5390,7 +5394,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-                random = bisakah[Math.floor(Math.random() * (bisakah.length))]  	
+                random = bisakah[Math.floor(Math.random() * (bisakah.length))]
+  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -5432,7 +5437,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = kapankah[Math.floor(Math.random() * (kapankah.length))]  	
+               random = kapankah[Math.floor(Math.random() * (kapankah.length))]
+  	
                random2 = Math.floor(Math.random() * 10) + 1
                hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random2} ${random}* *lagi*`
               reply(hasil)
@@ -8672,7 +8678,8 @@ addFilter(sender)
 		teks += `Judul: ${i.title}\nLink: ${i.url}`
 		}
 		buffs = await getBuffer(data.result[0].thumb)
-		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 
+		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 
+
 		limitAdd(sender)
 		addFilter(sender)
 					break
@@ -8692,7 +8699,8 @@ addFilter(sender)
 					break 
     case 'getjodoh':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-if (isBanned) return reply(mess.only.benned)
+
+if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
 
                     up = user
@@ -8704,7 +8712,8 @@ addFilter(sender)
 					+ `FN:${getName(aku)}\n` // full name
 					+ `TEL;type=CELL;type=VOICE;waid=${(aku.split('@')[0])}:${(aku.split('@')[0])}\n` // WhatsApp ID + phone number
 					+ 'END:VCARD'
-                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
+
+                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
 limitAdd(sender)
                     addFilter(sender)
 					break
