@@ -404,9 +404,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-	caliph.on('message-new', async (msg) => {
-	simple.smsg(caliph, msg)
+	caliph.on('chat-update', async (chat) => {
 		try {
+                        if (!chat.hasNewMessage) return
+                        msg = JSON.parse(JSON.stringify(chat)).messages[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			//if (!msg.key.fromMe) return 
@@ -3467,8 +3468,8 @@ async function perintah(teks){
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
-			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
-        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
+			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
+        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
 
 			if (isCmd) {
                   loaded.push("@caliph91_")
@@ -5242,7 +5243,7 @@ addFilter(sender)
 				timestamp = speed()
                 latensi = speed() - timestamp
                 const pingnya = `Speed: ${latensi.toFixed(4)} Second`
-                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
+                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(chat.t, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
 					addFilter(sender)
 					break
 addFilter(sender)
@@ -9096,7 +9097,7 @@ case 'reverb':
 				addFilter(sender)
 					break
               case 'speed':
-              reply(`*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_`)
+              reply(`*Speed :* ${processTime(chat.t, moment())} _second_`)
               addFilter(sender)
 					break
               case 'cbass':
