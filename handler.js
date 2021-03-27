@@ -404,10 +404,7 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-	caliph.on('chat-update', async (chat) => {
-		try {
-        if (!chat.hasNewMessage) return
-         msg = JSON.parse(JSON.stringify(chat)).messages[0]
+	caliph.on('message-new', async (msg) => {
 	simple.smsg(caliph, msg)
 		try {
 			if (!msg.message) return
@@ -3470,8 +3467,8 @@ async function perintah(teks){
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
-			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
-        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
+			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
+        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
 
 			if (isCmd) {
                   loaded.push("@caliph91_")
@@ -3549,7 +3546,13 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 ╚═〘 CALIPH BOT 〙`, freply)
 addFilter(sender)
 					break
-          
+          case 'join':
+              if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
+              if (args.length == 0) return reply('Linknya mana su')
+              if (!isUrl(args[0]) && args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
+              fak = await caliph.acceptInvite(args[0].replace('https://chat.whatsapp.com/', ''))
+              m.reply('Berhasil Masuk Grup : '+getName(fak.gid))
+              break
                 case 'readme':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
@@ -3828,7 +3831,7 @@ addFilter(sender)
 					
 					me = caliph.user
 					uptime = process.uptime()
-					teks = `*Nama bot* : ${me.name}\n*Nomor Bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Total Block Contact* : ${blocked.length}\n*Uptime* : ${kyun(uptime)}\n*Total User Premium* : ${premium.length}\n*Total Chat* : ${totalchat.length}\n*Readall Message* : ${reading}\n*Verify User* : ${user.length}\n*Author* : Mhankbarbar\n*Server* : heroku\n*lib* : Baileys`
+					teks = `*Nama bot* : ${me.name}\n*Nomor Bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Total Block Contact* : ${blocked.length}\n*Uptime* : ${kyun(uptime)}\n*Total User Premium* : ${premium.length}\n*Total Chat* : ${totalchat.length}\n*Readall Message* : ${reading}\n*Verify User* : ${user.length}`
 					try {
 					pp = await caliph.getProfilePicture(botNumber)
 					} catch {
@@ -5239,7 +5242,7 @@ addFilter(sender)
 				timestamp = speed()
                 latensi = speed() - timestamp
                 const pingnya = `Speed: ${latensi.toFixed(4)} Second`
-                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(chat.t, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
+                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
 					addFilter(sender)
 					break
 addFilter(sender)
@@ -9093,16 +9096,9 @@ case 'reverb':
 				addFilter(sender)
 					break
               case 'speed':
-              reply(`*Speed :* ${processTime(chat.t, moment())} _second_`)
+              reply(`*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_`)
               addFilter(sender)
 					break
-              case 'join':
-              if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
-              if (args.length == 0) return reply('Linknya mana su')
-              if (!isUrl(args[0]) && args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
-              fak = await caliph.acceptInvite(args[0].replace('https://chat.whatsapp.com/', ''))
-              m.reply('Berhasil Masuk Grup : '+getName(fak.gid))
-              break
               case 'cbass':
 					bass = body.slice(7)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
