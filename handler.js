@@ -3550,9 +3550,9 @@ addFilter(sender)
           case 'join':
               if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
               if (args.length == 0) return reply('Linknya mana su')
-              if (!isUrl(args[0]) && args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
+              if (!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
               fak = await caliph.acceptInvite(args[0].replace('https://chat.whatsapp.com/', ''))
-              m.reply('Berhasil Masuk Grup : '+getName(fak.gid))
+              reply('Berhasil Masuk Grup : '+getName(fak.gid))
               break
                 case 'readme':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
