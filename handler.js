@@ -1,6 +1,6 @@
 const
 {
-   WAConnection,
+ WAConnection: _WAConnection,
    MessageType,
    Presence,
    MessageOptions,
@@ -12,7 +12,7 @@ const
    ProxyAgent,
    GroupSettingChange,
    waChatKey,
-   mentionedJid,
+   mentionedJid
 } = require("@adiwajshing/baileys")
 const { color, bgcolor } = require('./lib/color')
 const { 
@@ -79,6 +79,7 @@ const textpro = require('./lib/textpro.js')
 const resep = require('./lib/resep')
 const antivirtex = JSON.parse(fs.readFileSync('./src/antiV.json'))
 const ytdl = require('ytdl-core')
+const stc= require('./lib/sticker.js')
 cr = `*SYSTEM*`
 const path = require('path')
 limitCount = 30
@@ -94,6 +95,7 @@ const {
 const { servers, yta, ytv } = require('./lib/y2mate')
 const os = require('os')
 const simple = require('./lib/simple.js')
+const WAConnection = simple.WAConnection(_WAConnection)
 const PhoneNumber = require('awesome-phonenumber')
 const vcard = 'BEGIN:VCARD\n' // metadata of the contact card
             + 'VERSION:3.0\n' 
@@ -384,7 +386,9 @@ function getName(jid)  {
 		}
 		})*/
     caliph.on('message-delete', async (m) => {
-    caliph.sendMessage(m.key.remoteJid, `Terdeteksi, @${m.participant.split("@")[0]} Telah Menghapus Pesan`, MessageType.text, {contextInfo: {"mentionedJid": [m.participant]}})
+    if (m.key.remoteJid == 'status@broadcast') return 
+    caliph.sendMessage(m.key.remoteJid, `Terdeteksi, @${m.participant.split("@")[0]} Telah Menghapus Pesan`, MessageType.text, {quoted: m, contextInfo: {"mentionedJid": [m.participant]}})
+      caliph.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m))
     console.log(m.message)
     })
     caliph.on('close', async () => {
@@ -4243,6 +4247,22 @@ addFilter(sender)
 					}
 					reply(teks.trim())
 					limitAdd(sender)
+					
+addFilter(sender)
+					break
+       case prefix+'searchstikers':
+					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)   
+					if (args.length < 1) return reply('Yang mau di cari apaan? titit?')
+					anu = await fetchJson(`https://api.vhtear.com/wasticker?query=${args.join(' ')}&apikey=${vkey}`, {method: 'get'})
+					teks = '--------------------------\n'
+					no = 0
+					for (let i of anu.result.data) {
+					no += 1
+						stik = await stc.sticker(false, i, args.join(' '), 'Caliph Bot\'s')
+						caliph.sendMessage(from, stik, sticker, { quoted: m })
+					}
 					
 addFilter(sender)
 					break
@@ -9306,7 +9326,7 @@ case prefix+'gta5':
            addFilter(sender)
 					break
              default:
-                 if (body.startsWith(`${prefix[0]}`)) {
+                 if (body.startsWith(`${prefix}`)) {
                   reply(`Maaf *${pushname}*, Command *${prefix}${command}* Tidak Terdaftar Di Dalam *${prefix}menu*!`)
                   }
                   if ('tes' == body) {
