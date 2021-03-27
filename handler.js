@@ -307,8 +307,21 @@ function getName(jid)  {
   	caliph.sendMessage(hem.jid, `Terima kasih Telah Menambahkan Bot Ke grup, ketik ${prefix}menu untuk menampilkan Menu!`, MessageType.text)
   	}
   	})
-  	
-                
+  	/*
+  	caliph.on('group-add', async (chatt) => {
+  	console.log(participants)
+  	try {
+  	for (let i of chatt.participants) {
+  	pp = await caliph.getProfilePicture(i)
+    buffer = await getBuffer(pp)
+    caliph.sendMessage(chatt.m.key.remoteJid, buffer, MessageType.image, { caption: `${setting.welcome.replace('{user}', '@'+i.split('@')[0]).replace('{name}', getName(i)).replace('{chatname}', caliph.getName(chatt.m.key.remoteJid))}`})
+    }
+    } catch {
+    for (let i of chatt.participants) {
+    caliph.sendMessage(chatt.m.key.remoteJid, `${setting.welcome.replace('{user}', '@'+i.split('@')[0]).replace('{name}', getName(i)).replace('{chatname}', caliph.getName(chatt.m.key.remoteJid))}`, MessageType.text)
+    }
+    }
+     })*/
                 
     function formatin(duit){
     let	reverse = duit.toString().split('').reverse().join('');
@@ -3472,8 +3485,11 @@ async function perintah(teks){
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
-			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
-        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
+			try {
+        require('./lib/print')(m, caliph)
+      } catch (e) {
+        console.log(m, m.quoted, e)
+      }
 
 			if (isCmd) {
                   loaded.push("@caliph91_")
@@ -8860,13 +8876,14 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
     var util = require('util')
     teks = args.join(' ')
     res = await fetch(teks)
-  var txt = await res.text()
+  if (!/text|json/.test(res.headers.get('content-type'))) return caliph.sendFile(m.chat, teks, 'file', teks, m)
+  txt = await res.buffer()
   try {
-    txt = util.format(JSON.parse(txt))
+    txt = util.format(JSON.parse(txt+''))
   } catch (e) {
-    txt = txt
+    txt = txt + ''
   } finally {
-    reply(txt.slice(0, 65536))
+    m.reply(txt.slice(0, 65536) + '')
   }
     addFilter(sender)
 					break

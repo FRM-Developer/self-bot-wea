@@ -61,7 +61,8 @@
     "ytdl-core": "^4.5.0",
     "yt-search": "^2.7.4",
     "cheerio": "^1.0.0-rc.5",
-    "jsdom": "^16.5.1"
+    "terminal-image": "^1.2.1",
+    "url-regex": "^5.0.0"
   },
   "devDependencies": {},
   "repository": {
