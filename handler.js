@@ -406,8 +406,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 		})
 	caliph.on('chat-update', async (chat) => {
 		try {
-                        if (!chat.hasNewMessage) return
-                        msg = JSON.parse(JSON.stringify(chat)).messages[0]
+        if (!chat.hasNewMessage) return
+         msg = JSON.parse(JSON.stringify(chat)).messages[0]
+	simple.smsg(caliph, msg)
+		try {
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			//if (!msg.key.fromMe) return 
@@ -3462,15 +3464,14 @@ async function perintah(teks){
                 return eval(teks)
                 }
 			colors = ['red','white','blue','yellow','green']
-			rainbow = colors[Math.floor(Math.random() * (colors.length))]
-  	
+			rainbow = colors[Math.floor(Math.random() * (colors.length))]  	
 			const isMedia = (type === 'imageMessage' || type === 'videoMessage')
 			const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
-			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
-        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(msg.messageTimestamp.low * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
+			if (isCmd && !isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
+        if (isCmd && isGroup) {console.log(color('[EXEC]'), color(moment(chat.t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname), 'in', color(groupMetadata.subject))}
 
 			if (isCmd) {
                   loaded.push("@caliph91_")
@@ -3777,8 +3778,7 @@ case 'ttp2':
 						])
 					await delay(2000)
 					exec('cwebp -q 50 ' + './tmp/ttp.png' + ' -o tmp/' + 'stikergradient' + '.webp', (error, stdout, stderr) =>
-					{
-
+					{
 					let stik = fs.readFileSync('./tmp/' + 'stikergradient' + '.webp')
 				    caliph.sendMessage(from, stik, sticker, { quoted: msg } )
 					});
@@ -3828,7 +3828,7 @@ addFilter(sender)
 					
 					me = caliph.user
 					uptime = process.uptime()
-					teks = `*Nama bot* : ${me.name}\n*Nomor Bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Total Block Contact* : ${blocked.length}\n*Uptime* : ${kyun(uptime)}\n*Total User Premium* : ${premium.length}\n*Total Chat* : ${totalchat.length}\n*Readall Message* : ${reading}\n*Verify User* : ${user.length}`
+					teks = `*Nama bot* : ${me.name}\n*Nomor Bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Total Block Contact* : ${blocked.length}\n*Uptime* : ${kyun(uptime)}\n*Total User Premium* : ${premium.length}\n*Total Chat* : ${totalchat.length}\n*Readall Message* : ${reading}\n*Verify User* : ${user.length}\n*Author* : Mhankbarbar\n*Server* : heroku\n*lib* : Baileys`
 					try {
 					pp = await caliph.getProfilePicture(botNumber)
 					} catch {
@@ -5239,7 +5239,7 @@ addFilter(sender)
 				timestamp = speed()
                 latensi = speed() - timestamp
                 const pingnya = `Speed: ${latensi.toFixed(4)} Second`
-                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
+                caliph.sendMessage(from, `Status :\n- *${loaded.length}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${personal.length}* Personal Chats\n- *${totalchat.length}* Total Chats\n- ${baterai}% Battery level\n*Speed :* ${processTime(chat.t, moment())} _second_\nPenggunaan Ram : ${ram}`, text, {quoted: msg})
 					addFilter(sender)
 					break
 addFilter(sender)
@@ -5382,8 +5382,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = apakah[Math.floor(Math.random() * (apakah.length))]
-  	
+               random = apakah[Math.floor(Math.random() * (apakah.length))]  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -5394,8 +5393,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-                random = bisakah[Math.floor(Math.random() * (bisakah.length))]
-  	
+                random = bisakah[Math.floor(Math.random() * (bisakah.length))]  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -5437,8 +5435,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = kapankah[Math.floor(Math.random() * (kapankah.length))]
-  	
+               random = kapankah[Math.floor(Math.random() * (kapankah.length))]  	
                random2 = Math.floor(Math.random() * 10) + 1
                hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random2} ${random}* *lagi*`
               reply(hasil)
@@ -7101,6 +7098,7 @@ addFilter(sender)
 				if (!isUser) return reply(mess.only.usetB)
 				if (isBanned) return reply(mess.only.benned)
 					brien = args.join(' ')
+					try {
 					brainly(`${brien}`).then(async bren => {
 					teks = '*「 _BRAINLY_ 」*\n\n'
 					reply(`${teks}${bren.length} jawaban Ditemukan`)
@@ -7114,6 +7112,9 @@ addFilter(sender)
 					caliph.sendMessage(from, teks, text, {quoted: msg, detectLinks: false})
                     })
 					addFilter(sender)
+					} catch (e) {
+					m.reply(`${e}`)
+					}
 					break
    case 'brainly2':
     teks = encodeURIComponent(args.join(' '))
@@ -7283,7 +7284,7 @@ addFilter(sender)
             addFilter(sender)
 					break
 case 'fakta':
-   data = await fetchJson('https://caliph-apis.herokuapp.com/api/fakta?apikey=CaliphGans')
+   data = await fetchJson('https://caliph-apis.herokuapp.com/api/fakta?apikey=FreeApi')
                 reply(data.result)
                 addFilter(sender)
 					break
@@ -7415,11 +7416,11 @@ addFilter(sender)
 					if (!isUser) return reply(mess.only.userB)
 				   try {
                    quotedText = msg.message.extendedTextMessage.contextInfo.quotedMessage.conversation
-                   datas = await fetchJson(`https://caliph-apis.herokuapp.com/api/hilih?kata=${quotedText}&apikey=CaliphGans`)
+                   datas = await fetchJson(`https://caliph-apis.herokuapp.com/api/hilih?kata=${quotedText}&apikey=FreeApi`)
                    reply(datas.teks.after)
                    } catch {
                    quotedText = args.join(' ')
-                   datas = await fetchJson(`https://caliph-apis.herokuapp.com/api/hilih?kata=${quotedText}&apikey=CaliphGans`)
+                   datas = await fetchJson(`https://caliph-apis.herokuapp.com/api/hilih?kata=${quotedText}&apikey=FreeApi`)
                    reply(datas.teks.after)
                    }
 					addFilter(sender)
@@ -8105,7 +8106,7 @@ addFilter(sender)
               if (args.length < 1) return reply(`Kirim perintah *${prefix}pubglogo teks1|teks2*`)
               teks = args.join(' ').split('|')
               try {
-              data = await fetchJson(`https://caliph-apis.herokuapp.com/api/textmaker/game?text=${teks[0]}&text2=${teks[1]}&theme=pubg&apikey=CaliphGans`)
+              data = await fetchJson(`https://caliph-apis.herokuapp.com/api/textmaker/game?text=${teks[0]}&text2=${teks[1]}&theme=pubg&apikey=FreeApi`)
               sendImgFromUrl(data.result.url, 'neh...')
               limitAdd(sender)
              } catch (e) {
@@ -8520,7 +8521,7 @@ addFilter(sender)
    if (args.length < 1) return reply(`kirim perintah ${prefix}googletext *[teks1|teks2|teks3]*`)
    try {
    teks = args.join(` `).split('|')
-   buffer = await fetchJson(`https://caliph-apis.herokuapp.com/api/textmaker?text=${teks[0]}&text2=${teks[1]}&text3=${teks[2]}&theme=google-suggestion&apikey=CaliphGans`)
+   buffer = await fetchJson(`https://caliph-apis.herokuapp.com/api/textmaker?text=${teks[0]}&text2=${teks[1]}&text3=${teks[2]}&theme=google-suggestion&apikey=FreeApi`)
    sendImgFromUrl(buffer.result.url, 'done!')
    limitAdd(sender)
    addFilter(sender)
@@ -8678,8 +8679,7 @@ addFilter(sender)
 		teks += `Judul: ${i.title}\nLink: ${i.url}`
 		}
 		buffs = await getBuffer(data.result[0].thumb)
-		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 
-
+		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 
 		limitAdd(sender)
 		addFilter(sender)
 					break
@@ -8699,8 +8699,7 @@ addFilter(sender)
 					break 
     case 'getjodoh':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-
-if (isBanned) return reply(mess.only.benned)
+if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
 
                     up = user
@@ -8712,8 +8711,7 @@ if (isBanned) return reply(mess.only.benned)
 					+ `FN:${getName(aku)}\n` // full name
 					+ `TEL;type=CELL;type=VOICE;waid=${(aku.split('@')[0])}:${(aku.split('@')[0])}\n` // WhatsApp ID + phone number
 					+ 'END:VCARD'
-
-                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
+                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
 limitAdd(sender)
                     addFilter(sender)
 					break
@@ -9095,9 +9093,16 @@ case 'reverb':
 				addFilter(sender)
 					break
               case 'speed':
-              reply(`*Speed :* ${processTime(msg.messageTimestamp.low, moment())} _second_`)
+              reply(`*Speed :* ${processTime(chat.t, moment())} _second_`)
               addFilter(sender)
 					break
+              case 'join':
+              if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
+              if (args.length == 0) return reply('Linknya mana su')
+              if (!isUrl(args[0]) && args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
+              fak = await caliph.acceptInvite(args[0].replace('https://chat.whatsapp.com/', ''))
+              m.reply('Berhasil Masuk Grup : '+getName(fak.gid))
+              break
               case 'cbass':
 					bass = body.slice(7)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
