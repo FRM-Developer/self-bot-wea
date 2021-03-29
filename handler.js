@@ -4727,6 +4727,17 @@ addFilter(sender)
                     }
 					addFilter(sender)
 					break
+       case prefix+'revoke':
+					 
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)   
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)  
+					if (!isGroup) return reply(mess.only.group)
+					if (!isGroupAdmins) return reply(mess.only.admin)
+					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
+					await caliph.resetInvite(from)
+					break
                case prefix+'qkick':
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -8667,11 +8678,11 @@ addFilter(sender)
    addFilter(sender)
 					break
    case prefix+'tag':
+   case prefix+'mention':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
-   ngetag = `${args[0]}@s.whatsapp.net`
-   caliph.sendMessage(from, `@${args[0]} Tagged!`, text, {quoted:msg, contextInfo: {"mentionedJid": [ngetag]}})
+   caliph.sendMessage(from, `@${args.join(' ')`, text, {quoted:msg, contextInfo: {"mentionedJid": caliph.parseMention(args.join(' '))}})
    addFilter(sender)
 					break
    case prefix+'profile': case prefix+'me':
