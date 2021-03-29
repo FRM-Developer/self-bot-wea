@@ -420,7 +420,7 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-	ak.on('chat-update', async (msg) => {
+   caliph.on('chat-update', async (msg) => {
 		try {
 			if (!msg.hasNewMessage) return
             msg = msg.messages.all()[0]
