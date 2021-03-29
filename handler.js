@@ -8683,7 +8683,7 @@ addFilter(sender)
    if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
 					texxt = args.join(' ')
-   caliph.sendMessage(from, text, text, {
+   caliph.sendMessage(from, texxt, text, {
    quoted: msg,
     contextInfo: {
       mentionedJid: caliph.parseMention(texxt)
