@@ -420,10 +420,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-	caliph.on('chat-update', async (chat) => {
+	ak.on('chat-update', async (msg) => {
 		try {
-                        if (!chat.hasNewMessage) return
-                        msg = chat.messages.all()[0]
+			if (!msg.hasNewMessage) return
+            msg = msg.messages.all()[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 				try {
@@ -4175,9 +4175,8 @@ addFilter(sender)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
 					try { 
-					    data = await fetchJson('https://tobz-api.herokuapp.com/api/randomloli?apikey='+tobzkey)
 					reply(mess.wait)
-					pine = await getBuffer(data.result)
+					pine = await getBuffer(`https://recoders-area.caliph.repl.co/api/loli`)
 					caliph.sendMessage(from, pine, image, { quoted: msg })
 					} catch (e) {
 					return reply(`${e}`)
@@ -4226,9 +4225,9 @@ addFilter(sender)
          if(ytdl.validateURL(url5)){
         server = (args[1] || 'id4').toLowerCase()
   var { dl_link, thumb, title, filesize, filesizeF} = await yta(url5, servers.includes(server) ? server : 'id4')
-  await sendImgFromUrl(thumb, `*Title:* ${title}\n*Filesize:* ${filesizeF}\n*Link* : ${await bitly(dl_link)}`)
+  await sendImgFromUrl(thumb, `*Title:* ${title}\n*Filesize:* ${filesizeF}\n*Link* : ${await bitly(dl_link) || await shortlink(dl_link)}`)
   limitAdd(sender)
-  if (!isPremium) return await reply('Maaf Audio Tidak Dapat Dikirim, Karena Anda Bukan User Premium')
+  //if (!isPremium) return await reply('Maaf Audio Tidak Dapat Dikirim, Karena Anda Bukan User Premium')
   buffer = await getBuffer(dl_link)
   caliph.sendMessage(from, buffer, audio, { quoted: msg, filename: title+'.mp3', mimetype: 'audio/mp4' })
     }else{
@@ -5197,7 +5196,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
 	              if (!isOwner) return reply(mess.only.ownerB)
 	               exec(args.join(' '), (err, stdout) => {
-		           if (err) return caliph.sendMessage(from, 'Error!', text, { quoted: msg })
+		           if (err) return caliph.sendMessage(from, `${err}`, text, { quoted: msg })
 		           if (stdout) {
 			       caliph.sendMessage(from, stdout, text, { quoted: msg })
 		           }
@@ -7865,16 +7864,8 @@ addFilter(sender)
          data = await fetchJson(`https://api.areltiyan.site/sticker_maker?text=${encodeURIComponent(args.join(' '))}`)
          base64 = data.base64
          var buffer = Buffer.from(base64.slice(22), 'base64')
-          linkimg = await uploadimg(buffer, `${sender}_img`)
-          ranp = getRandom('.png')
-          rano = getRandom('.webp')
-          exec(`wget ${linkimg} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=60 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-          //fs.unlinkSync(ranp)
-          if (err) return reply(mess.error.stick)
-          pps = fs.readFileSync(rano)
-          caliph.sendMessage(from, pps, sticker, {quoted: msg})
-          //fs.unlinkSync(rano)
-          })
+        stk = await stc.sticker(buffer, false, 'Text Maker', 'Caliph Bot')
+        caliph.sendMessage(from, stk, sticker, { quoted: m })
           addFilter(sender)
 					break
                    case prefix+'ramalpasangan':
@@ -8293,9 +8284,10 @@ if (!isUser) return reply(mess.only.userB)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
 				reply(`[❕] Loading`)
-				anu = await fetchJson(`https://onlydevcity.herokuapp.com/api/asupan?apikey=onlyonedev`, {method: 'get'})
+				anu = await fetchJson(`https://onlydevcity.herokuapp.com/api/asupan?apikey=${setting.onlycity}`, {method: 'get'})
 				buff = await getBuffer(anu.result.url)
 				pp = await caliph.getProfilePicture(botNumber)
+			//	caliph.sendFile(from, anu.result.url, 'asupan.mp4', 'Neh asupannya', m, false)
 				caliph.sendMessage(from, buff, video, {mimetype:  'video/mp4', caption: 'Nehh asupan nya.', quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_SelfBot Caliph Bot_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": await toBase64(pp)} } }})
 				limitAdd(sender)
 				addFilter(sender)
