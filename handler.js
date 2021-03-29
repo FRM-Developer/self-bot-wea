@@ -8682,7 +8682,13 @@ addFilter(sender)
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
-   caliph.sendMessage(from, `@${args.join(' ')`, text, {quoted:msg, contextInfo: {"mentionedJid": caliph.parseMention(args.join(' '))}})
+					texxt = args.join(' ')
+   caliph.sendMessage(from, text, text, {
+   quoted: msg,
+    contextInfo: {
+      mentionedJid: caliph.parseMention(texxt)
+    }
+  })
    addFilter(sender)
 					break
    case prefix+'profile': case prefix+'me':
