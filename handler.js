@@ -420,10 +420,8 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-   caliph.on('chat-update', async (msg) => {
+   caliph.on('message-new', async (msg) => {
 		try {
-			if (!msg.hasNewMessage) return
-            msg = msg.messages.all()[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 				try {
@@ -1187,7 +1185,7 @@ addFilter(sender)
               if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
               if (args.length == 0) return reply('Linknya mana su')
               if (!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
-              fak = await caliph.acceptInvite(args[0].replace('https://chat.whatsapp.com/', ''))
+              fak = await caliph.joinvialink(args[0].replace('https://chat.whatsapp.com/', ''))
               reply('Berhasil Masuk Grup : '+getName(fak.gid))
               break
                 case prefix+'readme':
@@ -2253,11 +2251,8 @@ addFilter(sender)
                 if (!isGroup) return reply(mess.only.group)
           //    if (!isOwner) return reply(mess.only.ownerB)
                 if (!isGroupOwner) return reply(mess.only.ownerG)
-                members_id = []
+                members_id = groupMembers.map(v => v.jid)
                mentioned = members_id
-               for (let mem of groupMembers) {
-               members_id.push(mem.jid)
-					}
                      using = mentioned.filter(u => !(u == groupOwner || u.includes(caliph.user.jid)))
                     for (let member of using) {
                     if (member.endsWith('@s.whatsapp.net')) 
@@ -2265,7 +2260,6 @@ addFilter(sender)
                     await caliph.groupRemove(m.chat, [member])
                     }
               await sendMess(from, 'sukses kick all member')
-              members_id.splice('reset')
               limitAdd(sender)
                addFilter(sender)
 					break
@@ -2276,11 +2270,8 @@ addFilter(sender)
                 if (!isGroup) return reply(mess.only.group)
           //    if (!isOwner) return reply(mess.only.ownerB)
                 if (!isOwner) return reply(mess.only.ownerB)
-                members_id = []
+                members_id = groupMembers.map(v => v.jid)
                mentioned = members_id
-               for (let mem of groupMembers) {
-               members_id.push(mem.jid)
-					}
                      using = mentioned.filter(u => !(u == groupOwner || u.includes(caliph.user.jid)))
                     for (let member of using) {
                     if (member.endsWith('@s.whatsapp.net')) 
@@ -2288,7 +2279,6 @@ addFilter(sender)
                     await caliph.groupRemove(m.chat, [member])
                     }
               await sendMess(from, 'sukses kick all member')
-              members_id.splice('reset')
               limitAdd(sender)
                addFilter(sender)
 					break
@@ -2301,12 +2291,10 @@ addFilter(sender)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
 						buff = await caliph.downloadMediaMessage(encmedia)
 						for (let _ of groups) {
-						await deplay(1500)
 							await caliph.sendMessage(_, buff, image, {caption: `*「 INFO 」*\n\n${args.join(' ')}`})
 						}
 					} else {
 						for (let _ of groups) {
-						await delay(1500)
 							await caliph.sendMessage(_, `*「 INFO 」*\n\n${args.join(' ')}`, text, {})
 						}
 						reply(`Sukses broadcast ${groups.length} group`)
@@ -2402,6 +2390,14 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
+               case 'report':
+               if (!isGroup) return reply(mess.only.group)
+               message = `══✪〘 GROUP REPORT 〙✪══\n\nFrom : @${sender.split('@')[0]} (${groupMetadata.subject})\nReason : ${args.join(' ') || ''}`
+                for (let i of groupAdmins) {
+                caliph.sendMessage(i, message, text)
+                }
+                caliph.sendMessage(from, 'Reported To Admins Group', text, { contextInfo: { mentionedJid: groupAdmins }})
+                break
             case prefix+'onlinelist':
 				case prefix+'listonline':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
