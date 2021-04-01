@@ -6878,7 +6878,7 @@ var headers = {
     'Content-Type': 'application/json'
 };
 
-var dataString = '{ "long_url": "https://dev.bitly.com", "domain": "bit.ly", "group_guid": "Bk8kew9JldP", "title": "Bitly API Documentation", "tags": [ "bitly", "api" ], "deeplinks": [ { "app_id": "com.bitly.app", "app_uri_path": "/store?id=123456", "install_url": "https://play.google.com/store/apps/details?id=com.bitly.app&hl=en_US", "install_type": "promote_install" } ] }';
+var dataString = `{ "long_url": ${args[0]}, "domain": "bit.ly", "group_guid": "o_1fsiehs2qu"}`;
 
 var options = {
     url: 'https://api-ssl.bitly.com/v4/bitlinks',
@@ -6894,7 +6894,7 @@ function callback(error, response, body) {
 }
 
 ngetes = await request(options, callback);
-reply(`${ngetes}`)
+reply(`${JSON.stringify(await ngetes)}`)
 addFilter(sender)
 					break
 case prefix+'getses':
