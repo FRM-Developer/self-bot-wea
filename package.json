@@ -63,7 +63,9 @@
     "cheerio": "^1.0.0-rc.5",
     "terminal-image": "^1.2.1",
     "url-regex": "^5.0.0",
-     "jsdom": "^16.5.1"
+    "jsdom": "^16.5.1",
+    "canvacord": "^5.1.0",
+    "discord-canvas": "^1.4.1"
   },
   "devDependencies": {},
   "repository": {
