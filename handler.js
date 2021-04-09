@@ -91,7 +91,7 @@ cr = `*SYSTEM*`
 const path = require('path')
 limitCount = 30
 baterai = 100
-//const canvas = require('discord-canvas')
+const canvas = require('discord-canvas')
 charging = ''
 reading = setting.read
 const { JSDOM } = require('jsdom')
@@ -342,7 +342,7 @@ function getName(jid)  {
 		try {
 					ppimg = await caliph.getProfilePicture(`${anu.participants[0].split('@')[0]}@c.us`)
 				} catch {
-					ppimg = './gambar/depresi.jpeg'
+					ppimg = 'https://i.ibb.co/Tq7d7TZ/age-hananta-495-photo.png'
 				}
 				const memJid = anu.participants[0]
 				const pushnem = caliph.contacts[memJid] !== undefined ? caliph.contacts[memJid].notify : PhoneNumber('+' + memJid.replace('@s.whatsapp.net', '')).getNumber('international')
@@ -1146,6 +1146,8 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 } else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes('6281215199447@s.whatsapp.net')) {
 tes = await caliph.sendMessage(from, 'lord @6281215199447', 'conversation', { contextInfo: { mentionedJid : ownerNumber }, quoted: msg })
 reply( 'Ada yang cariin tuh', tes)
+} else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes(botNumber)) {
+caliph.reply(from, 'Ada Apa kak?', msg)
 }
 } catch {}
 async function perintah(teks){
@@ -1167,10 +1169,12 @@ async function perintah(teks){
 			if (isCmd) {
                   loaded.push("@caliph91_")
 fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
-		caliph.chatRead(from)
  }
-      //[AUTO READ] Auto read message 
 
+      //[AUTO READ] Auto read message 
+ if (setting.read && isCmd) {
+ caliph.chatRead(from)
+}
        //FILTER BANNED
        if (isBanned && isCmd) {console.log(color('[BAN]', 'red'), color(moment.tz('Asia/Jakarta').format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${prefix}${command} [${args.length}]`), 'from', color(pushname))}
        
@@ -4293,6 +4297,7 @@ ${groupDesc}`})
 addFilter(sender)
 					break
                 case prefix+'run':
+                case '>':
                 if (!isOwner) return reply(mess.only.ownerB)
                 try {
                 sy = args.join(' ')
@@ -4396,6 +4401,7 @@ addFilter(sender)
 				     if (args.length < 1) return reply(`[�] Kirim perintah *${prefix}math [ Angka ]*\nContoh : ${prefix}math 12*12\n*NOTE* :\n- Untuk Perkalian Menggunakan *\n- Untuk Pertambahan Menggunakan +\n- Untuk Pengurangan Mennggunakan -\n- Untuk Pembagian Menggunakan /`)
 				  try {
 				    mtk = args.join(' ')
+				    Math_js = require('mathjs')
 				    let val = mtk
                     .replace(/[^0-9\-\/+*×÷πEe()piPI/]/g, '')
                     .replace(/×/g, '*')
@@ -4406,7 +4412,7 @@ addFilter(sender)
                    .replace(/\++/g, '+')
                    .replace(/-+/g, '-')
                    
-				reply(`*${mtk} = *${Math.floor(val)}*`)
+				reply(`*${mtk} = *${Math_js.evaluate(val)}*`)
 				limitAdd(sender)
 				} catch (err) {
 				reply(`${err}`)
@@ -5190,26 +5196,10 @@ addFilter(sender)
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
-                     var imgbb = require('imgbb-uploader')
-                     teks = encodeURIComponent(args.join(' '))
                      reply(mess.wait)
-                     try {
-                     pp = `https://api.zeks.xyz/api/emoji-image?apikey=${zekskey}&emoji=${teks}`
-                     media = await getBuffer(pp)
-                     datae = await imageToBase64(JSON.stringify(pp).replace(/\"/gi, ''))
-                     fs.writeFileSync('semoji.jpeg', datae, 'base64')
-                     res = await imgbb("2685f71965fa6c56702e9e70644ff0ad", 'semoji.jpeg')
-                     console.log(res)
-                     ranp = getRandom('.png')
-                     rano = getRandom('.webp')
-                     exec(`wget ${res.display_url} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=60 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-                             //fs.unlinkSync(ranp)
-                             if (err) return reply(mess.error.stick)
-                             pps = fs.readFileSync(rano)
-                             caliph.sendMessage(from, pps, sticker, {quoted: msg})
-                             //fs.unlinkSync(rano)
+                     try{
+                     stc.sticker(false, `https://api.vhtear.com/emojitopng?code=${emojiUnicode(query)}&apikey=${vkey}`, "Emoji sticker", "Caliph Bot").then(v => caliph.sendMessage(from, v, sticker, { quoted: msg}))
                              limitAdd(sender)
-                            })
                     } catch(e) {
                        reply('Error!')
                        console.log(e)
@@ -5401,6 +5391,7 @@ addFilter(sender)
 addFilter(sender)
 					break
 case prefix+'return':
+case '=>':
 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
    if (!isOwner) return reply(mess.only.ownerB)
@@ -5486,7 +5477,7 @@ addFilter(sender)
                      datae = await imageToBase64(JSON.stringify(pp).replace(/\"/gi, ''))
                      res = await Buffer.from(datae, 'base64')
                      await stc.sticker(res, false, 'Text Gif', 'Caliph Bot').then(gege => {
-                     caliph.sendMessage(from, gege, sticker, { quoted: m })
+                     caliph.sendMessage(from, gege, sticker, { quoted: msg })
                      })
 					} catch {
 					reply('Error mhank!')
