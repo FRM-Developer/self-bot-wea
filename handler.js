@@ -77,6 +77,7 @@ const _level = JSON.parse(fs.readFileSync('./src/level.json'))
 const limit = JSON.parse(fs.readFileSync('./src/msgLimit.json'))
 const setting = JSON.parse(fs.readFileSync('./src/setting.json'))
 const antilink = JSON.parse(fs.readFileSync('./src/antilink.json'))
+const revoke = JSON.parse(fs.readFileSync('./src/antirevoke.json'))
 const delay = require('delay')
 const { ht } = require('./lib/tahta.js')
 const nekopoi = require('./lib/nekopoi.js')
@@ -447,7 +448,7 @@ function getName(jid)  {
 		}
 		})*/
     caliph.on('message-delete', async (m) => {
-    return
+    if (!revoke.includes(m.key.remoteJid)) return
     if (m.key.remoteJid == 'status@broadcast') return 
     caliph.sendMessage(m.key.remoteJid, `Terdeteksi, @${m.participant.split("@")[0]} Telah Menghapus Pesan`, MessageType.text, {quoted: m, contextInfo: {"mentionedJid": [m.participant]}})
       caliph.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m))
@@ -469,8 +470,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-   caliph.on('message-new', async (msg) => {
+   caliph.on('chat-update', async (chat) => {
 		try {
+			if (!chat.hasNewMessage) return
+            msg = chat.messages.all()[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 				try {
@@ -829,6 +832,7 @@ const getLevelingXp = (userId) => {
 			const isNsfw = nsfw.includes(from)
 			const isSimi = isGroup ? samih.includes(from) : false
             const isStiker = isGroup ? astik.includes(from) : false
+            const isRevoke = revoke.includes(from)
 				const groupDesc = isGroup ? groupMetadata.desc : ''
 			const isPremium = premium.includes(sender)
 			const isOwner = ownerNumber.includes(sender)
@@ -1082,10 +1086,10 @@ const isLevelingOn = isGroup ? _leveling.includes(from) : false
         }
         if (isGroup && GroupLinkDetector && !isGroupAdmins){
             if (budy.includes('chat.whatsapp.com')) {
-            if (isOwner) return reply(`*「 GROUP LINK DETECTOR 」*\nKamu Owner Bot, Aku Tidak Akan kick kamu!`)
-                    await reply(`*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`)
-                    await delay(2000)
-                    await caliph.groupRemove(m.chat, [sender])
+            if (isOwner) return m.reply(`*「 GROUP LINK DETECTOR 」*\nKamu Owner Bot, Aku Tidak Akan kick kamu!`)
+            risen = `*KICKED GROUP*\n\n\nSubject : ${groupMetadata.subject}\nAdmins : @${botNumber.split('@')[0]}\nReason : Sending a Invite Link`
+                    await m.reply(`*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`).then(() => caliph.groupRemove(m.chat, [sender]))
+                    caliph.sendMessage(sender, risen, text, { contextInfo: { mentionedJid: caliph.parseMention(risen) }})
               }
             }
             if (isGroup && antiVirtex && !isGroupAdmins) {
@@ -2399,12 +2403,9 @@ addFilter(sender)
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
+					risen = `*KICKED GROUP*\n\n\nSubject : ${groupMetadata.subject}\nAdmins : ${sender.split('@')[0]}\nReason : ${args.join(' ') || ''}`
 					quoteds = msg.message.extendedTextMessage.contextInfo.participant
-					try {
-					 await caliph.groupRemove(from, [quoteds])
-					 } catch {
-					 caliph.sendMessage(from, `Gagal Kick Member @${quoteds.split('@')[0]}`, text, {contextInfo: { mentionedJid : [quoteds] }})
-					 }
+					 await caliph.groupRemove(from, [quoteds]).then(() => caliph.sendMessage(quoteds, risen, text, { contextInfo: { mentionedJid: caliph.parseMention(risen) }}))
 					addFilter(sender)
 					break
                case prefix+'kickme':
@@ -2441,10 +2442,6 @@ addFilter(sender)
 					break
                case 'report':
                if (!isGroup) return reply(mess.only.group)
-               message = `══✪〘 GROUP REPORT 〙✪══\n\nFrom : @${sender.split('@')[0]} (${groupMetadata.subject})\nReason : ${args.join(' ') || ''}`
-                for (let i of groupAdmins) {
-                caliph.sendMessage(i, message, text)
-                }
                 caliph.sendMessage(from, 'Reported To Admins Group', text, { contextInfo: { mentionedJid: groupAdmins }})
                 break
             case prefix+'onlinelist':
@@ -2808,6 +2805,32 @@ addFilter(sender)
 						welkom.splice(inz, 1)
 						fs.writeFileSync('./src/welkom.json', JSON.stringify(welkom))
 						reply('Sukses menonaktifkan fitur welcome di group ini ��')
+					} else {
+						reply('pilih enable atau disable udin!!')
+					}
+		           
+addFilter(sender)
+					break
+case prefix+'antidelete':
+					   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)   
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)  
+					if (!isGroup) return reply(mess.only.group)
+					if (!isGroupAdmins) return reply(mess.only.admin)
+					if (args.length < 1) return reply('pilih enable atau disable udin!!')
+					if (args[0] == 'enable') {
+						if (isRevoke) return reply('Udah aktif um')
+						revoke.push(from)
+						fs.writeFileSync('./src/antirevoke.json', JSON.stringify(revoke))
+						reply('Sukses mengaktifkan fitur Antidelete di group ini ‼️')
+					} else if (args[0] == 'disable') {
+					heh = from
+                inz = revoke.indexOf(heh)
+						revoke.splice(inz, 1)
+						fs.writeFileSync('./src/welkom.json', JSON.stringify(revoke))
+						reply('Sukses menonaktifkan fitur Antidelete di group ini ‼️')
 					} else {
 						reply('pilih enable atau disable udin!!')
 					}
