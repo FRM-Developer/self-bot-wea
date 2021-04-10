@@ -342,12 +342,13 @@ function getName(jid)  {
 		try {
 					ppimg = await caliph.getProfilePicture(`${anu.participants[0].split('@')[0]}@c.us`)
 				} catch {
-					ppimg = 'https://i.ibb.co/Tq7d7TZ/age-hananta-495-photo.png'
+					ppimg = 'https://telegra.ph/file/25bee11ec86f7956f6bdf.jpg'
 				}
 				const memJid = anu.participants[0]
 				const pushnem = caliph.contacts[memJid] !== undefined ? caliph.contacts[memJid].notify : PhoneNumber('+' + memJid.replace('@s.whatsapp.net', '')).getNumber('international')
 				const mems = anu.participants
 				const pushname = await getName(memJid)
+				const from = anu.jid
 				const mdata = await caliph.groupMetadata(anu.jid)
 				const iniGc = anu.jid.endsWith('@g.us')
 				const jumlahMem = iniGc ? mdata.participants : ''
@@ -366,10 +367,10 @@ function getName(jid)  {
                     .setColor('discriminator-box', '#00100C')
                     .setColor('message-box', '#00100C')
                     .setColor('title', '#00FFFF')
-                    .setBackground('https://www.photohdx.com/images/2016/05/red-blurry-background.jpg')
+                    .setBackground('https://images.unsplash.com/photo-1493514789931-586cb221d7a7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb')
                     .toAttachment()
                 const base64 = `${welcomer.toBuffer().toString('base64')}`
-                await caliph.sendMessage(from, Buffer.from(base64, 'base64'), image, { caption: `Welcome ${await getName(i)}`})
+                await caliph.sendMessage(anu.jid, Buffer.from(base64, 'base64'), MessageType.image, { caption: `Welcome ${await getName(i)}`})
                 }
 			} 
 			if (!caliph.user.jid.includes(memJid) && anu.action == 'remove' && left.includes(anu.jid)) {
@@ -385,10 +386,10 @@ function getName(jid)  {
                     .setColor('discriminator-box', '#00100C')
                     .setColor('message-box', '#00100C')
                     .setColor('title', '#00FFFF')
-                    .setBackground('https://www.photohdx.com/images/2016/05/red-blurry-background.jpg')
+                    .setBackground('https://images.unsplash.com/photo-1493514789931-586cb221d7a7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb')
                     .toAttachment()
                 const base64 = `${bye.toBuffer().toString('base64')}`
-                await caliph.sendMessage(from, Buffer.from(base64, 'base64'), image, { caption: `Goodbye ${await getName(i)}`})
+                await caliph.sendMessage(anu.jid, Buffer.from(base64, 'base64'), MessageType.image, { caption: `Goodbye ${await getName(i)}`})
 			}
 			}
 		} catch (e) {
