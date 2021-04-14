@@ -473,13 +473,11 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
    caliph.on('chat-update', async (chat) => {
 		try {
 			if (!chat.hasNewMessage) return
+            if (!chat.messages && !chat.count) return
             msg = chat.messages.all()[0]
 			if (!msg.message) return
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
-				try {
-			ff = await serialize(msg)
-			const m = simple.smsg(caliph, ff)
-			} catch {}
+			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
 			//if (!msg.key.fromMe) return 
 			const content = JSON.stringify(msg.message)
@@ -1255,7 +1253,8 @@ addFilter(sender)
               if (args.length == 0) return reply('Linknya mana su')
               if (!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
               fak = await caliph.joinvialink(args[0].replace('https://chat.whatsapp.com/', ''))
-              reply('Berhasil Masuk Grup : '+getName(fak.gid))
+              hemhe = await caliph.groupMetadata(fak.gid)
+              reply('Berhasil Masuk Grup : '+hemhe.subject)
               break
                 case prefix+'readme':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -1634,102 +1633,20 @@ addFilter(sender)
 					break
 			case prefix+'stiker':
 				case prefix+'sticker':
+				case prefix+'sgif':
+				case prefix+'stickergif':
+				case prefix+'stikergif':
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-					if ((isMedia && !msg.message.videoMessage || isQuotedImage) && args.length == 0) {
-						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
-						const media = await caliph.downloadAndSaveMediaMessage(encmedia)
-                                                
-						ran = getRandom('.webp')
-						await ffmpeg(`./${media}`)
-							.input(media)
-							.on('start', function (cmd) {
-								console.log(`Started : ${cmd}`)
-							})
-							.on('error', function (err) {
-								console.log(`Error : ${err}`)
-								fs.unlinkSync(media)
-								reply(mess.error.stick)
-							})
-							.on('end', async function () {
-								console.log('Finish')
-								caliph.sendMessage(from, fs.readFileSync(ran), sticker, {quoted: msg})
-								fs.unlinkSync(media)
-								fs.unlinkSync(ran)
-								limitAdd(sender)
-							})
-							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=120, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-							.toFormat('webp')
-							.save(ran)
-						} else if ((isMedia && msg.message.videoMessage.seconds < 16 || isQuotedVideo && msg.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 16)) {
-						if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
-						const media = await caliph.downloadAndSaveMediaMessage(encmedia)
-						ran = getRandom('.webp')
-						reply(mess.wait)
-						await ffmpeg(`./${media}`)
-							.inputFormat(media.split('.')[1])
-							.on('start', function (cmd) {
-								console.log(`Started : ${cmd}`)
-							})
-							.on('error', function (err) {
-								console.log(`Error : ${err}`)
-								fs.unlinkSync(media)
-								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								reply(`❌ Gagal, pada saat mengkonversi ${tipe} ke stiker`)
-							})
-							.on('end', function () {
-								console.log('Finish')
-								buff = fs.readFileSync(ran)
-								caliph.sendMessage(from, buff, sticker)
-								fs.unlinkSync(media)
-								fs.unlinkSync(ran)
-							})
-							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-							.toFormat('webp')
-							.save(ran)
-						} else {
-						reply(`kirim Gambar/video/gif dengan caption *${prefix}sticker*`)
-						}
-					//	await reply('stiker Terkirim '+(`${latensi.toFixed(4)}`) + 'detik')
-						
-						addFilter(sender)
-					break
-               case prefix+'stikergif':
-               case prefix+'stickergif':
-               case prefix+'sgif':
-               if (!isUser) return reply(mess.only.userB)
-               old = new Date
-                if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-                if ((isMedia && msg.message.videoMessage.seconds < 16 || isQuotedVideo && msg.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 16)) {
-						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
-						const media = await caliph.downloadAndSaveMediaMessage(encmedia)
-						ran = getRandom('.webp')
-						reply(mess.wait)
-						await ffmpeg(`./${media}`)
-							.inputFormat(media.split('.')[1])
-							.on('start', function (cmd) {
-								console.log(`Started : ${cmd}`)
-							})
-							.on('error', function (err) {
-								console.log(`Error : ${err}`)
-								fs.unlinkSync(media)
-								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								reply(`❌ Gagal, pada saat mengkonversi ${tipe} ke stiker`)
-							})
-							.on('end', function () {
-								console.log('Finish')
-								buff = fs.readFileSync(ran)
-								caliph.sendMessage(from, buff, sticker)
-								fs.unlinkSync(media)
-								fs.unlinkSync(ran)
-							})
-							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=10, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-							.toFormat('webp')
-							.save(ran)
-						}  else {
-						reply(`hanya untuk gif/video yang berdurasi -15 detik`)
-						}
+				try {
+						encmedia = m.quoted ? m.quoted : m
+						media = await encmedia.download()
+						if (!media) return reply('Media Tidak Ditemukan')
+						stiker = await stc.sticker(media, false, 'Caliph Bot', '@caliph71')
+						caliph.sendMessage(from, stiker, sticker)
+						} catch (e) {
+						reply(`${e}`)
+			            }
 						addFilter(sender)
 					break
              /*  case prefix+'swm':
@@ -3298,26 +3215,6 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-case prefix+'jadibot':
-                 let conn = new WAConnection()
-                 conn.on('qr', async (qr) => {
-                 QRCode = require('qrcode')
-                 QRCode.toDataURL(qr, async function (err, url) {
-        file = url
-		console.log(color('[','white'), color('!','red'), color(']','white'), color(' Scan the qr code above'))
-		scc = await caliph.sendMessage(from, Buffer.from(file.substr(22), 'base64'), image, {caption: 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik', quoted: m })
-		setTimeout(() => {
-        caliph.deleteMessage(m.chat, scc.key)
-      }, 30000)
-		})
-	})
-	conn.on('credentials-updated', (user) => {
-		fs.writeFileSync(`./${sender.split("@")[0]}.numpang.json`, JSON.stringify(conn.base64EncodedAuthInfo(), null, '\t'))
-		reply('Berhasil tersambung dengan WhatsApp - mu.\n*NOTE: Ini cuma numpang*\n' + JSON.stringify(user, null, '\t'))
-	})
-	conn.loadAuthInfo(`./${sender.split("@")[0]}.numpang.json`)
-	await conn.connect()
-	break
      case prefix+'readall':
 					if (!isOwner) return reply(mess.only.ownerB)
 					var chats = await caliph.chats.all()
@@ -4497,10 +4394,8 @@ addFilter(sender)
   var { dl_link, thumb, title, filesize, filesizeF} = await yta(url5, servers.includes(server) ? server : 'id4')
   console.log(await yta(url5, servers.includes(server) ? server : 'id4'))
  thumbnail = await caliph.sendMessage(from, await getBuffer(thumb), image, { caption:`*Title:* ${title}\n*Filesize:* ${filesizeF}\n*Link* : ${await shortlink(dl_link)}`, quoted:msg})
-//  if (!isPremium) await reply('Maaf Audio Tidak Dapat Dikirim, Karena Anda Bukan User Premium')
- // if (!isPremium) return caliph.sendMessage(from, 'Download Sendiri, gosah Manja!', text, { quoted: thumbnail })
 // if (filesize > 10000) return sendImgFromUrl(thumb, `*「 YOUTUBE PLAY 」*\n\n• *Judul* : ${title}\n• *Filesize* : ${filesizeF}\n\n__Maaf, Durasi video melebihi 10 MB. Silahkan download video melalui link dibawah_.\n${await shortlink(dl_link)}`)
-  caliph.sendFile(from, dl_link, title+'.mp3', false, m, false)
+  caliph.sendMessage(from, await getBuffer(dl_link), audio, { quoted: msg, mimetype: 'audio/mp4'})
   } catch (e) {
   reply(`${e}`)}  
 addFilter(sender)
@@ -4515,11 +4410,6 @@ bitlyy = await bitly(i.url)
 teks += `Channel : ${i.name}\nSubs : ${h2k(i.subCount)}\nVideo : ${i.videoCount}\nLink : ${bitlyy}\n--------------------------\n`
 }
 sendImgFromUrl(thumb, teks.trim())
-addFilter(sender)
-					break
-case prefix+'mengetes':
-results = await yts(query)
-console.log(results)
 addFilter(sender)
 					break
                 case prefix+'reminder':
@@ -4684,6 +4574,11 @@ if (isBanned) return reply(mess.only.benned)
 						}
 						addFilter(sender)
 					break
+                case prefix+'status':
+                teks = `RAM : ${ram}`
+                caliph.reply(m.chat, teks, msg)
+                break
+                
     case prefix+'nobg':
                                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
@@ -6567,7 +6462,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
     var util = require('util')
     teks = args.join(' ')
     res = await fetch(teks)
-  if (!/text|json/.test(res.headers.get('content-type'))) return caliph.sendFile(m.chat, teks, 'file', teks, m)
+  if (!/text|json/.test(res.headers.get('content-type'))) return caliph.sendMessage(from, await getBuffer(teks), document, { mimetype: 'application/octet-stream', filename: 'file'})
   txt = await res.buffer()
   try {
     txt = util.format(JSON.parse(txt+''))
@@ -6598,7 +6493,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
   addFilter(sender)
 					break
    case prefix+'translate':
-  translate(body.slice(11+args[0].length), {tld: 'cn', to: args[0]}).then(res => {
+  translate(args.slice(1).join(' '), {tld: 'cn', to: args[0]}).then(res => {
             caliph.sendMessage(from, `${res.text}`, text, {quoted: msg})
             console.log(res)
         }).catch(err => {
@@ -7034,9 +6929,6 @@ case prefix+'gta5':
            addFilter(sender)
 					break
              default:
-                 if (body.startsWith(`${prefix}`)) {
-                  reply(`Maaf *${pushname}*, Command *${prefix}${command}* Tidak Terdaftar Di Dalam *${prefix}menu*!`)
-                  }
                   if ('tes' == body) {
                   reply('tes Di respon')
                   }
@@ -7049,89 +6941,4 @@ case prefix+'gta5':
 
 }
 starts()
-/*
-spawn('convert', [
-						'./database/gambar/welcome.jpg',
-						'-gravity',
-						'Center',
-						'-fill',
-						'#ffffff',
-						'-font',
-						'./src/font/Dimbo Italic.ttf',
-						'-size',
-						'2540x1438',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0-65',
-						pushnem,
-						'-fill',
-						'#ffffff',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0+35',
-						'# '+daftar.length,
-						'-fill',
-						'#ffffff',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0+220',
-						'Joining '+mdata.subject,
-						'./database/gambar/welkom.jpg'
-						])
-				setTimeout( () => {
-				ppimg = fs.readFileSync('database/gambar/welkom.jpg')
-				alfa.sendMessage(mdata.id, ppimg, MessageType.image)
-					}, 2000)
-			} else if (anu.action == 'remove') {
-				spawn('convert', [
-						'./database/gambar/sayonara.jpg',
-						'-gravity',
-						'Center',
-						'-fill',
-						'#ffffff',
-						'-font',
-						'./src/font/Dimbo Italic.ttf',
-						'-size',
-						'2540x1438',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0-65',
-						pushnem,
-						'-fill',
-						'#ffffff',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0+35',
-						'# '+daftar.length,
-						'-fill',
-						'#ffffff',
-						'-pointsize',
-						'70',
-						'-interline-spacing',
-						'7.5',
-						'-annotate',
-						'+0+220',
-						'Leaving '+mdata.subject,
-						'./database/gambar/leave.jpg'
-						])
-				setTimeout( () => {
-				ppimg = fs.readFileSync('database/gambar/leave.jpg')
-				alfa.sendMessage(mdata.id, ppimg, MessageType.image)
-					}, 2000)*/
-					
 					
