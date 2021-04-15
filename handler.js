@@ -476,7 +476,9 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
             if (!chat.messages && !chat.count) return
             msg = chat.messages.all()[0]
 			if (!msg.message) return
+                 msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
+       if (!msg.key.fromMe) return
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
 			//if (!msg.key.fromMe) return 
@@ -1157,7 +1159,8 @@ async function perintah(teks){
                 return eval(teks)
                 }
 			colors = ['red','white','blue','yellow','green']
-			rainbow = colors[Math.floor(Math.random() * (colors.length))]  	
+			rainbow = colors[Math.floor(Math.random() * (colors.length))]
+  	
 			const isMedia = (type === 'imageMessage' || type === 'videoMessage')
 			const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
@@ -1484,8 +1487,7 @@ case prefix+'ttp2':
 						])
 					await delay(2000)
 					exec('cwebp -q 50 ' + './tmp/ttp.png' + ' -o tmp/' + 'stikergradient' + '.webp', (error, stdout, stderr) =>
-					{
-					let stik = fs.readFileSync('./tmp/' + 'stikergradient' + '.webp')
+					{					let stik = fs.readFileSync('./tmp/' + 'stikergradient' + '.webp')
 				    caliph.sendMessage(from, stik, sticker, { quoted: msg } )
 					});
 					await delay(3000)
@@ -1890,10 +1892,8 @@ addFilter(sender)
 					if (args.length < 1) return reply('Urlnya mana um?')
 					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
 					reply(mess.wait)
-					anu = await fetchJson(`https://mhankbarbar.moe/api/tiktok?url=${args[0]}&apiKey=${apiKey}`, {method: 'get'})
-					if (anu.error) return sendImgFromUrl('https://i.ibb.co/f8K14jz/327aae709c00.jpg','Terjadi Kesalahan')
-					buffer = await getBuffer(anu.result)
-					caliph.sendMessage(from, buffer, video, {caption: anu.quote, quoted:msg, mimetype:'video/mp4'})
+buffer = await getBuffer(`https://recoders-area.caliph.repl.co/api/tiktod?url=${args[0]}&apikey=FreeApi`)
+					caliph.sendMessage(from, buffer, video, {quoted:msg, mimetype:'video/mp4'})
 					limitAdd(sender)
 addFilter(sender)
 					break
@@ -3033,7 +3033,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = apakah[Math.floor(Math.random() * (apakah.length))]  	
+               random = apakah[Math.floor(Math.random() * (apakah.length))]
+  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -3044,7 +3045,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-                random = bisakah[Math.floor(Math.random() * (bisakah.length))]  	
+                random = bisakah[Math.floor(Math.random() * (bisakah.length))]
+  	
 			   hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
 			   reply(hasil)
 addFilter(sender)
@@ -3080,7 +3082,8 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-               random = kapankah[Math.floor(Math.random() * (kapankah.length))]  	
+               random = kapankah[Math.floor(Math.random() * (kapankah.length))]
+  	
                random2 = Math.floor(Math.random() * 10) + 1
                hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random2} ${random}* *lagi*`
               reply(hasil)
@@ -5311,13 +5314,16 @@ addFilter(sender)
 					break
 case prefix+'return':
 case '=>':
+case prefix+'raw':
 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
    if (!isOwner) return reply(mess.only.ownerB)
     try {
                     let evaled = await eval(args.join(' '))
                     if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
-                    await caliph.reply(from, evaled, msg)
+                    if (command.slice(1) == 'raw') {
+await fs.writeFileSync('raw.json', evaled)
+ caliph.sendMessage(from, fs.readFileSync('raw.json'), document, { quoted: msg, mimetype: 'text/txt', filename: 'raw.txt'}) } else caliph.reply(from, evaled, msg)
                 } catch (err) {
                     console.error(err)
                     await caliph.reply(from, `${err}`, msg)
@@ -5702,6 +5708,27 @@ addFilter(sender)
        limitAdd(sender)
        addFilter(sender)
 					break
+case prefix+'cnn':
+      if (args[0].toLowerCase() == 'nasional' || args[0].toLowerCase() == 'internasional') {
+      require('axios').get(`https://www.cnnindonesia.com/${args[0].toLowerCase()}`).then(async res => {
+const $ = require('cheerio').load(res.data)
+hasil = []
+$('article').each(function(a, b) {
+const link = $(b).find('a').attr('href')
+const thumb = $(b).find('img').attr('src') 
+const judul = $(b).find('img').attr('alt')
+hasil.push({ judul, link, thumb })
+})
+result = hasil.map(({ judul, link, snippet}) => {
+    return `*${judul}*\n_${link}_`
+  }).join`\n\n`
+  await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=https://www.cnnindonesia.com/${args[0].toLowerCase()}&quality=100&full_page=true`, result)
+hasil = []
+})
+} else { 
+reply('Masukkan Query nasional / internasional')
+}
+break
      case prefix+'google':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
      if (!isUser) return reply(mess.only.userB)
@@ -6228,6 +6255,42 @@ if (isBanned) return reply(mess.benned)
 
 addFilter(sender)
 					break
+case prefix+'sider':
+      if (!isGroup) return 
+      if (!m.quoted.fromMe) return reply('Reply Pesan Bot')
+      infom = await caliph.messageInfo(from, m.quoted.id)
+      hemm = infom.reads
+      readdin = hemm.map(v => v.jid)
+
+      stamp = hemm.map(v => v.t)
+    function toTime(UNIX_timestamp, ribuan){
+  ribuan = (typeof ribuan == 'undefined') ? false : true;
+
+  let a = new Date(UNIX_timestamp);
+  if (ribuan) {
+    a = new Date(UNIX_timestamp * 1000);
+  }
+ 
+  //buat index bulan
+  var months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','Nopember','Desember'];
+
+  // ambil pecahan waktu masing-masing
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+
+  // gabungkan ke dalam variable time
+  var time = hour + ':' + min + ':' + sec ;
+  return time;
+}
+      teksx = `Wayoloh, ngeread mulu :\n`
+hiks = 0
+      for (let i of hemm) {
+hiks += 1
+      teksx += `~> @${i.jid.split('@')[0]} > ${toTime(i.t, true)}\n`
+      }
+      caliph.sendMessage(from, teksx, text, { contextInfo: { mentionedJid: readdin }})
+      break
     case prefix+'restart':
     if (!isOwner) return reply( mess.only.ownerB, msg)
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -6307,8 +6370,8 @@ addFilter(sender)
 		teks += `Judul: ${i.title}\nLink: ${i.url}`
 		}
 		buffs = await getBuffer(data.result[0].thumb)
-		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 
-		limitAdd(sender)
+		caliph.sendMessage(from, buffs, image, {quoted: msg, caption: teks}) 		
+limitAdd(sender)
 		addFilter(sender)
 					break
     case prefix+'nightcore':
@@ -6327,7 +6390,8 @@ addFilter(sender)
 					break 
     case prefix+'getjodoh':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-if (isBanned) return reply(mess.only.benned)
+
+if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
 
                     up = user
@@ -6339,7 +6403,8 @@ addFilter(sender)
 					+ `FN:${getName(aku)}\n` // full name
 					+ `TEL;type=CELL;type=VOICE;waid=${(aku.split('@')[0])}:${(aku.split('@')[0])}\n` // WhatsApp ID + phone number
 					+ 'END:VCARD'
-                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
+
+                 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, {quoted:msg})
 limitAdd(sender)
                     addFilter(sender)
 					break
