@@ -478,7 +478,7 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 			if (!msg.message) return
                  msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
-      // if (!msg.key.fromMe) return
+       if (!msg.key.fromMe) return
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
 			//if (!msg.key.fromMe) return 
@@ -836,7 +836,7 @@ const getLevelingXp = (userId) => {
 				const groupDesc = isGroup ? groupMetadata.desc : ''
 			const isPremium = premium.includes(sender)
 			const isOwner = ownerNumber.includes(sender)
-			const isUser = user.includes(sender)
+			const isUser = true
 			const isBanned = ban.includes(sender)
 			const isGroupOwner = groupOwner.includes(sender)
 			let query = args.join(' ')
@@ -1198,6 +1198,7 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
        /*if (!budy.startsWith(prefix) && m.isPrivate && !msg.key.fromMe && !budy.includes('cekprefix') && !budy.includes('assalamualaikum')) {
        reply(`Maap, gua kagak ngarti gan:(\nKetik ${prefix}help untuk melihat list command`)
        }*/
+       if (isBanned) return
        if (isCmd && isFiltered(sender)) return 
 		switch(command) {
 				case prefix+'help':
@@ -1578,7 +1579,7 @@ addFilter(sender)
                 case prefix+'asmaulhusna':
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
-                data = await fetchJson(`https://recoders-area.herokuapp.com/api/muslim/asmaulhusna?apikey=FreeApi`)
+                data = await fetchJson(`https://recoders-area.caliph.repl.co/api/muslim/asmaulhusna?apikey=FreeApi`)
                 v = data.result.data
                 random = v[Math.floor(Math.random() * 99)]
                 reply(`${random.arabic}\n${random.latin}\n\n${random.translation_id}`)
@@ -2500,7 +2501,7 @@ addFilter(sender)
 				caliph.updatePresence(from, Presence.composing) 
 				if (args.length < 1) return reply(`kotanya mana bang?`)
 				reply(`[❕] Loading`)
-				asu = await fetchJson(`https://recoders-area.herokuapp.com/api/kodepos?kota=${args.join(' ')}&apikey=FreeApi`)
+				asu = await fetchJson(`https://recoders-area.caliph.repl.co/api/kodepos?kota=${args.join(' ')}&apikey=FreeApi`)
 				teks = '=================\n'
 				if (!asu.result.success) return reply(asu.data)
 				for (let i of asu.result.data) {
@@ -3147,7 +3148,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'demotesssisj':
+				case prefix+'demote':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3162,7 +3163,7 @@ addFilter(sender)
                      }
 				    addFilter(sender)
 					break
-                  case prefix+'sksnkdns':
+                  case prefix+'promote':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -5188,7 +5189,7 @@ addFilter(sender)
                                          owgi = await caliph.downloadAndSaveMediaMessage(ger)
                                          anu = await imgbb("2685f71965fa6c56702e9e70644ff0ad", owgi)
                                         teks = `${anu.display_url}`
-                                       axios.get(`https://recoders-area.herokuapp.com/api/qrread?url=${teks}&apikey=FreeApi`)
+                                       axios.get(`https://recoders-area.caliph.repl.co/api/qrread?url=${teks}&apikey=FreeApi`)
 		.then((res) => {
 			reply('HASIL : '+res.data.result)
 		})
@@ -6527,7 +6528,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
     var util = require('util')
     teks = args.join(' ')
     res = await fetch(teks)
-  if (!/text|json/.test(res.headers.get('content-type'))) return caliph.sendMessage(from, await getBuffer(teks), document, { mimetype: 'application/octet-stream', filename: 'file'})
+  if (!/text|json/.test(res.headers.get('content-type'))) return caliph.sendFile(from, teks, 'file', '', msg)
   txt = await res.buffer()
   try {
     txt = util.format(JSON.parse(txt+''))
