@@ -1888,7 +1888,6 @@ addFilter(sender)
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
-					if (!isPremium) return reply(mess.only.premi)
 					if (args.length < 1) return reply('Urlnya mana um?')
 					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
 					reply(mess.wait)
@@ -2181,14 +2180,12 @@ addFilter(sender)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
 					if (!isOwner) return reply(mess.only.ownerB)
-					if (args.length < 1) return reply('.......')
-					if (isMedia && !msg.message.videoMessage || isQuotedImage) {
-						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
-						buff = await caliph.downloadMediaMessage(encmedia)
-							caliph.sendMessage('status@broadcast', buff, image, {caption: `${args.join(' ')}`})
+					if (m.quoted.mtype == 'imageMessage') {
+							caliph.sendMessage('status@broadcast', await m.quoted.download(), image, {caption: `${args.join(' ')}`})
+					} else if (m.quoted.mtype == 'videoMessage') {
+						caliph.sendMessage('status@broadcast', await m.quoted.download(), video, {caption: `${args.join(' ')}`})
 					} else {
-							sendMess('status@broadcast', `${args.join(' ')}`)
-						reply('Suksess broadcast')
+					sendMess('status@broadcast', args.join(' '))
 					}
 					
 addFilter(sender)
@@ -3145,36 +3142,6 @@ addFilter(sender)
 						reply('pilih open atau close udin!!')
 					}
 					
-addFilter(sender)
-					break
-				case prefix+'demote':
-					 
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)   
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)  
-					if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
-					mentioned = msg.message.extendedTextMessage.contextInfo.mentionedJid
-					for (let i of mentioned) {
-                    await caliph.groupDemoteAdmin(m.chat, [i])
-                     }
-				    addFilter(sender)
-					break
-                  case prefix+'promote':
-					 
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)   
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)  
-					if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
-					mentioned = msg.message.extendedTextMessage.contextInfo.mentionedJid
-					for (let i of mentioned) {
-                    await caliph.groupMakeAdmin(m.chat, [i])
-                     }
 addFilter(sender)
 					break
 				  case prefix+'wa.me':
