@@ -478,7 +478,6 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 			if (!msg.message) return
                  msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
-       if (!msg.key.fromMe) return
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
 			//if (!msg.key.fromMe) return 
