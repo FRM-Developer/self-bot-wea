@@ -33,7 +33,8 @@ const {
     groupmenu,
     funmenu,
     snk,
-    readme
+    readme,
+    downloadmenu
     } = require('./src/help.js')
 const { donasi } = require('./src/donasi.js')
 const { negara } = require('./src/kodenegara.js')
@@ -191,6 +192,19 @@ var hariRamadhan = Math.floor(15 - moment().format('DD'))
 					break
     }
 }
+
+const neonime = () => new Promise((resolve, reject) => {
+    
+console.log('Get Neonime latest update...')
+    
+fetchJson('https://enznoire.herokuapp.com/neolatest')
+        
+.then((result) => resolve(result))
+        
+.catch((err) => reject(err))
+
+})
+
 
 const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -3159,6 +3173,46 @@ addFilter(sender)
 				
 addFilter(sender)
 					break
+					
+					case prefix+'neonime':
+               
+					  if (isLimit(sender)) return 
+					  limitAdd(sender)
+               
+					  await caliph.reply(from, mess.wait, msg)
+               
+					  neonime()
+                  
+					  .then(async ({ status, result }) => {
+                       
+					  if (status !== 200) return await caliph.reply(from, 'Not found.', msg)
+                        
+					 let neoInfo = '*── 「 NEONIME LATEST 」 ──*'
+                       
+					  for (let i = 0; i < result.length; i++) {
+                            
+					  const { date, title, link, desc } = result[i]
+                           
+					   neoInfo += `\n\n➸ *Title*: ${title}\n➸ *Date*: ${date}\n➸ *Synopsis*: ${desc}\n➸ *Link*: ${link}\n\n=_=_=_=_=_=_=_=_=_=_=_=_=`
+                   
+				    }
+                     
+				      await caliph.reply(from, neoInfo, id)
+                        
+				      console.log('Success sending Neonime latest update!')
+                    
+				      })
+                   
+				      .catch(async (err) => {
+                       
+				      console.error(err)
+                     
+				      await caliph.reply(from, 'Error!', id)
+                 
+				      })
+           
+				       break
+					
                 case prefix+'jadwaltv':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
@@ -3462,21 +3516,6 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'neonime':
-					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)   
-					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)  
-					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/neonime_lastest`, {method: 'get'})
-					teks = '################\n'
-					for (let i of data.result) {
-						teks += `*Title* : ${i.judul}\n*link* : ${i.link}\n*rilis* : ${i.rilis}\n###############\n`
-					}
-					reply(teks.trim())
-					limitAdd(sender)
-addFilter(sender)
-					break  
 					case prefix+'bpink':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
@@ -3964,6 +4003,15 @@ addFilter(sender)
                    reply(data.result)
                    limitAdd(sender)
 addFilter(sender)
+					break
+					case prefix+'ig': case prefix+'igdl':
+                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+                     if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)  
+					rawd = await axios.get(`https://api.zeks.xyz/api/ig?url=${args[0]}&apikey=apivinz`)
+					if (rawd.data.message) return reply(rawd.data.message)
+					caliph.sendFile(from, rawd.data.result[0].url, 'ig', rawd.data.caption, msg)
+					limitAdd(sender)
 					break
                      case prefix+'igstalk': case prefix+'stalkig':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -5875,6 +5923,13 @@ if (!isUser) return reply(mess.only.userB)
 				caliph.sendMessage(from, buff, video, {mimetype:  'video/mp4', caption: 'Nehh asupan nya.', quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_SelfBot Caliph Bot_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": await toBase64(pp)} } }})
 				limitAdd(sender)
 				addFilter(sender)
+					break
+					case prefix+'downloadmenu':
+         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+        if (!isUser) return reply(mess.only.userB)
+	if (isBanned) return reply(mess.only.benned)
+            reply(downloadmenu(prefix))
+            addFilter(sender)
 					break
         case prefix+'othermenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
