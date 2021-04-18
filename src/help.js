@@ -1,16 +1,6 @@
 
 const help = (prefix, pushname, readMore, hari2, time, getLimit, sender, getLevelingXp, getLevelingLevel) => {
 	return `
-╔══✪〘 INFO USER 〙✪══
-║
-┣ ❏ NAME : ${pushname}
-┣ ❏ NUMBER : @${sender.split('@')[0]}
-┣ ❏ LIMIT : ${getLimit(sender)}
-┣ ❏ LEVEL : ${getLevelingLevel(sender) || 0}
-┣ ❏ XP : ${getLevelingXp(sender) || 0}
-┣ ❏ PREFIX : ${prefix}
-║
-║
 ╠══✪〘 LIST MENU 〙✪══
 ║
 ┣ ❏ *${prefix}ownermenu*
@@ -20,27 +10,8 @@ const help = (prefix, pushname, readMore, hari2, time, getLimit, sender, getLeve
 ┣ ❏ *${prefix}mediamenu*
 ┣ ❏ *${prefix}animemenu*
 ┣ ❏ *${prefix}kerangmenu*
-┣ ❏ *${prefix}downloadmenu* [MAINTENANCE]
+┣ ❏ *${prefix}downloadmenu*
 ┣ ❏ *${prefix}othermenu*
-║
-╠══✪〘 OTHER 〙✪══
-║
-┣ ❏ *cekprefix*
-┣ ❏ *${prefix}setprefix*
-┣ ❏ *${prefix}verify*
-┣ ❏ *${prefix}bugreport [teks]*
-┣ ❏ *${prefix}banlist*
-┣ ❏ *${prefix}blocklist*
-┣ ❏ *${prefix}grouplist*
-┣ ❏ *${prefix}info*
-┣ ❏ *${prefix}snk*
-┣ ❏ *${prefix}readme*
-┣ ❏ *${prefix}donate*
-┣ ❏ *${prefix}ping*
-┣ ❏ *${prefix}speed*
-┣ ❏ *${prefix}caliphgroup*
-┣ ❏ *${prefix}owner*
-┣ ❏ *${prefix}botstat*
 ║
 ╚═〘 CALIPH BOT 〙
 `
@@ -91,19 +62,16 @@ const ownermenu = (prefix) => {
 return `
 ╔══✪〘 OWNER 〙✪══
 ║
-┣ ❏ *${prefix}block 62858xxxxx*
-┣ ❏ *${prefix}unblock 62858xxxxx*
-┣ ❏ *${prefix}unban 62858xxxxx*
-┣ ❏ *${prefix}ban 62858xxxxx*
+┣ ❏ *${prefix}block @user*
+┣ ❏ *${prefix}unblock @user*
+┣ ❏ *${prefix}unban @user*
+┣ ❏ *${prefix}ban @user*
 ┣ ❏ *${prefix}restart*
-┣ ❏ *${prefix}banchat*
-┣ ❏ *${prefix}unbanchat*
-┣ ❏ *${prefix}setname [teks]*
-┣ ❏ *${prefix}setstatus [teks]*
-┣ ❏ *${prefix}setprofilepic*
+┣ ❏ *${prefix}setppbot*
+┣ ❏ *${prefix}setbio*
 ┣ ❏ *${prefix}run [kode JavaScript]*
 ┣ ❏ *${prefix}return [kode Javascript]
-┣ ❏ *${prefix}exe [kode Executor] 
+┣ ❏ *${prefix}exec [kode Executor] 
 ║
 ╚═〘 CALIPH BOT 〙`
 }
@@ -128,6 +96,7 @@ return `
 ┣ ❏ *${prefix}adminList*
 ┣ ❏ *${prefix}ownerGroup*
 ┣ ❏ *${prefix}listonline
+┣ ❏ *${prefix}sider  [replyChatBot]
 ┣ ❏ *${prefix}delete [replyChatBot]*
 ┣ ❏ *${prefix}kickme 
 ║
@@ -142,6 +111,7 @@ return `
 ┣ ❏ *${prefix}leave
 ┣ ❏ *${prefix}hidetag [teks]
 ┣ ❏ *${prefix}tagall 
+┣ ❏ *${prefix}antivirtex [enable/disable]
 ║
 ╚═〘 CALIPH BOT 〙`
 }
@@ -180,7 +150,8 @@ const funmenu = (prefix) => {
 ┣ ❏ *${prefix}quotemaker [|teks|author|theme]*
 ┣ ❏ *${prefix}csgo [teks]*
 ┣ ❏ *${prefix}pubglogo [teks1|teks2]*
-┣ ❏ *${prefix}nulis4 [teks]*
+┣ ❏ *${prefix}nulis2 [teks]*
+┣ ❏ *${prefix}nulis3 [teks]*
 ┣ ❏ *${prefix}crossfire [teks]*
 ║
 ╚═〘 CALIPH BOT 〙
@@ -208,7 +179,7 @@ return `
 ┣ ❏ *${prefix}qrread [reply|send image]
 ┣ ❏ *${prefix}map [optional]*
 ┣ ❏ *${prefix}checkip [ipaddress]*
-┣ ❏ *${prefix}ssweb [linkWeb]*
+┣ ❏ *${prefix}ss [linkWeb]*
 ┣ ❏ *${prefix}bitly [linkWeb]*
 ┣ ❏ *${prefix}tinyurl [url]
 ║
@@ -232,6 +203,7 @@ const othermenu = (prefix) => {
 ┣ ❏ *${prefix}sticker*
 ┣ ❏ *${prefix}stickergif*
 ┣ ❏ *${prefix}ttp [teks]*
+┣ ❏ *${prefix}attp [teks]*
 ┣ ❏ *${prefix}toimg*
 ┣ ❏ *${prefix}neko*
 ┣ ❏ *${prefix}pokemon*
@@ -239,11 +211,27 @@ const othermenu = (prefix) => {
 ┣ ❏ *${prefix}infoGempa*
 ┣ ❏ *${prefix}quotes*
 ┣ ❏ *${prefix}dadu*
+┣ ❏ *${prefix}owner [teks]*
 ┣ ❏ *${prefix}koin*
 ┣ ❏ *${prefix}wa.me*
+┣ ❏ *${prefix}getjodoh
 ║
 ╚═〘 CALIPH BOT 〙`
 }
+const downloadmenu = (prefix) => { 
+    return `
+╔══✪〘 DOWNLOAD 〙✪══
+║
+┣ ❏ *${prefix}play* *[TITLE]*
+┣ ❏ *${prefix}tiktok**[UrlTiktok]*
+┣ ❏ *${prefix}ytmp3**[UrlYT]*
+┣ ❏ *${prefix}ytmp4**[UrlYT]*
+┣ ❏ *${prefix}fetch**[Url]*
+┣ ❏ *${prefix}ig [linkIG]
+║
+╚═〘 CALIPH BOT 〙`
+}
+
 const stickermenu = (prefix) => { 
     return `
 ╔══✪〘 STICKER 〙✪══
@@ -257,6 +245,7 @@ const stickermenu = (prefix) => {
 ┣ ❏ *${prefix}ttd *[teks]*
 ┣ ❏ *${prefix}trigger *[caption|reply]*
 ┣ ❏ *${prefix}colors *[caption|reply]*
+┣ ❏ *${prefix}attp [teks]*
 ║
 ╚═〘 CALIPH BOT 〙`
 }
@@ -267,6 +256,7 @@ exports.mediamenu = mediamenu //mediamenu
 exports.funmenu = funmenu //funmenu
 exports.animemenu = animemenu //animemenu
 exports.groupmenu = groupmenu //groupmenu
+exports.downloadmenu = downloadmenu //downloadmenu
 exports.kerangmenu = kerangmenu //kerangmenu
 exports.ownermenu = ownermenu //ownermenu
 exports.help = help //menu
