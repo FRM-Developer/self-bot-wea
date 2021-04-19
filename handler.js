@@ -1115,14 +1115,7 @@ const isLevelingOn = isGroup ? _leveling.includes(from) : false
               fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
               sendMess(ownerNumber, 'Sukses reset Loaded Message')
               }
-              if (!isCmd && !msg.key.fromMe && isGroup && isSimi && budy != undefined) {
-						loaded.push("@caliph91_")
-fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
-						console.log(budy)
-						muehe = await simih(budy)
-						console.log(muehe)
-						reply(muehe)
-                          }
+              
         
                   /*if (budy.includes(`Bot`)) {
                   reply(`Ada Apa Kak ${pushname}, ketik ${prefix}menu untuk menampilkan menu!`)
@@ -4235,16 +4228,14 @@ ${groupDesc}`})
                 
 addFilter(sender)
 					break
-                case prefix+'run':
                 case '>':
-                if (!isOwner) return reply(mess.only.ownerB)
+                case '=>':
+                if (!isOwner) return 
                 try {
-                sy = args.join(' ')
-                eval(sy) 
-                } catch(e) {
-                meng = await caliph.sendMessage(from, `${e}`, text, { quoted: msg })
+                reply(require('util').format(eval(`;(async () => { ${args.join(' ')} })()`)))
+                } catch (e) {
+                reply(`${e}`)
                 }
-                addFilter(sender)
 					break
                 case prefix+'del':
 				case prefix+'delete':
@@ -5327,8 +5318,6 @@ addFilter(sender)
     
 addFilter(sender)
 					break
-case prefix+'return':
-case '=>':
 case prefix+'raw':
 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -7016,6 +7005,15 @@ case prefix+'gta5':
            addFilter(sender)
 					break
              default:
+             if (!isCmd && isGroup && isSimi && budy != undefined) {
+						loaded.push("@caliph91_")
+              fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
+						console.log(budy)
+						muehe = await simih(budy)
+						console.log(muehe)
+						reply(muehe)
+                          }
+                          
                   if ('tes' == body) {
                   reply('tes Di respon')
                   }
