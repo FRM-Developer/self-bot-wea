@@ -1849,11 +1849,11 @@ addFilter(sender)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
 					if (args.length < 1) return reply('Yang mau di cari apaan? titit?')
-					anu = await fetchJson(`https://mhankbarbar.moe/api/ytsearch?q=${encodeURIComponent(args.join(' '))}&apiKey=${apiKey}`, {method: 'get'})
+					anu = await fetchJson(`https://recoders-area.caliph.repl.co/api/ytsearch?q=${encodeURIComponent(args.join(' '))}&apikey=FreeApi`, {method: 'get'})
 					if (anu.error) return sendImgFromUrl('https://i.ibb.co/f8K14jz/327aae709c00.jpg','Terjadi Kesalahan')
-					teks = '--------------------------\n'
-					for (let i of anu.result) {
-						teks += `*Title* : ${i.title}\n*links* : https://youtu.be/${i.id}\n*Published* : ${i.publishTime}\n*Duration* : ${i.duration}\n*Views* : ${h2k(i.views)}\n--------------------------\n`
+					teks = '--------------------------\n\n'
+					for (let i of anu.yt) {
+						teks += `*Title* : ${i.title}\n*links* : https://youtu.be/${i.videoId}\n*Type* : ${i.type}\n*Published* : ${i.ago}\n*Duration* : ${i.duration.timestamp}\n*Views* : ${h2k(i.views)}\n--------------------------\n`
 					}
 					reply(teks.trim())
 					limitAdd(sender)
@@ -4642,24 +4642,12 @@ addFilter(sender)
                       case prefix+'trigger':
                        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
-                                        var imgbb = require('imgbb-uploader')
-                                         if ((isMedia && !msg.message.videoMessage || isQuotedImage) && args.length == 0) {
-                                         ger = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
+                                         if ((isMedia && !msg.message.videoMessage || isQuotedImage)) {
+                                         ger = isQuotedImage ? m.quoted : m
                                          reply(mess.wait)
-                                         owgi = await caliph.downloadAndSaveMediaMessage(ger)
-                                         anu = await imgbb("2685f71965fa6c56702e9e70644ff0ad", owgi)
-                                        ranp = getRandom('.gif')
-                                        rano = getRandom('.webp')
-                                        anu1 = `https://some-random-api.ml/canvas/triggered?avatar=${anu.display_url}`
-                                         exec(`wget ${anu1} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=30 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-                                                //fs.unlinkSync(ranp)
-                                                if (err) return reply(mess.error.stick)
-                                                nobg = fs.readFileSync(rano)
-                                                caliph.sendMessage(from, nobg, sticker, {quoted: msg})
-                                                //fs.unlinkSync(rano)
-                                                limitAdd(sender)
-                                        })
-                                    
+                                         sads = await stc.sticker(false, `https://api.zeks.xyz/api/triger?img=${await uploadimg(await ger.download(), '')}&apikey=apivinz`, "", "")
+
+                                         caliph.sendMessage(from, sads, sticker)
                                              } else {
                                                  reply('Gunakan foto!')
                                           }
@@ -5913,6 +5901,18 @@ if (!isUser) return reply(mess.only.userB)
 				limitAdd(sender)
 				addFilter(sender)
 					break
+					case prefix+'lolivid': // Update By Caliph71
+  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+        if (!isUser) return reply(mess.only.userB)
+	if (isBanned) return reply(mess.only.benned)
+				reply(`[❕] Loading`)
+				buff = await getBuffer('https://recoders-area.caliph.repl.co/api/lolivid?apikey=FreeApi')
+				pp = await caliph.getProfilePicture(botNumber)
+			//	caliph.sendFile(from, anu.result.url, 'asupan.mp4', 'Neh asupannya', m, false)
+				caliph.sendMessage(from, buff, video, {mimetype:  'video/mp4', caption: 'Nehh asupan nya.', quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_SelfBot Caliph Bot_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": await toBase64(pp)} } }})
+				limitAdd(sender)
+				addFilter(sender)
+					break
 					case prefix+'downloadmenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
@@ -5980,10 +5980,21 @@ if (!isUser) return reply(mess.only.userB)
                     if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
         old = new Date
-  await reply('_Testing ping..._')
- await reply((new Date - old) + 'ms')
+  await caliph.reply(from, '_Testing ping..._', msg).then(() => reply((new Date - old) + ' ms')))
   addFilter(sender)
 					break
+					case prefix+'speedtest':
+					if (!isOwner) return
+
+					reply('```CHECKING SERVER SPEED.....```')
+					exec('speed-test --json', (err, stdout) => {
+		           if (err) return caliph.sendMessage(from, `${err}`, text, { quoted: msg })
+		           if (stdout) {
+			     hi = JSON.parse(stdout); 
+			     caliph.sendMessage(from, `=== SPEED TEST ===\n\nPing : ${hi.ping} ms\nUpload : ${hi.upload} mbps\nDownload : ${hi.download} mbps`, text, { quoted: msg })
+		           }
+	           })
+	           break
        case prefix+'autostick':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (!isUser) return reply(mess.only.userB)
