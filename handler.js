@@ -5980,7 +5980,7 @@ if (!isUser) return reply(mess.only.userB)
                     if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
         old = new Date
-  await caliph.reply(from, '_Testing ping..._', msg).then(() => reply((new Date - old) + ' ms')))
+  await caliph.reply(from, '_Testing ping..._', msg).then(() => reply((new Date - old) + ' ms'))
   addFilter(sender)
 					break
 					case prefix+'speedtest':
