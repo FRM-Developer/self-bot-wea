@@ -444,7 +444,7 @@ function getName(jid)  {
 	console.log(json[2][0][1])
         const penelpon = json[2][0][1].from;
        console.log(color(`[WARN] ${penelpon} is calling!`,'red'))
-       if (['6281215199447@s.whatsapp.net'].includes(penelpon)) return caliph.sendMessage(penelpon.replace('c.us', 's.whatsapp.net'), `Maaf, saya tidak bisa menerima panggilan. telpon = block!.\nJika ingin membuka block harap chat Owner!`, MessageType.text)
+       if (['6282136888623@s.whatsapp.net'].includes(penelpon)) return 
 //caliph.sendMessage('6282387804410@s.whatsapp.net', `MENELPON BOT!  @${penelpon.split('@')[0]}`, MessageType.text, { contextInfo: { mentionedJid: [penelpon] } })
         caliph.sendMessage(penelpon.replace('c.us', 's.whatsapp.net'), `Maaf, saya tidak bisa menerima panggilan. telpon = block!.\nJika ingin membuka block harap chat Owner!`, MessageType.text)
         await delay(2000)
@@ -484,13 +484,10 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 					resolve(ress)
 			})
 		})
-   caliph.on('chat-update', async (chat) => {
+   caliph.on('message-new', async (msg) => {
 		try {
-			if (!chat.hasNewMessage) return
-            if (!chat.messages && !chat.count) return
-            msg = chat.messages.all()[0]
 			if (!msg.message) return
-                 msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
+            msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
@@ -2876,8 +2873,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)   
 				if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-				niowner = await caliph.sendMessage(from, {displayName: "Caliph", vcard: vcard}, contact)
-                caliph.sendMessage(from, 'Jika Ada Bug Silahkan Chat Owner!', text, {quoted: niowner})
+				niowner = await caliph.sendMessage(from, {displayName: "Caliph", vcard: vcard}, contact, { quoted: msg })
                 console.log(niowner)
                 
 addFilter(sender)
@@ -3249,6 +3245,7 @@ addFilter(sender)
                 if (!isUser) return reply(mess.only.userB)
                 if (!isGroup) return reply(mess.only.group)
                 if (!isGroupAdmins) return reply(mess.only.admin)
+                ppgc = await caliph.getProfilePicture(from)
                 teks = args.join(' ')
                 group = await caliph.groupMetadata(from);
                 member = group['participants']
@@ -3257,11 +3254,12 @@ addFilter(sender)
                 jids.push(adm.id.replace('c.us', 's.whatsapp.net'));
                  })
                  options = {
-                 text: teks,
-                contextInfo: {mentionedJid: jids},
-                quoted: msg
+                contextInfo: {mentionedJid: groupMembers.map(v => v.jid)},
+                quoted: msg,
+               sendEphemeral: true, 
+               thumbnail: await toBase64(ppgc)
                 }
-              await caliph.sendMessage(from, options, text)
+              await caliph.sendMessage(from, teks, text, options)
               limitAdd(sender)
                addFilter(sender)
 					break
@@ -6574,8 +6572,17 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 	if (!isUser) return reply(mess.only.userB)
-  data = await fetchJson('https://api.zeks.xyz/api/epep?text='+args.join(' ')+'&apikey='+zekskey)
-  sendImgFromUrl(data.result, 'GAME 8 BIT')
+  data = 'https://api.lolhuman.xyz/api/ephoto1/freefire?text='+args.join(' ')+'&apikey='+setting.lol
+  sendImgFromUrl(data, '')
+  limitAdd(sender)
+  addFilter(sender)
+					break
+					case prefix+'carbon':
+      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+    if (isBanned) return reply(mess.only.benned)
+	if (!isUser) return reply(mess.only.userB)
+  data = 'https://api.lolhuman.xyz/api/carbon?code='+args.join(' ')+'&apikey='+setting.lol
+  sendImgFromUrl(data, '')
   limitAdd(sender)
   addFilter(sender)
 					break
