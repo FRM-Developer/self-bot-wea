@@ -1050,30 +1050,7 @@ const isLevelingOn = isGroup ? _leveling.includes(from) : false
 			const repeat = (text, total) => {
 			return text.repeat(total)
 			}
-			const freply = {key:{ fromMe:false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: `status@broadcast` } : {}) }, message: {
-					"productMessage": {
-						"product": {
-							"productImage": {
-								"url": "https://mmg.whatsapp.net/d/f/Am1sSqpVypFpsQawFUFkm4HgkPRqEx8rt32niyBmL4Wa.enc",
-								"mimetype": "image/jpeg",
-								"fileSha256": "KbJC20DoVEdDw+8WF1EqwtPsdPUTF8/xQbhg+65P3q4=",
-								"fileLength": "43344",
-								"height": 1080,
-								"width": 1080,
-								"mediaKey": "cX+6c20dws6B++0slmMNXcCk7omK+zvheoN6087j9nl=",
-								"fileEncSha256": "BGO1C/OttoScb1UxDrGlwsI9eImocg1zwbLgYKmecXs=",
-								"directPath": "/v/t62.7118-24/20036572_1210576852672540_4032358369544328852_n.enc?oh=d0e477e1bf0a01bfcf328776ab50ccee&oe=6043238E",
-								"mediaKeyTimestamp": "1612168223",
-								"jpegThumbnail": await toBase64 (await caliph.getProfilePicture(botNumber))
-		},
-							"productId": "3872465552870232",
-							"title": "@caliph71",
-							"currencyCode": "USD",
-							"priceAmount1000": "99",
-							"productImageCount": 1
-						},
-						"businessOwnerJid": "6281215199447@s.whatsapp.net"}}}
-						
+			
 			const sendImgFromUrl = (teks, teks2) => {
 				imageToBase64(teks)
 					.then(
@@ -1176,8 +1153,7 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
                  loaded.push("@caliph91_")
 fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 } else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes('6281215199447@s.whatsapp.net')) {
-tes = await caliph.sendMessage(from, 'lord @6281215199447', 'conversation', { contextInfo: { mentionedJid : ownerNumber }, quoted: msg })
-reply( 'Ada yang cariin tuh', tes)
+caliph.sendMessage(from, fs.readFileSync('stik/tag.webp'), sticker, { quoted:msg })
 } else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes(botNumber)) {
 caliph.reply(from, 'Ada Apa kak?', msg)
 }
@@ -1235,7 +1211,31 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)    
+					if (isBanned) return reply(mess.only.benned)
+const freply = {key:{ fromMe:false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: `status@broadcast` } : {}) }, message: {
+					"productMessage": {
+						"product": {
+							"productImage": {
+								"url": "https://mmg.whatsapp.net/d/f/Am1sSqpVypFpsQawFUFkm4HgkPRqEx8rt32niyBmL4Wa.enc",
+								"mimetype": "image/jpeg",
+								"fileSha256": "KbJC20DoVEdDw+8WF1EqwtPsdPUTF8/xQbhg+65P3q4=",
+								"fileLength": "43344",
+								"height": 1080,
+								"width": 1080,
+								"mediaKey": "cX+6c20dws6B++0slmMNXcCk7omK+zvheoN6087j9nl=",
+								"fileEncSha256": "BGO1C/OttoScb1UxDrGlwsI9eImocg1zwbLgYKmecXs=",
+								"directPath": "/v/t62.7118-24/20036572_1210576852672540_4032358369544328852_n.enc?oh=d0e477e1bf0a01bfcf328776ab50ccee&oe=6043238E",
+								"mediaKeyTimestamp": "1612168223",
+								"jpegThumbnail": await toBase64 (await caliph.getProfilePicture(botNumber))
+		},
+							"productId": "3872465552870232",
+							"title": "@caliph71",
+							"currencyCode": "USD",
+							"priceAmount1000": "99",
+							"productImageCount": 1
+						},
+						"businessOwnerJid": "6281215199447@s.whatsapp.net"}}}
+						    
 				    caliph.reply(from, `
 ╔══✪〘 INFO 〙✪══
 ║
@@ -4253,7 +4253,7 @@ addFilter(sender)
                 case '=>':
                 if (!isOwner) return 
                 try {
-                reply(require('util').format(eval(`;(async () => { ${args.join(' ')} })()`)))
+                reply(require('util').format(await eval(`;(async () => { ${args.join(' ')} })()`)))
                 } catch (e) {
                 reply(`${e}`)
                 }
@@ -4586,21 +4586,13 @@ if (isBanned) return reply(mess.only.benned)
 						ranp = getRandom('.png')
 						reply(mess.wait)
 						keyrmbg = 'Ggq1Rn9iDohBGBGkcv5EZMAf'
-						await removeBackgroundFromImageFile({path: media, apiKey: keyrmbg, size: 'auto', type: 'auto', ranp}).then(res => {
+						await removeBackgroundFromImageFile({path: media, apiKey: keyrmbg, size: 'auto', type: 'auto', ranp}).then(async res => {
 						console.log(res)
 							fs.unlinkSync(media)
 						    buffer = Buffer.from(res.base64img, 'base64')
-							fs.writeFileSync(ranp, buffer, (err) => {
-								if (err) return reply('Gagal, Terjadi kesalahan, silahkan coba beberapa saat lagi.')
-							})
-							exec(`ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${ranw}`, (err) => {
-								fs.unlinkSync(ranp)
-									caliph.sendMessage(from, fs.readFileSync(ranw), sticker, {quoted: msg})
-									fs.unlinkSync(ranw)
-									limitAdd(sender)
-								//caliph.sendMessage(from, fs.readFileSync(ranw), sticker, {quoted: msg})
-							})
-						})
+							stik = await stc.sticker(buffer, false, 'Sticker Nobg', 'caliph Bot')
+caliph.sendMessage(from, stik,  sticker, { quoted: msg})												
+})
 						}
 						addFilter(sender)
 					break
