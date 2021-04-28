@@ -21,7 +21,6 @@ const
    mentionedJid
 } = require("@adiwajshing/baileys")
 const { color, bgcolor } = require('./lib/color')
-const crop = require('./lib/imageProcessing')
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 const { 
     help,
@@ -41,6 +40,7 @@ const { donasi } = require('./src/donasi.js')
 const { negara } = require('./src/kodenegara.js')
 const { uploadimg, wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close, emojiStrip, banner2, processTime, bitly, shortlink } = require('./lib/functions')
 const { fetchJson } = require('./lib/fetcher')
+const downloader = require(`./lib/downloader`)
 const axios = require('axios');
 const { recognize } = require('./lib/ocr')
 const imageToBase64 = require('image-to-base64')
@@ -492,7 +492,7 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
-			//if (!msg.key.fromMe) return 
+			const chat = {t: msg.messageTimestamp.low}
 			const content = JSON.stringify(msg.message)
 			const from = msg.key.remoteJid
 			const type = Object.keys(msg.message)[0]
@@ -1051,30 +1051,7 @@ const isLevelingOn = isGroup ? _leveling.includes(from) : false
 			const repeat = (text, total) => {
 			return text.repeat(total)
 			}
-			const freply = {key:{ fromMe:false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: `status@broadcast` } : {}) }, message: {
-					"productMessage": {
-						"product": {
-							"productImage": {
-								"url": "https://mmg.whatsapp.net/d/f/Am1sSqpVypFpsQawFUFkm4HgkPRqEx8rt32niyBmL4Wa.enc",
-								"mimetype": "image/jpeg",
-								"fileSha256": "KbJC20DoVEdDw+8WF1EqwtPsdPUTF8/xQbhg+65P3q4=",
-								"fileLength": "43344",
-								"height": 1080,
-								"width": 1080,
-								"mediaKey": "cX+6c20dws6B++0slmMNXcCk7omK+zvheoN6087j9nl=",
-								"fileEncSha256": "BGO1C/OttoScb1UxDrGlwsI9eImocg1zwbLgYKmecXs=",
-								"directPath": "/v/t62.7118-24/20036572_1210576852672540_4032358369544328852_n.enc?oh=d0e477e1bf0a01bfcf328776ab50ccee&oe=6043238E",
-								"mediaKeyTimestamp": "1612168223",
-								"jpegThumbnail": fs.readFileSync('gambar/pp.jpeg')
-		},
-							"productId": "3872465552870232",
-							"title": "@caliph71",
-							"currencyCode": "USD",
-							"priceAmount1000": "99",
-							"productImageCount": 1
-						},
-						"businessOwnerJid": "6281215199447@s.whatsapp.net"}}}
-						
+			
 			const sendImgFromUrl = (teks, teks2) => {
 				imageToBase64(teks)
 					.then(
@@ -1177,11 +1154,8 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
                  loaded.push("@caliph91_")
 fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 } else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes('6281215199447@s.whatsapp.net')) {
-tes = await caliph.sendMessage(from, 'lord @6281215199447', 'conversation', { contextInfo: { mentionedJid : ownerNumber }, quoted: msg })
-reply( 'Ada yang cariin tuh', tes)
-} else if (msg.message.extendedTextMessage.contextInfo.mentionedJid.includes(botNumber)) {
-caliph.reply(from, 'Ada Apa kak?', msg)
-}
+caliph.sendMessage(from, fs.readFileSync('stik/tag.webp'), sticker, { quoted:msg })
+} 
 } catch {}
 async function perintah(teks){
                 return eval(teks)
@@ -1227,13 +1201,9 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
        reply(`Maap, gua kagak ngarti gan:(\nKetik ${prefix}help untuk melihat list command`)
        }*/
        if (isBanned) return
+	   if (!msg.key.fromMe) return
        if (isCmd && isFiltered(sender)) return 
 		switch(command) {
-case prefix+'resend':
-case prefix+'sendulang':
-if (!m.quoted) return reply('Reply Pesannya Kak')
-caliph.copyNForward(from, await m.getQuotedObj())
-break
 				case prefix+'help':
 				case prefix+'menu':
 			  
@@ -1241,47 +1211,32 @@ break
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (!isUser) return reply(mess.only.userB)
-					if (isBanned) return reply(mess.only.benned)    
-				    caliph.reply(from, `
-╔══✪〘 INFO 〙✪══
-║
-┃ ❏ Runtime: ${kyun(process.uptime())}
-┃ ❏ Prefix: 「 ${prefix} 」
-┃ ❏ Api: 「 http://recoders-area.caliph.repl.co 」
-║
-║
-╠══✪〘 LIST MENU 〙✪══
-║
-┣ ❏ *${prefix}ownermenu*
-┣ ❏ *${prefix}groupmenu*
-┣ ❏ *${prefix}nsfwmenu*
-┣ ❏ *${prefix}funmenu*
-┣ ❏ *${prefix}mediamenu*
-┣ ❏ *${prefix}animemenu*
-┣ ❏ *${prefix}kerangmenu*
-┣ ❏ *${prefix}downloadmenu*
-┣ ❏ *${prefix}othermenu*
-║
-╠══✪〘 OTHER 〙✪══
-║
-┣ ❏ *cekprefix*
-┣ ❏ *${prefix}setprefix*
-┣ ❏ *${prefix}verify*
-┣ ❏ *${prefix}bugreport [teks]*
-┣ ❏ *${prefix}banlist*
-┣ ❏ *${prefix}blocklist*
-┣ ❏ *${prefix}grouplist*
-┣ ❏ *${prefix}info*
-┣ ❏ *${prefix}snk*
-┣ ❏ *${prefix}readme*
-┣ ❏ *${prefix}donate*
-┣ ❏ *${prefix}ping*
-┣ ❏ *${prefix}speed*
-┣ ❏ *${prefix}caliphgroup*
-┣ ❏ *${prefix}owner*
-┣ ❏ *${prefix}botstat*
-║
-╚═〘 CALIPH BOT 〙`, freply)
+					if (isBanned) return reply(mess.only.benned)
+const freply = {key:{ fromMe:false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: `status@broadcast` } : {}) }, message: {
+					"productMessage": {
+						"product": {
+							"productImage": {
+								"url": "https://mmg.whatsapp.net/d/f/Am1sSqpVypFpsQawFUFkm4HgkPRqEx8rt32niyBmL4Wa.enc",
+								"mimetype": "image/jpeg",
+								"fileSha256": "KbJC20DoVEdDw+8WF1EqwtPsdPUTF8/xQbhg+65P3q4=",
+								"fileLength": "43344",
+								"height": 1080,
+								"width": 1080,
+								"mediaKey": "cX+6c20dws6B++0slmMNXcCk7omK+zvheoN6087j9nl=",
+								"fileEncSha256": "BGO1C/OttoScb1UxDrGlwsI9eImocg1zwbLgYKmecXs=",
+								"directPath": "/v/t62.7118-24/20036572_1210576852672540_4032358369544328852_n.enc?oh=d0e477e1bf0a01bfcf328776ab50ccee&oe=6043238E",
+								"mediaKeyTimestamp": "1612168223",
+								"jpegThumbnail": await toBase64 (await caliph.getProfilePicture(botNumber))
+		},
+							"productId": "3872465552870232",
+							"title": "@caliph71",
+							"currencyCode": "USD",
+							"priceAmount1000": "99",
+							"productImageCount": 1
+						},
+						"businessOwnerJid": "6281215199447@s.whatsapp.net"}}}
+						    
+				    caliph.reply(from, help(prefix), freply)
 addFilter(sender)
 					break
           case prefix+'join':
@@ -1674,11 +1629,11 @@ addFilter(sender)
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				try {
-				freplys = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_Nih Kak Stikernya_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": fs.readFileSync('gambar/pp.jpeg')} } }
 						encmedia = m.quoted ? m.quoted : m
-						media = await encmedia.download().catch(() => reply('Media Tidak Ditemukan'))
-						stiker = await stc.sticker(encmedia.mtype == 'imageMessage' ? await crop(media, false) : media, false, 'Caliph Bot', '@caliph71')
-						caliph.sendMessage(from, stiker, sticker, { quoted: freplys})
+						media = await encmedia.download()
+						if (!media) return reply('Media Tidak Ditemukan')
+						stiker = await stc.sticker(media, false, 'Caliph Bot', '@caliph71')
+						caliph.sendMessage(from, stiker, sticker)
 						} catch (e) {
 						reply(`${e}`)
 			            }
@@ -1879,7 +1834,7 @@ addFilter(sender)
 					if (anu.error) return sendImgFromUrl('https://i.ibb.co/f8K14jz/327aae709c00.jpg','Terjadi Kesalahan')
 					teks = '--------------------------\n\n'
 					for (let i of anu.yt) {
-						teks += `*Title* : ${i.title}\n*links* : https://youtu.be/${i.videoId}\n*Type* : ${i.type}\n*Published* : ${i.ago}\n*Views* : ${h2k(i.views)}\n--------------------------\n`
+						teks += `*Title* : ${i.title}\n*links* : https://youtu.be/${i.videoId}\n*Type* : ${i.type}\n*Published* : ${i.ago}\n*Duration* : ${i.duration.timestamp}\n*Views* : ${h2k(i.views)}\n--------------------------\n`
 					}
 					reply(teks.trim())
 					limitAdd(sender)
@@ -1911,92 +1866,23 @@ addFilter(sender)
 					for (let i of anu.result.data) {
 					no += 1
 						stik = await stc.sticker(false, i, args.join(' '), 'Caliph Bot\'s')
-						caliph.sendMessage(from, stik, sticker, { quoted: msg })
+						caliph.sendMessage(from, stik, sticker, { quoted: m })
 					}
 					
 addFilter(sender)
 					break
               
 				case prefix+'tiktok':
-
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-
 					if (!isUser) return reply(mess.only.userB)
-
 					if (isBanned) return reply(mess.only.benned)   
-
 					if (args.length < 1) return reply('Urlnya mana um?')
-
 					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
-
-					reply('_Scraping Metadata.....')
-
-const puppeteer = require("puppeteer");
-
-
-
-async function getVideo(URL) {
-
-    const browser = await puppeteer.launch({
-
-        headless: true,
-
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-
-    });
-
-    const page = await browser.newPage();
-
-    await page.goto('https://snaptik.app/');
-
-
-
-    await page.type('#url', `${URL}`);
-
-    await page.click('#send', { delay: 300 });
-
-
-
-    await page.waitForSelector('#download-block > div > a:nth-child(3)', {delay: 300});
-
-    let mp4direct = await page.$eval("#download-block > div > a:nth-child(3)", (element) => {
-
-        return element.getAttribute("href");
-
-    });
-
-    let image = await page.$eval("#div_download > section > div > div > div > article > div.zhay-left.left > img", (element) => {
-
-        return element.getAttribute("src");
-
-    });
-
-	let textInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(2) > span', el => el.innerText);
-
-	let nameInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > h1 > a', el => el.innerText);
-
-	let timeInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(3) > b', el => el.innerText);
-
-	browser.close();
-
-    return { mp4direct, image, textInfo, nameInfo, timeInfo }
-
-}
-
-
-
-
-
-tiktods = await getVideo(args[0])
-
-buffer = await getBuffer(tiktods.mp4direct)
-
-					caliph.sendMessage(from, buffer, video, {caption: `*${tiktods.nameInfo}*\n_${tiktods.timeInfo}_\n\n${tiktods.textInfo}`, quoted:msg, mimetype:'video/mp4'})
-
+					reply(mess.wait)
+buffer = await getBuffer(`https://recoders-area.caliph.repl.co/api/tiktod?url=${args[0]}&apikey=FreeApi`)
+					caliph.sendMessage(from, buffer, video, {quoted:msg, mimetype:'video/mp4'})
 					limitAdd(sender)
-
 addFilter(sender)
-
 					break
                case prefix+'tiktokwm':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -2075,7 +1961,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)  
 					if (args.length < 1) return reply('Textnya mana um?')
 					hem = await stc.sticker(false, args.join(' '), '', '')
-					
+					caliph.sendMessage(from, hem, sticker)
 addFilter(sender)
 					break
             case prefix+'animecry':
@@ -2400,6 +2286,41 @@ addFilter(sender)
                     }
 					addFilter(sender)
 					break
+					case prefix+'ig':
+        case prefix+'instagram':
+			var id = msg.key.id
+            if (args.length !== 1) return caliph.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', id)
+            if (!is.Url(url) && !url.includes('instagram.com')) return caliph.reply(from, 'Maaf, link yang kamu kirim tidak valid. [Invalid Link]', id)
+            await caliph.reply(from, `_Scraping Metadata...`, msg)
+			t = msg.messageTimestamp.low
+            downloader.insta(url).then(async (data) => {
+                if (data.type == 'GraphSidecar') {
+                    if (data.image.length != 0) {
+                        data.image.map((x) => sendImgFromUrl(x, ``))
+                            .then((serialized) => console.log(`Sukses Mengirim File dengan id: ${serialized} diproses selama ${processTime(msg.messageTimestamp.low, moment())}`))
+                            .catch((err) => console.error(err))
+                    }
+                    if (data.video.length != 0) {
+                        data.video.map((x) => caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg}))
+                            .then((serialized) => console.log(`Sukses Mengirim File dengan id: ${serialized} diproses selama ${processTime(t, moment())}`))
+                            .catch((err) => console.error(err))
+                    }
+                } else if (data.type == 'GraphImage') {
+                    caliph.sendMessage(from, await getBuffer(data.image), image, {quoted:msg})
+                        .then((serialized) => console.log(`Sukses Mengirim File dengan id: ${serialized} diproses selama ${processTime(t, moment())}`))
+                        .catch((err) => console.error(err))
+                } else if (data.type == 'GraphVideo') {
+					caliph.sendMessage(from, await getBuffer(data.video.videoUrl), video, {quoted:msg})
+                        .then((serialized) => console.log(`Sukses Mengirim File dengan id: ${serialized} diproses selama ${processTime(t, moment())}`))
+                        .catch((err) => console.error(err))
+                }
+            })
+                .catch((err) => {
+                    console.log(err)
+                    if (err === 'Not a video') { return caliph.reply(from, 'Error, tidak ada video di link yang kamu kirim. [Invalid Link]', id) }
+                    caliph.reply(from, 'Error, user private atau link salah [Private or Invalid Link]', msg)
+                })
+            break
        case prefix+'revoke':
 					 
 					if (!isUser) return reply(mess.only.userB)
@@ -3613,13 +3534,7 @@ addFilter(sender)
                   reply(mess.wait)
                data = await textpro('https://textpro.me/create-blackpink-logo-style-online-1001.html', args.join(' '))
         ranp = getRandom('.png')
-        exec(`wget ${data} -O ${ranp}`, (err) => {
-						if (err) return reply(mess.error.stick)
-						buffer = fs.readFileSync(ranp)
-						caliph.sendMessage(from, buffer, image, { quoted: msg })
-						limitAdd(sender)
-						fs.unlinkSync(ranp)
-					})
+       caliph.sendFile(from, data, ``, ``, msg)
 addFilter(sender)
 					break
            case prefix+'tpantai':
@@ -3630,13 +3545,8 @@ addFilter(sender)
                   if (args.length < 1) return reply(`Masukan Teks\nContoh : ${prefix}tpantai Caliph Bot`)
                data = await textpro('https://textpro.me/sand-engraved-3d-text-effect-989.html', args.join(' '))
         ranp = getRandom('.png')
-        exec(`wget ${data} -O ${ranp}`, (err) => {
-						if (err) return reply(mess.error.stick)
-						buffer = fs.readFileSync(ranp)
-						caliph.sendMessage(from, buffer, image, { quoted: msg })
-						limitAdd(sender)
-						fs.unlinkSync(ranp)
-					})
+		caliph.sendFile(from, data, ``, ``, msg)
+
 addFilter(sender)
 					break
 case prefix+'toxic':
@@ -3647,13 +3557,8 @@ case prefix+'toxic':
                   reply(mess.wait)
                data = await textpro('https://textpro.me/toxic-text-effect-online-901.html', args.join(' '))
         ranp = getRandom('.png')
-        exec(`wget ${data} -O ${ranp}`, (err) => {
-						if (err) return reply(mess.error.stick)
-						buffer = fs.readFileSync(ranp)
-						caliph.sendMessage(from, buffer, image, { quoted: msg })
-						limitAdd(sender)
-						fs.unlinkSync(ranp)
-					})
+		caliph.sendFile(from, data, ``, ``, msg)
+
 addFilter(sender)
 					break
                 case prefix+'jadwaltvnow':
@@ -4661,21 +4566,13 @@ if (isBanned) return reply(mess.only.benned)
 						ranp = getRandom('.png')
 						reply(mess.wait)
 						keyrmbg = 'Ggq1Rn9iDohBGBGkcv5EZMAf'
-						await removeBackgroundFromImageFile({path: media, apiKey: keyrmbg, size: 'auto', type: 'auto', ranp}).then(res => {
+						await removeBackgroundFromImageFile({path: media, apiKey: keyrmbg, size: 'auto', type: 'auto', ranp}).then(async res => {
 						console.log(res)
 							fs.unlinkSync(media)
 						    buffer = Buffer.from(res.base64img, 'base64')
-							fs.writeFileSync(ranp, buffer, (err) => {
-								if (err) return reply('Gagal, Terjadi kesalahan, silahkan coba beberapa saat lagi.')
-							})
-							exec(`ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${ranw}`, (err) => {
-								fs.unlinkSync(ranp)
-									caliph.sendMessage(from, fs.readFileSync(ranw), sticker, {quoted: msg})
-									fs.unlinkSync(ranw)
-									limitAdd(sender)
-								//caliph.sendMessage(from, fs.readFileSync(ranw), sticker, {quoted: msg})
-							})
-						})
+							stik = await stc.sticker(buffer, false, 'Sticker Nobg', 'caliph Bot')
+caliph.sendMessage(from, stik,  sticker, { quoted: msg})												
+})
 						}
 						addFilter(sender)
 					break
@@ -6452,30 +6349,29 @@ hiks += 1
    addFilter(sender)
 					break
    case prefix+'profile': case prefix+'me':
-   send = caliph.parseMention(args.join(' ')).length == 0 ? sender : caliph.parseMention(args.join(' '))
-   bio = (await caliph.getStatus(send)).status
+   bio = (await caliph.getStatus(sender)).status
   pcard = 'BEGIN:VCARD\n' // metadata of the contact card
 					+ 'VERSION:3.0\n' 
 					+ `FN:${pushname}\n` // full name
-					+ `TEL;type=CELL;type=VOICE;waid=${(send.split('@')[0])}:${(send.split('@')[0])}\n` // WhatsApp ID + phone number
+					+ `TEL;type=CELL;type=VOICE;waid=${(sender.split('@')[0])}:${(sender.split('@')[0])}\n` // WhatsApp ID + phone number
 					+ `ORG:${bio};\n`
 					+ 'END:VCARD'
    str = `
-Name: ${caliph.getName(send)} (@${send.split`@`[0]})
-ID: ${send.split`@`[0]}@c.us
+Name: ${pushname} (@${sender.split`@`[0]})
+ID: ${sender.split`@`[0]}@c.us
 Bio = ${bio}
-Link: https://wa.me/${send.split`@`[0]}
-Level: ${getLevelingLevel(send)}
-Xp: ${getLevelingXp(send)}
-Limit: ${getLimit(send)}
+Link: https://wa.me/${sender.split`@`[0]}
+Level: ${getLevelingLevel(sender)}
+Xp: ${getLevelingXp(sender)}
+Limit: ${getLimit(sender)}
 `.trim()
 try {
-ppUrl = await caliph.getProfilePicture(send) 
+ppUrl = await caliph.getProfilePicture(sender) 
 pp = await getBuffer(ppUrl)
 } catch {
 pp = await fs.readFileSync('./lib/avatar_contact.png')
 }
-hadeh = await caliph.sendMessage(from, pp, image, {caption: str, quoted:msg, contextInfo: {"mentionedJid": [send]}})
+hadeh = await caliph.sendMessage(from, pp, image, {caption: str, quoted:msg, contextInfo: {"mentionedJid": [sender]}})
 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, { quoted: hadeh })
 addFilter(sender)
 					break
@@ -7134,6 +7030,7 @@ case prefix+'gta5':
                   if ('tes' == body) {
                   reply('tes Di respon')
                   }
+if (isCmd) caliph.logger.error(`COMMAND NOT FOUND : ${command}`)
                   
         }                 
 		} catch (e) {
