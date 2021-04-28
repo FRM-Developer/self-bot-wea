@@ -21,6 +21,7 @@ const
    mentionedJid
 } = require("@adiwajshing/baileys")
 const { color, bgcolor } = require('./lib/color')
+const crop = require('./lib/imageProcessing')
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 const { 
     help,
@@ -1228,6 +1229,11 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
        if (isBanned) return
        if (isCmd && isFiltered(sender)) return 
 		switch(command) {
+case prefix+'resend':
+case prefix+'sendulang':
+if (!m.quoted) return reply('Reply Pesannya Kak')
+caliph.copyNForward(from, await m.getQuotedObj())
+break
 				case prefix+'help':
 				case prefix+'menu':
 			  
@@ -1668,12 +1674,11 @@ addFilter(sender)
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				try {
-				freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_Nih Kak Stikernya_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": fs.readFileSync('gambar/pp.jpeg')} } }
+				freplys = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_Nih Kak Stikernya_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": fs.readFileSync('gambar/pp.jpeg')} } }
 						encmedia = m.quoted ? m.quoted : m
-						media = await encmedia.download()
-						if (!media) return reply('Media Tidak Ditemukan')
-						stiker = await stc.sticker(media, false, 'Caliph Bot', '@caliph71')
-						caliph.sendMessage(from, stiker, sticker, { quoted: freply})
+						media = await encmedia.download().catch(() => reply('Media Tidak Ditemukan'))
+						stiker = await stc.sticker(encmedia.mtype == 'imageMessage' ? await crop(media, false) : media, false, 'Caliph Bot', '@caliph71')
+						caliph.sendMessage(from, stiker, sticker, { quoted: freplys})
 						} catch (e) {
 						reply(`${e}`)
 			            }
@@ -1913,16 +1918,85 @@ addFilter(sender)
 					break
               
 				case prefix+'tiktok':
+
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+
 					if (!isUser) return reply(mess.only.userB)
+
 					if (isBanned) return reply(mess.only.benned)   
+
 					if (args.length < 1) return reply('Urlnya mana um?')
+
 					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
-					reply(mess.wait)
-buffer = await getBuffer(`https://recoders-area.caliph.repl.co/api/tiktod?url=${args[0]}&apikey=FreeApi`)
-					caliph.sendMessage(from, buffer, video, {quoted:msg, mimetype:'video/mp4'})
+
+					reply('_Scraping Metadata.....')
+
+const puppeteer = require("puppeteer");
+
+
+
+async function getVideo(URL) {
+
+    const browser = await puppeteer.launch({
+
+        headless: true,
+
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+
+    });
+
+    const page = await browser.newPage();
+
+    await page.goto('https://snaptik.app/');
+
+
+
+    await page.type('#url', `${URL}`);
+
+    await page.click('#send', { delay: 300 });
+
+
+
+    await page.waitForSelector('#download-block > div > a:nth-child(3)', {delay: 300});
+
+    let mp4direct = await page.$eval("#download-block > div > a:nth-child(3)", (element) => {
+
+        return element.getAttribute("href");
+
+    });
+
+    let image = await page.$eval("#div_download > section > div > div > div > article > div.zhay-left.left > img", (element) => {
+
+        return element.getAttribute("src");
+
+    });
+
+	let textInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(2) > span', el => el.innerText);
+
+	let nameInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > h1 > a', el => el.innerText);
+
+	let timeInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(3) > b', el => el.innerText);
+
+	browser.close();
+
+    return { mp4direct, image, textInfo, nameInfo, timeInfo }
+
+}
+
+
+
+
+
+tiktods = await getVideo(args[0])
+
+buffer = await getBuffer(tiktods.mp4direct)
+
+					caliph.sendMessage(from, buffer, video, {caption: `*${tiktods.nameInfo}*\n_${tiktods.timeInfo}_\n\n${tiktods.textInfo}`, quoted:msg, mimetype:'video/mp4'})
+
 					limitAdd(sender)
+
 addFilter(sender)
+
 					break
                case prefix+'tiktokwm':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
