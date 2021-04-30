@@ -67,8 +67,7 @@
     "jsdom": "^16.5.1",
     "canvacord": "^5.1.0",
     "discord-canvas": "^1.4.1",
-    "sharp": "^0.27.2",
-   "puppeteer": "^5.4.1"
+    "sharp": "^0.27.2"
   },
   "devDependencies": {},
   "repository": {

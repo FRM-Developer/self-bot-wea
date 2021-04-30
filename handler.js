@@ -1888,31 +1888,10 @@ addFilter(sender)
 
 					reply(mess.wait)
 
-					const puppeteer = require("puppeteer");
-
 async function getVideo(URL) {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    const page = await browser.newPage();
-    await page.goto('https://snaptik.app/');
-
-    await page.type('#url', `${URL}`);
-    await page.click('#send', { delay: 300 });
-
-    await page.waitForSelector('#download-block > div > a:nth-child(3)', {delay: 300});
-    let mp4direct = await page.$eval("#download-block > div > a:nth-child(3)", (element) => {
-        return element.getAttribute("href");
-    });
-    let image = await page.$eval("#div_download > section > div > div > div > article > div.zhay-left.left > img", (element) => {
-        return element.getAttribute("src");
-    });
-	let textInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(2) > span', el => el.innerText);
-	let nameInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > h1 > a', el => el.innerText);
-	let timeInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(3) > b', el => el.innerText);
-	browser.close();
-    return mp4direct
+    sstiktod = await fetchJson(`http://192.53.115.44/sstik?url=${URL}`)
+    h = await sstiktod.mp4direct
+    return h
 }
 
 buffer = await getBuffer(await getVideo(args[0]))
@@ -1946,9 +1925,9 @@ addFilter(sender)
 					reply(mess.wait)
 					linkimg = await shortlink(await uploadimg(await getBuffer(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=${args[0]}&quality=100&full_page=true`), 'ssweb')) || ''
 					 try {
-       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=${args[0]}&quality=100&full_page=true`, linkimg)
+       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=7a91eb559b784b5a8d0eef74fe27c2e7&url=${args[0]}&quality=100&full_page=true`, linkimg)
        } catch {
-       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=${args[0]}&quality=100`, linkimg)
+       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=7a91eb559b784b5a8d0eef74fe27c2e7&url=${args[0]}&quality=100`, linkimg)
        }
        limitAdd(sender)
 				 addFilter(sender)
@@ -5769,7 +5748,7 @@ break
      result = search.map(({ title, link, snippet}) => {
     return `*${title}*\n_${link}_\n_${snippet}_`
   }).join`\n\n`
-               sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=https://google.com/search?q=${googleQuery}&quality=100&full_page=true`, result)
+               sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=7a91eb559b784b5a8d0eef74fe27c2e7&url=https://google.com/search?q=${googleQuery}&quality=100&full_page=true`, result)
                 limitAdd(sender)
             addFilter(sender)
 					break
