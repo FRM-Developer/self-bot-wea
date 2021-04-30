@@ -30,6 +30,7 @@
     "cfonts": "^2.9.0",
     "cwebp": "^2.0.5",
     "delay": "^5.0.0",
+        "video-url-link": "git+https://github.com/YogaSakti/video-url-link.git",
     "emoji-regex": "^9.2.0",
     "emoji-unicode": "^2.0.1",
     "escape-string-regexp": "^1.0.5",
