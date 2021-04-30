@@ -60,6 +60,7 @@ const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const astik = JSON.parse(fs.readFileSync('./src/autos.json'))
 const left = JSON.parse(fs.readFileSync('./src/left.json'))
 const brainly = require('brainly-scraper');
+const crop = require('./lib/imageProcessing')
 const randomString = require('random-string');
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
 const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
@@ -1201,7 +1202,7 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
        reply(`Maap, gua kagak ngarti gan:(\nKetik ${prefix}help untuk melihat list command`)
        }*/
        if (isBanned) return
-	   if (!msg.key.fromMe) return
+	  // if (!mMe) return
        if (isCmd && isFiltered(sender)) return 
 		switch(command) {
 				case prefix+'help':
@@ -1631,8 +1632,9 @@ addFilter(sender)
 				try {
 						encmedia = m.quoted ? m.quoted : m
 						media = await encmedia.download()
+          resize = encmedia.mtype == 'imageMessage' ? await crop(media, false) : media
 						if (!media) return reply('Media Tidak Ditemukan')
-						stiker = await stc.sticker(media, false, 'Caliph Bot', '@caliph71')
+						stiker = await stc.sticker(resize, false, 'Caliph Bot', '@caliph71')
 						caliph.sendMessage(from, stiker, sticker)
 						} catch (e) {
 						reply(`${e}`)
@@ -1873,16 +1875,54 @@ addFilter(sender)
 					break
               
 				case prefix+'tiktok':
+
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+
 					if (!isUser) return reply(mess.only.userB)
+
 					if (isBanned) return reply(mess.only.benned)   
+
 					if (args.length < 1) return reply('Urlnya mana um?')
+
 					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
+
 					reply(mess.wait)
-buffer = await getBuffer(`https://recoders-area.caliph.repl.co/api/tiktod?url=${args[0]}&apikey=FreeApi`)
+
+					const puppeteer = require("puppeteer");
+
+async function getVideo(URL) {
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    await page.goto('https://snaptik.app/');
+
+    await page.type('#url', `${URL}`);
+    await page.click('#send', { delay: 300 });
+
+    await page.waitForSelector('#download-block > div > a:nth-child(3)', {delay: 300});
+    let mp4direct = await page.$eval("#download-block > div > a:nth-child(3)", (element) => {
+        return element.getAttribute("href");
+    });
+    let image = await page.$eval("#div_download > section > div > div > div > article > div.zhay-left.left > img", (element) => {
+        return element.getAttribute("src");
+    });
+	let textInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(2) > span', el => el.innerText);
+	let nameInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > h1 > a', el => el.innerText);
+	let timeInfo = await page.$eval('#div_download > section > div > div > div > article > div.zhay-middle.center > p:nth-child(3) > b', el => el.innerText);
+	browser.close();
+    return mp4direct
+}
+
+buffer = await getBuffer(await getVideo(args[0]))
+
 					caliph.sendMessage(from, buffer, video, {quoted:msg, mimetype:'video/mp4'})
+
 					limitAdd(sender)
+
 addFilter(sender)
+
 					break
                case prefix+'tiktokwm':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -2288,12 +2328,12 @@ addFilter(sender)
 					break
 					case prefix+'ig':
         case prefix+'instagram':
-			var id = msg.key.id
-            if (args.length !== 1) return caliph.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', id)
-            if (!is.Url(url) && !url.includes('instagram.com')) return caliph.reply(from, 'Maaf, link yang kamu kirim tidak valid. [Invalid Link]', id)
+	//		var id = msg.key.id
+            if (args.length !== 1) return caliph.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', msg)
+            if (!isUrl(args.join(' ')) && !args.join(' ').includes('instagram.com')) return caliph.reply(from, 'Maaf, link yang kamu kirim tidak valid. [Invalid Link]', id)
             await caliph.reply(from, `_Scraping Metadata...`, msg)
 			t = msg.messageTimestamp.low
-            downloader.insta(url).then(async (data) => {
+            downloader.insta(args.join(' ')).then(async (data) => {
                 if (data.type == 'GraphSidecar') {
                     if (data.image.length != 0) {
                         data.image.map((x) => sendImgFromUrl(x, ``))
@@ -2301,7 +2341,9 @@ addFilter(sender)
                             .catch((err) => console.error(err))
                     }
                     if (data.video.length != 0) {
-                        data.video.map((x) => caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg}))
+                        data.video.map(async (x) => {
+caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg})
+})
                             .then((serialized) => console.log(`Sukses Mengirim File dengan id: ${serialized} diproses selama ${processTime(t, moment())}`))
                             .catch((err) => console.error(err))
                     }
@@ -2317,7 +2359,7 @@ addFilter(sender)
             })
                 .catch((err) => {
                     console.log(err)
-                    if (err === 'Not a video') { return caliph.reply(from, 'Error, tidak ada video di link yang kamu kirim. [Invalid Link]', id) }
+                    if (err === 'Not a video') { return caliph.reply(from, 'Error, tidak ada video di link yang kamu kirim. [Invalid Link]', msg) }
                     caliph.reply(from, 'Error, user private atau link salah [Private or Invalid Link]', msg)
                 })
             break
