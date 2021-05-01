@@ -4979,20 +4979,23 @@ case prefix+'fakta':
                 reply(randomnix.replace(/pjrx-line/g,"\n"))
                 addFilter(sender)
 					break
+               case prefix+'togif':
                case prefix+'tovideo':
-					if (!isQuotedSticker) return reply( 'Reply Stickernya om', msg)
+				      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)  
+					if (!isUser) return reply(mess.only.userB)
+					if (isBanned) return reply(mess.only.benned)  
+					if (!isQuotedSticker) return reply('� reply stickernya um �')
+					if (!msg.quoted.isAnimated) return reply('reply Stiker Yang Berbentuk Gif!')
 					reply(mess.wait)
-					anumedia = JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
-					anum = await caliph.downloadAndSaveMediaMessage(anumedia)
-					ran = getRandom('.webp')
-					exec(`ffmpeg -i ${anum} ${ran}`, (err) => {
-						fs.unlinkSync(anum)
-						if (err) return reply(`Error: ${err}`)
-						buffers = fs.readFileSync(ran)
-						caliph.sendMessage(from, buffers, video, { quoted: msg, caption: 'DONE...' })
-						fs.unlinkSync(ran)
-					})
-					addFilter(sender)
+					var { webp2gif } = require('./lib/gif')
+					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					media = await caliph.downloadAndSaveMediaMessage(encmedia)
+					con = await webp2gif(media)
+					buff = con.result
+					caliph.sendFile(from, buff, 'webp2gif.gif', 'Sukses Convert Sticker To Gif', msg)
+addFilter(sender)
 					break
                case prefix+'setreply':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
