@@ -2699,6 +2699,71 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
+					case prefix+'hekerserti':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/HekerSerti/img.php?nama=${args.join(' ')}`, 'Serti.png', '', msg)
+					break
+
+					case prefix+'ffserti':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'ffserti2':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'ffserti3':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/FFSert3i/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'ffserti4':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'ffserti5':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'mlserti':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'mlserti2':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'mlserti3':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti3/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'mlserti4':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'mlserti5':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti5/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'pubgserti':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'pubgserti2':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'pubgserti3':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti3/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'pubgserti4':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
+					case prefix+'pubgserti5':
+					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
+					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti5/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
+					break
 				case prefix+'clone':
 					 
 					if (!isUser) return reply(mess.only.userB)
