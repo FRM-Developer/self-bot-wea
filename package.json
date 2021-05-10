@@ -67,12 +67,13 @@
     "jsdom": "^16.5.1",
     "canvacord": "^5.1.0",
     "discord-canvas": "^1.4.1",
-    "sharp": "^0.27.2"
+    "sharp": "0.27.2",
+    "puppeteer": "^5.4.1"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mhankbarbar/termux-wabot.git"
+    "url": "git+https://github.com/caliph71/termux-wabot.git"
   },
   "bugs": {
     "url": "https://github.com/mhankbarbar/termux-wabot/issues"
