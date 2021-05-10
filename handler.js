@@ -1923,12 +1923,7 @@ addFilter(sender)
 					if (args.length < 1) return reply('Urlnya mana um?')
 					if (!isUrl(args[0])) return reply(mess.error.Iv)
 					reply(mess.wait)
-					linkimg = await shortlink(await uploadimg(await getBuffer(`https://api.apiflash.com/v1/urltoimage?access_key=b3aa607e199e44d0892770166249f872&url=${args[0]}&quality=100&full_page=true`), 'ssweb')) || ''
-					 try {
-       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=7a91eb559b784b5a8d0eef74fe27c2e7&url=${args[0]}&quality=100&full_page=true`, linkimg)
-       } catch {
-       await sendImgFromUrl(`https://api.apiflash.com/v1/urltoimage?access_key=7a91eb559b784b5a8d0eef74fe27c2e7&url=${args[0]}&quality=100`, linkimg)
-       }
+       await sendImgFromUrl(`https://caliph-api.herokuapp.com/api/ssweb?url=${isUrl(args[0])}&delay=1000`)
        limitAdd(sender)
 				 addFilter(sender)
 					break
@@ -1938,11 +1933,7 @@ addFilter(sender)
 					if (isBanned) return reply(mess.only.benned)  
 					if (args.length < 1) return reply('Urlnya mana um?')
 					if (!isUrl(args[0])) return reply(mess.error.Iv)
-					reply(mess.wait)
-					anu = await fetchJson(`https://api.zeks.xyz/api/sswebf?url=${args[0]}&apikey=${zekskey}`, {method: 'get'})
-					if (anu.message) return sendImgFromUrl('https://i.ibb.co/f8K14jz/327aae709c00.jpg','Terjadi Kesalahan')
-					buffer = await getBuffer(anu.result)
-					caliph.sendMessage(from, buffer, document, {quoted: msg, mimetype: Mimetype.pdf, filename: `ss.pdf`})
+					sendImgFromUrl(`https://caliph-api.herokuapp.com/api/ssweb?url=${isUrl(args[0])}&fullpage=true&delay=1000`)
 					limitAdd(sender)
 				 addFilter(sender)
 					break
