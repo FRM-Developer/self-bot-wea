@@ -5576,11 +5576,8 @@ addFilter(sender)
 					if (isLimit(sender)) return
          limitAdd(sender)
          reply( mess.wait, msg)
-         data = await fetchJson(`https://api.areltiyan.site/sticker_maker?text=${encodeURIComponent(args.join(' '))}`)
-         base64 = data.base64
-         var buffer = Buffer.from(base64.slice(22), 'base64')
-        stk = await stc.sticker(buffer, false, 'Text Maker', 'Caliph Bot')
-        caliph.sendMessage(from, stk, sticker, { quoted: m })
+        stk = await getBuffer ('https://recoders-area.caliph.repl.co/api/ttp?q='+args.join(' '))
+        caliph.sendMessage(from, stk, sticker, { quoted: msg })
           addFilter(sender)
 					break
                    case prefix+'ramalpasangan':
