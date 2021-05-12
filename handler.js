@@ -165,28 +165,28 @@ var hariRamadhan = Math.floor(15 - moment().format('DD'))
 			const randomNimek = async (type) => {
     var url = 'https://api.computerfreaker.cf/v1/'
     switch(type) {
-        case prefix+'nsfw':
+        case 'nsfw':
             nsfw = 'https://api.xteam.xyz/randomimage/nsfwneko?APIKEY='+setting.xteam
             //if (!nsfw.ok) throw new Error(`unexpected response ${nsfw.statusText}`)
             //resultNsfw = await nsfw.json()
             return nsfw
 					break
-        case prefix+'hentai':
+        case 'hentai':
             hentai = 'https://api.xteam.xyz/randomimage/hentai?APIKEY='+setting.xteam
            // resultHentai = await hentai.json()
             return hentai
 					break
-        case prefix+'anime':
+        case 'anime':
             anime = await fetch(url + 'anime')
            // if (!anime.ok) throw new Error(`unexpected response ${anime.statusText}`)
             resultNime = await anime.json()
             return resultNime.url
 					break
-        case prefix+'neko':
+        case 'neko':
             neko = 'https://api.xteam.xyz/randomimage/sfwneko?APIKEY='+setting.xteam
             return neko
 					break
-        case prefix+'trap':
+        case 'trap':
              trap = await fetch(url + 'trap')
           //  if (!trap.ok) throw new Error(`unexpected response ${trap.statusText}`)
             resultTrap = await trap.json()
@@ -1629,16 +1629,61 @@ addFilter(sender)
 				case prefix+'stikergif':
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-				try {
-						encmedia = m.quoted ? m.quoted : m
-						media = await encmedia.download()
-          resize = encmedia.mtype == 'imageMessage' ? await crop(media, false) : media
-						if (!media) return reply('Media Tidak Ditemukan')
-						stiker = await stc.sticker(resize, false, 'Caliph Bot', '@caliph71')
-						caliph.sendMessage(from, stiker, sticker)
-						} catch (e) {
-						reply(`${e}`)
-			            }
+				if (isMedia && !msg.message.videoMessage || isQuotedImage) {
+					const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : msg
+					const media = await caliph.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					await ffmpeg(`${media}`)
+							.input(media)
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+								fs.unlinkSync(media)
+								caliph.reply(from, mess.error.api, msg)
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return caliph.reply(from, mess.error.api, msg)
+									caliph.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, { quoted: msg })
+									fs.unlinkSync(media)	
+									fs.unlinkSync(`./sticker/${sender}.webp`)	
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+				} else if ((isMedia && msg.message.videoMessage.fileLength < 10000000 || isQuotedVideo && msg.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.fileLength < 10000000)) {
+					const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : msg
+					const media = await caliph.downloadAndSaveMediaMessage(encmedia, `./sticker/${sender}`)
+					caliph.reply(from, mess.wait, msg)
+						await ffmpeg(`${media}`)
+							.inputFormat(media.split('.')[4])
+							.on('start', function (cmd) {
+								console.log(`Started : ${cmd}`)
+							})
+							.on('error', function (err) {
+								console.log(`Error : ${err}`)
+								fs.unlinkSync(media)
+								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
+								caliph.reply(from, mess.error.api, msg)
+							})
+							.on('end', function () {
+								console.log('Finish')
+								exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
+									if (error) return caliph.reply(from, 'Error!', msg)
+									caliph.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, { quoted: msg })
+									fs.unlinkSync(media)
+									fs.unlinkSync(`./sticker/${sender}.webp`)
+								})
+							})
+							.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+							.toFormat('webp')
+							.save(`./sticker/${sender}.webp`)
+				} else {
+					caliph.reply(from, `Kirim gambar/video dengan caption ${prefix}sticker atau tag gambar/video yang sudah dikirim\nNote : Durasi video maximal 10 detik`, msg)
+				}
 						addFilter(sender)
 					break
              /*  case prefix+'swm':
