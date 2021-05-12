@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 
 AUTHOR: Mhankbarbar
@@ -1640,12 +1640,12 @@ addFilter(sender)
 							.on('error', function (err) {
 								console.log(`Error : ${err}`)
 								fs.unlinkSync(media)
-								caliph.reply(from, mess.error.api, msg)
+								caliph.reply(from, `ffmpeg : Error`, msg)
 							})
 							.on('end', function () {
 								console.log('Finish')
 								exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
-									if (error) return caliph.reply(from, mess.error.api, msg)
+									if (error) return caliph.reply(from, 'libwebp : Error!', msg)
 									caliph.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, { quoted: msg })
 									fs.unlinkSync(media)	
 									fs.unlinkSync(`./sticker/${sender}.webp`)	
@@ -1667,7 +1667,7 @@ addFilter(sender)
 								console.log(`Error : ${err}`)
 								fs.unlinkSync(media)
 								tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-								caliph.reply(from, mess.error.api, msg)
+								caliph.reply(from, 'ffmpeg : Error!', msg)
 							})
 							.on('end', function () {
 								console.log('Finish')
