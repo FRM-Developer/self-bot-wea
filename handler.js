@@ -517,7 +517,7 @@ const jam = moment.tz('Asia/Jakarta').format('HH')
 			const args = body.trim().split(/ +/).slice(1)
 			const bodys = msg.message.conversation
 			const command = budy.toLowerCase().split(' ')[0] || ''
-            const prefix = ''
+            const prefix = '#'
             const isCmd = body.startsWith(prefix)
 			const truth =[
         'menurut kamu crush kamu sekarang itu cocok gak sama kamu?',
@@ -1206,8 +1206,8 @@ fs.writeFileSync('./src/mess.json', JSON.stringify(loaded))
 	  // if (!mMe) return
        if (isCmd && isFiltered(sender)) return 
 		switch(command) {
-				case prefix+'help':
-				case prefix+'menu':
+				case 'help':
+				case 'menu':
 			  
 				caliph.updatePresence(from, Presence.composing) 
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
@@ -1241,7 +1241,7 @@ const freply = {key:{ fromMe:false, participant: `0@s.whatsapp.net`, ...(from ? 
 				    caliph.reply(from, help(prefix), freply)
 addFilter(sender)
 					break
-          case prefix+'join':
+          case 'join':
               if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
               if (args.length == 0) return reply('Linknya mana su')
               if (!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
@@ -1249,7 +1249,7 @@ addFilter(sender)
               hemhe = await caliph.groupMetadata(fak.gid)
               reply('Berhasil Masuk Grup : '+hemhe.subject)
               break
-                case prefix+'readme':
+                case 'readme':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (!isUser) return reply(mess.only.userB)
@@ -1258,12 +1258,12 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'nulis4':
+                case 'nulis4':
                 reply(`mungkin Yang Anda Maksud ${prefix}nulis2`)
                 addFilter(sender)
 					break
-                case prefix+'donasi':
-				case prefix+'donate':
+                case 'donasi':
+				case 'donate':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (!isUser) return reply(mess.only.userB)
@@ -1272,7 +1272,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-       case prefix+'styletext':
+       case 'styletext':
        try {
 teks = msg.message.extendedTextMessage.contextInfo.quotedMessage.conversation
 } catch {
@@ -1281,7 +1281,7 @@ teks = args.join(' ') ? args.join(' ') : 'Caliph Bot'
 reply(Object.entries(await stylizeText(teks)).map(([name, value]) => `*${name}*\n${value}`).join`\n\n`)
 addFilter(sender)
 					break
-    case prefix+'autoread':
+    case 'autoread':
     if (!isOwner) return reply(mess.only.ownerB)
     switch(args[0]) {
     case 'on': case 'nyala': case 'enable':
@@ -1295,7 +1295,7 @@ addFilter(sender)
     reply('sukses mematikan autoread')
     }
 					break
-  case prefix+'antilink':
+  case 'antilink':
             if (!isGroup) return reply(`Perintah ini hanya bisa di gunakan dalam group!`)
             if (!isGroupAdmins) return reply(`Perintah ini hanya bisa di gunakan oleh Admin group!`)
             if (!isBotGroupAdmins) return reply(`Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`)
@@ -1323,7 +1323,7 @@ addFilter(sender)
             }
             addFilter(sender)
 					break    
-            case prefix+'antivirtex':
+            case 'antivirtex':
             if (!isGroup) return reply(`Perintah ini hanya bisa di gunakan dalam group!`)
             if (!isGroupAdmins) return reply(`Perintah ini hanya bisa di gunakan oleh Admin group!`)
             if (!isBotGroupAdmins) return reply(`Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`)
@@ -1351,7 +1351,7 @@ addFilter(sender)
             }
             addFilter(sender)
 					break    
-                case prefix+'replyteks':
+                case 'replyteks':
                 try {
                quotedText = msg.message.extendedTextMessage.contextInfo.quotedMessage.conversation
                 reply(quotedText)
@@ -1360,7 +1360,7 @@ addFilter(sender)
                 }
                 addFilter(sender)
 					break
-                case prefix+'getcaption':
+                case 'getcaption':
                try {
                  quotedCaption = msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage.caption
                 reply(quotedCaption)
@@ -1369,7 +1369,7 @@ addFilter(sender)
                 }
                 addFilter(sender)
 					break
-                case prefix+'fdeface':
+                case 'fdeface':
                                 var nn = args.join(' ')
                                 var urlnye = nn.split("|")[0];
                                 var titlenye = nn.split("|")[1];
@@ -1389,7 +1389,7 @@ addFilter(sender)
                                 }, 'extendedTextMessage', { detectLinks: false })
                                 addFilter(sender)
 					break
-                case prefix+'ban':
+                case 'ban':
 					if (!isOwner)return reply(mess.only.ownerB)
 					if (args.length < 1) return reply('Tag Member yang ingin di ban!')
 					mentioned = msg.message.extendedTextMessage.contextInfo.mentionedJid[0]
@@ -1399,7 +1399,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'unban':
+				case 'unban':
             if (!isOwner) return reply(mess.only.ownerB)
              if (args.length < 1) return reply('Tag Member yang ingin di unban!')
                 heh = msg.message.extendedTextMessage.contextInfo.mentionedJid[0]
@@ -1409,7 +1409,7 @@ addFilter(sender)
                 reply('Unbanned User!')
             addFilter(sender)
 					break
-                case prefix+'cekpremium': 
+                case 'cekpremium': 
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1418,7 +1418,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'bahasa':
+                case 'bahasa':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -1426,21 +1426,21 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'encoded64':
+               case 'encoded64':
                if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply('limit lu abis')
 				if (isBanned) return reply(mess.only.benned)
                reply( Buffer.from(args.join(' '), 'utf-8').toString('base64'), msg)
                addFilter(sender)
 					break
-               case prefix+'decode64':
+               case 'decode64':
                if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply('limit lu abis')
 				if (isBanned) return reply(mess.only.benned)
                reply( Buffer.from(args.join(' '), 'base64').toString('utf-8'), msg)
                addFilter(sender)
 					break
-case prefix+'ttp2':
+case 'ttp2':
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply('limit lu abis')
 				if (isBanned) return reply(mess.only.benned)
@@ -1485,7 +1485,7 @@ case prefix+'ttp2':
                 await fs.unlinkSync('./tmp/ttp.png')
 					addFilter(sender)
 					break
-               case prefix+'virtex':
+               case 'virtex':
                 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1494,7 +1494,7 @@ case prefix+'ttp2':
                limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'kodenegara':
+               case 'kodenegara':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -1502,7 +1502,7 @@ addFilter(sender)
                limitAdd(sender)
 addFilter(sender)
 					break
-        case prefix+'textpro':
+        case 'textpro':
         if (isLimit(sender)) return 
         try {
         data = await textpro(args.join(' ').split('#')[0], args.join(' ').split('#')[1])
@@ -1519,7 +1519,7 @@ addFilter(sender)
 					}
         addFilter(sender)
 					break
-				case prefix+'info':
+				case 'info':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -1536,7 +1536,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'blocklist':
+				case 'blocklist':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -1549,7 +1549,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'totaluser':
+                case 'totaluser':
 					 freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "_SelfBot Caliph Bot_", "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": await toBase64(await caliph.getProfilePicture(botNumber))} } }
 			
 					if (!isUser) return reply(mess.only.userB)
@@ -1565,7 +1565,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'asmaulhusna':
+                case 'asmaulhusna':
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
                 data = await fetchJson(`https://recoders-area.caliph.repl.co/api/muslim/asmaulhusna?apikey=FreeApi`)
@@ -1574,7 +1574,7 @@ addFilter(sender)
                 reply(`${random.arabic}\n${random.latin}\n\n${random.translation_id}`)
                 addFilter(sender)
                 break
-                case prefix+'banlist':
+                case 'banlist':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -1587,7 +1587,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                	case prefix+'premiumlist':
+                	case 'premiumlist':
 					teks = 'This is list of user premium :\n'
 					for (let V of premium) {
 						teks += `~> @${V.split('@')[0]}\n`
@@ -1597,7 +1597,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'ocr':
+				case 'ocr':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if ((isMedia && !msg.message.videoMessage || isQuotedImage) && args.length == 0) {
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
@@ -1623,11 +1623,11 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-			case prefix+'stiker':
-				case prefix+'sticker':
-				case prefix+'sgif':
-				case prefix+'stickergif':
-				case prefix+'stikergif':
+			case 'stiker':
+				case 'sticker':
+				case 'sgif':
+				case 'stickergif':
+				case 'stikergif':
 				if (!isUser) return reply(mess.only.userB)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (isMedia && !msg.message.videoMessage || isQuotedImage) {
@@ -1681,7 +1681,7 @@ addFilter(sender)
 				}
 						addFilter(sender)
 					break
-             /*  case prefix+'swm':
+             /*  case 'swm':
                 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if ((isMedia && msg.message.videoMessage.seconds < 11 || isQuotedVideo && msg.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11) && args.length == 0) {
 						const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
@@ -1695,7 +1695,7 @@ addFilter(sender)
 						}
 						addFilter(sender)
 					break*/
-               case prefix+'stickwm':
+               case 'stickwm':
                if (!isQuotedSticker) return reply('Stiker aja om')
                encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 			  media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -1707,7 +1707,7 @@ addFilter(sender)
 			require('./lib/exif.js').modStick(media, caliph, msg, from)
 				addFilter(sender)
 					break
-				case prefix+'tts':
+				case 'tts':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (isBanned) return reply(mess.only.benned)
 				if (!isUser) return reply(mess.only.userB)
@@ -1733,7 +1733,7 @@ addFilter(sender)
 					})
 					addFilter(sender)
 					break
-             case prefix+'vibra':
+             case 'vibra':
 					tels = args.join(' ')
 					encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -1747,7 +1747,7 @@ addFilter(sender)
 						})
 						addFilter(sender)
 					break
-				case prefix+'meme':
+				case 'meme':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					meme = await kagApi.memes()
 					if (!isUser) return reply(mess.only.userB)
@@ -1759,7 +1759,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'memeindo':
+				case 'memeindo':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1769,7 +1769,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				 case prefix+'setprefix':
+				 case 'setprefix':
 					if (args.length < 1) return
 					if (!isOwner) return reply(mess.only.ownerB)
 					prefix = args[0]
@@ -1778,7 +1778,7 @@ addFilter(sender)
 					reply(`Berhasil Mengganti Prefix Ke *「* ${prefix} *」*`)
 					addFilter(sender)
 					break
-                 case prefix+'setwelcome':
+                 case 'setwelcome':
 					if (args.length < 1) return
 					if (!isOwner) return reply(mess.only.ownerB)
 					wel = args.join(' ')
@@ -1787,7 +1787,7 @@ addFilter(sender)
 					reply(`Sukses Setting Welcome\n\n- {user} : tag\n- {chatname} : nama grup\n- {name} : nama`)
 					addFilter(sender)
 					break
-                   case prefix+'setbye':
+                   case 'setbye':
 					if (args.length < 1) return
 					if (!isOwner) return reply(mess.only.ownerB)
 					wel = args.join(' ')
@@ -1796,13 +1796,13 @@ addFilter(sender)
 					reply(`Sukses Setting left\n\n- {user} : tag\n- {chatname} : nama grup\n- {name} : nama`)
 					addFilter(sender)
 					break
-            case prefix+'setlimit':
+            case 'setlimit':
             if(!isOwner) return reply(`Perintah ini hanya bisa di gunakan oleh Owner Caliph!`)
             limitCount = args[0]
             reply(`Limit Berhasil Di Ubah Menjadi *「* ${limitCount} *」*`)
             addFilter(sender)
 					break
-				case prefix+'loli':
+				case 'loli':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1816,7 +1816,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'addpremium':
+                case 'addpremium':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1827,7 +1827,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'nsfwloli':
+				case 'nsfwloli':
 					if (!isNsfw) return reply('❗ *FALSE* ❗')
 					loli.getNSFWLoli(async (err, res) => {
 						if (err) return reply('❗ *ERROR* ❗')
@@ -1837,7 +1837,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'virtextag':
+                case 'virtextag':
                 if (!isOwner) return reply('Khusus Owner kaks')
                 ment = []
                 for (let i = 0; i < 123456; i++) {
@@ -1847,7 +1847,7 @@ addFilter(sender)
                 caliph.sendMessage(from, args.join(' ') ? args.join(' ') : 'Gabut Men', text, {quoted : msg, contextInfo : { mentionedJid: ment }})
                 addFilter(sender)
 					break
- case prefix+'ytmp3':
+ case 'ytmp3':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1867,7 +1867,7 @@ addFilter(sender)
     }
          addFilter(sender)
 					break
-				case prefix+'ytsearch':
+				case 'ytsearch':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1882,7 +1882,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'searchstik':
+                case 'searchstik':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1897,7 +1897,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-       case prefix+'searchstikers':
+       case 'searchstikers':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1914,7 +1914,7 @@ addFilter(sender)
 addFilter(sender)
 					break
               
-			case prefix+'tiktok':
+			case 'tiktok':
 									  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 									if (!isUser) return reply(mess.only.userB)
 									if (isBanned) return reply(mess.only.benned)   
@@ -1952,7 +1952,7 @@ addFilter(sender)
 									limitAdd(sender)
 				addFilter(sender)
 									break
-               case prefix+'tiktokwm':
+               case 'tiktokwm':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -1965,7 +1965,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'ss':
+				case 'ss':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1976,7 +1976,7 @@ addFilter(sender)
        limitAdd(sender)
 				 addFilter(sender)
 					break
-                case prefix+'ssf':
+                case 'ssf':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -1986,7 +1986,7 @@ addFilter(sender)
 					limitAdd(sender)
 				 addFilter(sender)
 					break
-                 case prefix+'y2mate':
+                 case 'y2mate':
                  url = args[0]
                  if (!args.join(' ')) return msg.reply.text('USAGE : <code>/play [judul]</code>', { parseMode: 'html',replyToMessage: msg.message_id})
                   server = (args[1] || 'id4').toLowerCase()
@@ -1996,7 +1996,7 @@ addFilter(sender)
                   caliph.sendMessage(from, buffer, document, { mimetype: 'audio/mp3', quoted: msg, filename: title })
                   addFilter(sender)
 					break
-             case prefix+'attp':
+             case 'attp':
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
 				    data = await getBuffer(`https://api.xteam.xyz/attp?file&text=${encodeURIComponent(args.join(' '))}`)
@@ -2004,7 +2004,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-            case prefix+'sliding':
+            case 'sliding':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
@@ -2014,7 +2014,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-            case prefix+'slink':
+            case 'slink':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -2023,7 +2023,7 @@ addFilter(sender)
 					caliph.sendMessage(from, hem, sticker)
 addFilter(sender)
 					break
-            case prefix+'animecry':
+            case 'animecry':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -2042,7 +2042,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-            case prefix+'animehug':
+            case 'animehug':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -2061,7 +2061,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-              case prefix+'koin':
+              case 'koin':
                if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -2073,7 +2073,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-			case prefix+'tagall':
+			case 'tagall':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2090,7 +2090,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'tagall2':
+                case 'tagall2':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2107,7 +2107,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'tagall3':
+                case 'tagall3':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2124,7 +2124,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                        case prefix+'tagall4':
+                        case 'tagall4':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2141,7 +2141,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'tagall5':
+                case 'tagall5':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2160,7 +2160,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'clearall':
+				case 'clearall':
 					if (!isOwner) return reply(mess.only.ownerB)
 					anu = await caliph.chats.all()
 					caliph.setMaxListeners(300)
@@ -2172,7 +2172,7 @@ addFilter(sender)
 addFilter(sender)
 					break
                
-				case prefix+'bc':
+				case 'bc':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2197,7 +2197,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-      case prefix+'inu':
+      case 'inu':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
       if (!isUser) return reply(mess.only.userB)
       if (isBanned) return reply(mess.only.benned) 
@@ -2209,7 +2209,7 @@ addFilter(sender)
       limitAdd(sender)
       addFilter(sender)
 					break 
-      case prefix+'neko':
+      case 'neko':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
       if (!isUser) return reply(mess.only.userB)
       if (isBanned) return reply(mess.only.benned) 
@@ -2222,7 +2222,7 @@ addFilter(sender)
       limitAdd(sender)
       addFilter(sender)
 					break 
-     case prefix+'buatsw':
+     case 'buatsw':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2237,7 +2237,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-					case prefix+'bcmem':
+					case 'bcmem':
 					if (!isGroup) return reply(mess.only.group)
 					if (!isOwner) return reply(mess.only.ownerB)
 					if (args.length < 1) return reply('.......')
@@ -2258,7 +2258,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-     case prefix+'kickall':
+     case 'kickall':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                caliph.updatePresence(from, Presence.composing) 
                 if (!isUser) return reply(mess.only.userB)
@@ -2277,7 +2277,7 @@ addFilter(sender)
               limitAdd(sender)
                addFilter(sender)
 					break
-        case prefix+'okickall':
+        case 'okickall':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                caliph.updatePresence(from, Presence.composing) 
                 if (!isUser) return reply(mess.only.userB)
@@ -2296,7 +2296,7 @@ addFilter(sender)
               limitAdd(sender)
                addFilter(sender)
 					break
-     case prefix+'bcgc':
+     case 'bcgc':
 					if (!isOwner) return reply(mess.only.ownerB)
 					if (args.length < 1) return reply('.......')
 					groups = caliph.chats.array.filter(v => v.jid.endsWith('g.us') && !v.read_only && v.message).map(v => v.jid)
@@ -2316,7 +2316,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-          case prefix+'bug':
+          case 'bug':
 if (!isOwner) return
 for (let i = 0; i < args[0]; i++) {
 await caliph.toggleDisappearingMessages(from, 0)
@@ -2324,7 +2324,7 @@ await caliph.toggleDisappearingMessages(from, 0)
 reply('Sukses Hack Group Sebanyak : '+args.join(' '))
 addFilter(sender)
 					break
-				case prefix+'kick':
+				case 'kick':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2345,8 +2345,8 @@ addFilter(sender)
                     }
 					addFilter(sender)
 					break
-					case prefix+'ig':
-        case prefix+'instagram':
+					case 'ig':
+        case 'instagram':
 	//		var id = msg.key.id
             if (args.length !== 1) return caliph.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', msg)
             if (!isUrl(args.join(' ')) && !args.join(' ').includes('instagram.com')) return caliph.reply(from, 'Maaf, link yang kamu kirim tidak valid. [Invalid Link]', id)
@@ -2382,7 +2382,7 @@ caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg})
                     caliph.reply(from, 'Error, user private atau link salah [Private or Invalid Link]', msg)
                 })
             break
-       case prefix+'revoke':
+       case 'revoke':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2393,7 +2393,7 @@ caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg})
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 					await caliph.resetInvite(from)
 					break
-               case prefix+'qkick':
+               case 'qkick':
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
 					if (!isUser) return reply(mess.only.userB)
@@ -2406,7 +2406,7 @@ caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg})
 					 await caliph.groupRemove(from, [quoteds]).then(() => caliph.sendMessage(quoteds, risen, text, { contextInfo: { mentionedJid: caliph.parseMention(risen) }}))
 					addFilter(sender)
 					break
-               case prefix+'kickme':
+               case 'kickme':
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
 					if (!isUser) return reply(mess.only.userB)
@@ -2420,8 +2420,8 @@ caliph.sendMessage(from, await getBuffer(x.videoUrl), video, {quoted:msg})
 					await caliph.groupRemove(from, [quoteds])
 					addFilter(sender)
 					break
-				case prefix+'listadmins':
-				case prefix+'adminlist':
+				case 'listadmins':
+				case 'adminlist':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2442,8 +2442,8 @@ addFilter(sender)
                if (!isGroup) return reply(mess.only.group)
                 caliph.sendMessage(from, 'Reported To Admins Group', text, { contextInfo: { mentionedJid: groupAdmins }})
                 break
-            case prefix+'onlinelist':
-				case prefix+'listonline':
+            case 'onlinelist':
+				case 'listonline':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2461,18 +2461,18 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-              case prefix+'grouplist':
-              case prefix+'groups':
-              case prefix+'gruplist':
-              case prefix+'listgroup':
-              case prefix+'listgrup':
+              case 'grouplist':
+              case 'groups':
+              case 'gruplist':
+              case 'listgroup':
+              case 'listgrup':
                if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               var txt = caliph.chats.array.filter(v => v.jid.endsWith('g.us')).map(v =>`${v.name}\n${v.jid} \n*Status: ${v.read_only ? 'Keluar' : 'Bergabung'}* \n*Spam:${v.spam_only ? 'True' : 'False'}*\n*mute:${v.mute_only ? 'True' : 'False'}*\n*Message:${v.count}*`).join`\n\n`
               reply('List Groups:\n' + txt)
               limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'toimg':
+				case 'toimg':
 				      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -2494,7 +2494,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                	case prefix+'tomp3':
+                	case 'tomp3':
                 	 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.only.benned)
@@ -2516,7 +2516,7 @@ addFilter(sender)
 					}
 					addFilter(sender)
 					break
-				case prefix+'simi':
+				case 'simi':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2542,7 +2542,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                  case prefix+'astick':
+                  case 'astick':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2568,7 +2568,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                    case prefix+'kali':
+                    case 'kali':
                 const q = query
                 var kalian = body.slice(6)
                 var kali1 = kalian.split("×")[0];
@@ -2577,7 +2577,7 @@ addFilter(sender)
                 reply(perkalian)
             addFilter(sender)
 					break
-           case prefix+'kodepos': // Update By RzkyO & ItsmecaliphXSec404	
+           case 'kodepos': // Update By RzkyO & ItsmecaliphXSec404	
 				caliph.updatePresence(from, Presence.composing) 
 				if (args.length < 1) return reply(`kotanya mana bang?`)
 				reply(`[❕] Loading`)
@@ -2590,7 +2590,7 @@ addFilter(sender)
 				reply(teks)
 				addFilter(sender)
 					break
-                    case prefix+'nsfw':
+                    case 'nsfw':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2616,7 +2616,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                    case prefix+'verify':
+                    case 'verify':
 					
 					if (isBanned) return reply(mess.only.benned)
 					if (isUser) return reply('kamu sudah terverifikasi')
@@ -2644,7 +2644,7 @@ addFilter(sender)
 ╰─「 *Caliph-BOT* 」`, quoted: msg, contextInfo: {"mentionedJid": [sender]}})
 					addFilter(sender)
 					break
-                 case prefix+'verify2':
+                 case 'verify2':
                 if (isBanned) return reply(mess.only.benned)
 					if (!isOwner) return reply('only owner')
 		          senders = msg.message.extendedTextMessage.contextInfo.participant
@@ -2670,7 +2670,7 @@ addFilter(sender)
 ╰─「 *Caliph-BOT* 」`, quoted: msg, contextInfo: {"mentionedJid": [senders]}})
 					addFilter(sender)
 					break
-                    case prefix+'addsay':
+                    case 'addsay':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -2681,7 +2681,7 @@ addFilter(sender)
 						limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'saylist':
+                   case 'saylist':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)    
@@ -2694,7 +2694,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'resetsay':
+                    case 'resetsay':
 					
 					if (!isOwner) return reply(mess.only.ownerB)
 					if (isBanned) return reply(mess.only.benned)
@@ -2706,7 +2706,7 @@ addFilter(sender)
 						
 addFilter(sender)
 					break
-                    case prefix+'say':
+                    case 'say':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                     if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -2715,7 +2715,7 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-					case prefix+'osimih':
+					case 'osimih':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2739,72 +2739,72 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-					case prefix+'hekerserti':
+					case 'hekerserti':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/HekerSerti/img.php?nama=${args.join(' ')}`, 'Serti.png', '', msg)
 					break
 
-					case prefix+'ffserti':
+					case 'ffserti':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'ffserti2':
+					case 'ffserti2':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'ffserti3':
+					case 'ffserti3':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/FFSert3i/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'ffserti4':
+					case 'ffserti4':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'ffserti5':
+					case 'ffserti5':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/FFSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'mlserti':
+					case 'mlserti':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'mlserti2':
+					case 'mlserti2':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'mlserti3':
+					case 'mlserti3':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti3/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'mlserti4':
+					case 'mlserti4':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'mlserti5':
+					case 'mlserti5':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/MLTourSerti5/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'pubgserti':
+					case 'pubgserti':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'pubgserti2':
+					case 'pubgserti2':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti2/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'pubgserti3':
+					case 'pubgserti3':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti3/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'pubgserti4':
+					case 'pubgserti4':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti4/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-					case prefix+'pubgserti5':
+					case 'pubgserti5':
 					if (!args.join(' ')) return reply('Masukkan Teks\nContoh : '+command+' <teks>')
 					caliph.sendFile(from, `https://onlydevcity.xyz/PubgTourSerti5/img.php?nama=${args.join(' ')}`, 'serti.png', '', msg)
 					break
-				case prefix+'clone':
+				case 'clone':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2827,7 +2827,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'yourpic':
+                case 'yourpic':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2848,7 +2848,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'welcome':
+				case 'welcome':
 					   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2874,7 +2874,7 @@ addFilter(sender)
 		           
 addFilter(sender)
 					break
-case prefix+'antidelete':
+case 'antidelete':
 					   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2900,7 +2900,7 @@ case prefix+'antidelete':
 		           
 addFilter(sender)
 					break
-case prefix+'left':
+case 'left':
 					   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2926,7 +2926,7 @@ case prefix+'left':
 		           
 addFilter(sender)
 					break
-				case prefix+'wait':
+				case 'wait':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2949,7 +2949,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'exec':
+				case 'exec':
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
 	              if (!isOwner) return reply(mess.only.ownerB)
@@ -2963,9 +2963,9 @@ addFilter(sender)
 addFilter(sender)
 					break
 
-      case prefix+'battery':
-	  case prefix+'batere':
-	  case prefix+'baterai':
+      case 'battery':
+	  case 'batere':
+	  case 'baterai':
 	   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
@@ -2980,9 +2980,9 @@ addFilter(sender)
                   
 addFilter(sender)
 					break
-                 case prefix+'linkgroup':
-				case prefix+'linkgrup':
-				case prefix+'linkgc':
+                 case 'linkgroup':
+				case 'linkgrup':
+				case 'linkgc':
 				      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -2995,7 +2995,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'qrcode':
+                case 'qrcode':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3011,8 +3011,8 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'owner':
-				case prefix+'creator':
+				case 'owner':
+				case 'creator':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3040,7 +3040,7 @@ addFilter(sender)
 					break
 addFilter(sender)
 					break
-				case prefix+'quote':
+				case 'quote':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3052,7 +3052,7 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-              case prefix+'saveimg':
+              case 'saveimg':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -3073,16 +3073,16 @@ addFilter(sender)
           }
           addFilter(sender)
 					break
-         case prefix+'getimg':
+         case 'getimg':
          data = await getimage(args.join(' ')) || 'A Server Error Occurred'
          reply( data, msg)
          addFilter(sender)
 					break
-        case prefix+'listimg':
+        case 'listimg':
          reply( JSON.stringify(db_img, null, '\t'), msg)
          addFilter(sender)
 					break
-        case prefix+'quotes':
+        case 'quotes':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         try {
         data = await fetchJson('https://recoders-area.caliph.repl.co/api/randomquote?apikey=FreeApi')
@@ -3092,7 +3092,7 @@ addFilter(sender)
         reply('Error!')}
         addFilter(sender)
 					break
-				case prefix+'3dtext':
+				case '3dtext':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3101,7 +3101,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'fml':
+                case 'fml':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3111,7 +3111,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'trendtwit':
+				case 'trendtwit':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3126,7 +3126,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'dare':
+				case 'dare':
 			  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3138,8 +3138,8 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-    case prefix+'resep':
-    case prefix+'resepmasakan':
+    case 'resep':
+    case 'resepmasakan':
             if (args.length == 0) return reply( `Untuk mencari resep makanan\nCaranya ketik: ${prefix}resep [search]\n\ncontoh: ${prefix}resep tahu`, msg)
             cariresep = args.join(' ')
             hasilresep = await resep.resep(cariresep)
@@ -3149,7 +3149,7 @@ addFilter(sender)
             })
             addFilter(sender)
 					break
-              				case prefix+'bucin':
+              				case 'bucin':
 			  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3160,7 +3160,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'truth':
+               case 'truth':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3172,7 +3172,7 @@ addFilter(sender)
 			   limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'apakah':
+               case 'apakah':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3184,7 +3184,7 @@ addFilter(sender)
 			   reply(hasil)
 addFilter(sender)
 					break
-              case prefix+'bisakah':
+              case 'bisakah':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3196,7 +3196,7 @@ addFilter(sender)
 			   reply(hasil)
 addFilter(sender)
 					break
-               case prefix+'rate':
+               case 'rate':
                 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3208,7 +3208,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-              case prefix+'dadu':
+              case 'dadu':
                if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3221,7 +3221,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-               case prefix+'kapankah':
+               case 'kapankah':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3234,7 +3234,7 @@ addFilter(sender)
               reply(hasil)
 addFilter(sender)
 					break
-			case prefix+'closegc':
+			case 'closegc':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3253,8 +3253,8 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'opengc':
-                case prefix+'bukagc':
+                case 'opengc':
+                case 'bukagc':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3272,7 +3272,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'group':
+                case 'group':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3292,8 +3292,8 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				  case prefix+'wa.me':
-				  case prefix+'wame':
+				  case 'wa.me':
+				  case 'wame':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3308,7 +3308,7 @@ addFilter(sender)
 addFilter(sender)
 					break
 					
-					case prefix+'neonime':
+					case 'neonime':
                
 					  if (isLimit(sender)) return 
 					  limitAdd(sender)
@@ -3347,7 +3347,7 @@ addFilter(sender)
            
 				       break
 					
-                case prefix+'jadwaltv':
+                case 'jadwaltv':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3359,7 +3359,7 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'cuaca':
+                case 'cuaca':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3373,7 +3373,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-     case prefix+'readall':
+     case 'readall':
 					if (!isOwner) return reply(mess.only.ownerB)
 					var chats = await caliph.chats.all()
                     chats.map( async ({ jid }) => {
@@ -3384,7 +3384,7 @@ addFilter(sender)
 					console.log(chats.length)
 					addFilter(sender)
 					break
-					case prefix+'hidetag':
+					case 'hidetag':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                caliph.updatePresence(from, Presence.composing) 
                 if (!isUser) return reply(mess.only.userB)
@@ -3408,7 +3408,7 @@ addFilter(sender)
               limitAdd(sender)
                addFilter(sender)
 					break
-          case prefix+'gctag':
+          case 'gctag':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (!isOwner) return 
                 meng = args.join(' ').split('|')
@@ -3427,7 +3427,7 @@ addFilter(sender)
               limitAdd(sender)
                addFilter(sender)
 					break
-          case prefix+'ohidetag':
+          case 'ohidetag':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                caliph.updatePresence(from, Presence.composing) 
                 if (!isUser) return reply(mess.only.userB)
@@ -3449,7 +3449,7 @@ addFilter(sender)
               limitAdd(sender)
                addFilter(sender)
 					break
-				case prefix+'runtime':
+				case 'runtime':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3460,7 +3460,7 @@ addFilter(sender)
 				
 addFilter(sender)
 					break
- case prefix+'kodenuklir':
+ case 'kodenuklir':
              nekopoi.getLatest()
             .then((result) => {
                 nekopoi.getVideo(result.link)
@@ -3477,7 +3477,7 @@ addFilter(sender)
             })
             addFilter(sender)
 					break
-				case prefix+'tinyurl':
+				case 'tinyurl':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
@@ -3489,7 +3489,7 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-                 case prefix+'joox':
+                 case 'joox':
                 data = await fetchJson(`https://tobz-api.herokuapp.com/api/joox?q=${body.slice(6)}&apikey=BotWeA`, {method: 'get'})
                if (data.error) return reply(data.error)
                  infomp3 = `*Lagu Ditemukan!!!*\nJudul : ${data.result.judul}\nAlbum : ${data.result.album}\nDipublikasi : ${data.result.dipublikasi}`
@@ -3500,7 +3500,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'fb':
+               case 'fb':
                 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3512,7 +3512,7 @@ addFilter(sender)
                limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'kbbi':
+               case 'kbbi':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3526,7 +3526,7 @@ addFilter(sender)
               limitAdd(sender)
 addFilter(sender)
 					break
-              case prefix+'wiki':
+              case 'wiki':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3540,7 +3540,7 @@ addFilter(sender)
               limitAdd(sender)
 addFilter(sender)
 					break
-            		case prefix+'ytmp4':
+            		case 'ytmp4':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3561,7 +3561,7 @@ await sendImgFromUrl(thumb, `*Title:* ${title}\n*Filesize:* ${filesizeF}\n*Link*
     }
 addFilter(sender)
 					break
-				case prefix+'beritahoax':
+				case 'beritahoax':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3576,7 +3576,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break  
- case prefix+'spamcall':
+ case 'spamcall':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
           if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3611,7 +3611,7 @@ addFilter(sender)
                                        reply(JSON.stringify(data8, null, '\t'))
 addFilter(sender)
 					break
-                 case prefix+'spamsms':
+                 case 'spamsms':
                  data = args[0]
                  if (!args[0].startsWith('62')) return reply('Gunakan nomor awalan 62/n ex : *62796662*')
                  data8 = await fetchJson(`https://api.xteam.xyz/spammer/jagreward?no=${data}&APIKEY=a72abb5d0420ef3e`)
@@ -3637,7 +3637,7 @@ addFilter(sender)
                limitAdd(sender)
                addFilter(sender)
 					break
-                case prefix+'infonomor':
+                case 'infonomor':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3652,7 +3652,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-					case prefix+'bpink':
+					case 'bpink':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3663,7 +3663,7 @@ addFilter(sender)
        caliph.sendFile(from, data, ``, ``, msg)
 addFilter(sender)
 					break
-           case prefix+'tpantai':
+           case 'tpantai':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3675,7 +3675,7 @@ addFilter(sender)
 
 addFilter(sender)
 					break
-case prefix+'toxic':
+case 'toxic':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -3687,7 +3687,7 @@ case prefix+'toxic':
 
 addFilter(sender)
 					break
-                case prefix+'jadwaltvnow':
+                case 'jadwaltvnow':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3699,7 +3699,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'jsholat':
+                case 'jsholat':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3712,7 +3712,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                 case prefix+'bugreport':
+                 case 'bugreport':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3729,7 +3729,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'pokemon':
+                    case 'pokemon':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3744,7 +3744,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'darkjokes':
+                case 'darkjokes':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3757,7 +3757,7 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'husbu':
+                case 'husbu':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3770,9 +3770,9 @@ addFilter(sender)
 				limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'bokep':
-                case prefix+'porno':
-                case prefix+'indohot':
+                case 'bokep':
+                case 'porno':
+                case 'indohot':
 				  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isNsfw) return reply('Nsfw Belum Diaktifkan Di grup ini!')
 					if (!isUser) return reply(mess.only.userB)
@@ -3789,7 +3789,7 @@ addFilter(sender)
 				}
 addFilter(sender)
 					break
-                case prefix+'blowjob':
+                case 'blowjob':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (!isNsfw) return reply('Nsfw Belum Diaktifkan Di grup ini!')
 					if (!isUser) return reply(mess.only.userB)
@@ -3809,7 +3809,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                 case prefix+'hentai':
+                 case 'hentai':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (!isNsfw) return reply('Nsfw Belum Diaktifkan Di grup ini!')
 					if (!isUser) return reply(mess.only.userB)
@@ -3823,7 +3823,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'pinterest':
+                case 'pinterest':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3838,7 +3838,7 @@ addFilter(sender)
 					limitAdd(sender)
 					addFilter(sender)
 					break
-      case prefix+'wallpaper':
+      case 'wallpaper':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3853,7 +3853,7 @@ addFilter(sender)
 					limitAdd(sender)
 					addFilter(sender)
 					break
-     case prefix+'wallpaper2':
+     case 'wallpaper2':
      if (isLimit(sender)) return
      if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3864,7 +3864,7 @@ addFilter(sender)
        limitAdd(sender)
        addFilter(sender)
 					break
-case prefix+'wallpaper3':
+case 'wallpaper3':
       if (isLimit(sender)) return
      if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3875,7 +3875,7 @@ case prefix+'wallpaper3':
        limitAdd(sender)
        addFilter(sender)
 					break
-case prefix+'wallpaper4':
+case 'wallpaper4':
       if (isLimit(sender)) return
      if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3886,7 +3886,7 @@ case prefix+'wallpaper4':
        limitAdd(sender)
        addFilter(sender)
 					break
-case prefix+'wallpaper5':
+case 'wallpaper5':
       if (isLimit(sender)) return
      if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3897,7 +3897,7 @@ case prefix+'wallpaper5':
        limitAdd(sender)
        addFilter(sender)
 					break
-case prefix+'wallpaper6':
+case 'wallpaper6':
       if (isLimit(sender)) return
      if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -3908,8 +3908,8 @@ case prefix+'wallpaper6':
        limitAdd(sender)
        addFilter(sender)
 					break
-      case prefix+'cogan':
-      case prefix+'cowok':
+      case 'cogan':
+      case 'cowok':
        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					items = ["cowo ganteng", "cogan", "korean boy", "chinese boy", "japan boy"];
                     var cewe = items[Math.floor(Math.random() * items.length)];
@@ -3922,7 +3922,7 @@ case prefix+'wallpaper6':
 					limitAdd(sender)
 addFilter(sender)
 					break
-case prefix+'aesthetic':
+case 'aesthetic':
 anu = JSON.parse(fs.readFileSync('./src/estetik.json'))
 var pin = JSON.parse(JSON.stringify(anu));
 					var trest =  pin[Math.floor(Math.random() * pin.length)];
@@ -3931,8 +3931,8 @@ var pin = JSON.parse(JSON.stringify(anu));
 					limitAdd(sender)
 					addFilter(sender)
 					break
-               case prefix+'cecan':
-      case prefix+'cewek':
+               case 'cecan':
+      case 'cewek':
        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					var items = ["ullzang girl", "cewe cantik", "hijab cantik", "korean girl"];
                     var cewe = items[Math.floor(Math.random() * items.length)];
@@ -3945,7 +3945,7 @@ var pin = JSON.parse(JSON.stringify(anu));
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'block':
+                case 'block':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3956,7 +3956,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                  case prefix+'getstatus':
+                  case 'getstatus':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3965,7 +3965,7 @@ addFilter(sender)
                     
 addFilter(sender)
 					break
-				case prefix+'unblock':
+				case 'unblock':
 					 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3976,7 +3976,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-               case prefix+'setppbot':
+               case 'setppbot':
 				 
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -3992,7 +3992,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-            case prefix+'jadibot':
+            case 'jadibot':
             caliph.on('qr', async qr => {
       var scan = await caliph.sendMessage(from, qr, image, {quoted:msg, caption:'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik'})
       setTimeout(() => {
@@ -4004,7 +4004,7 @@ addFilter(sender)
     })
     addFilter(sender)
 					break
-                   case prefix+'artinama':
+                   case 'artinama':
                     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4015,7 +4015,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'map':
+                   case 'map':
                     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                    if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4025,7 +4025,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'covid':
+                   case 'covid':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4038,7 +4038,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'alay':
+                    case 'alay':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4049,7 +4049,7 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'quotemaker':
+                    case 'quotemaker':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                     if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4063,7 +4063,7 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'glitch':
+                    case 'glitch':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                     if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4073,7 +4073,7 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-                     /*case prefix+'leave':
+                     /*case 'leave':
                     if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
                     if (!isGroup) return reply(mess.only.group)
@@ -4091,7 +4091,7 @@ addFilter(sender)
                      
 addFilter(sender)
 					break*/
-            case prefix+'leave':
+            case 'leave':
             if (!isGroup) return reply('Perintah ini hanya bisa di gunakan dalam group')
             if (isGroupAdmins || isOwner) {
           caliph.reply(from, 'Pamit Dulu Ngap👋', msg).then(() => caliph.groupLeave(from)).then(() => caliph.deleteChat(from))
@@ -4100,7 +4100,7 @@ addFilter(sender)
            }
             addFilter(sender)
 					break
-                   case prefix+'lirik':
+                   case 'lirik':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4112,7 +4112,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'chord':
+                   case 'chord':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4124,7 +4124,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-					case prefix+'ig': case prefix+'igdl':
+					case 'ig': case 'igdl':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4133,7 +4133,7 @@ addFilter(sender)
 					caliph.sendFile(from, rawd.data.result[0].url, 'ig', rawd.data.caption, msg)
 					limitAdd(sender)
 					break
-                     case prefix+'igstalk': case prefix+'stalkig':
+                     case 'igstalk': case 'stalkig':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4144,8 +4144,8 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'ownergrup':
-				  case prefix+'ownergroup':
+                    case 'ownergrup':
+				  case 'ownergroup':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -4159,7 +4159,7 @@ addFilter(sender)
 				
 addFilter(sender)
 					break
-           case prefix+'quran':
+           case 'quran':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4169,7 +4169,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-           case prefix+'nekonime':
+           case 'nekonime':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
           if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4179,7 +4179,7 @@ addFilter(sender)
            limitAdd(sender)
 addFilter(sender)
 					break
-           case prefix+'send':
+           case 'send':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4192,7 +4192,7 @@ addFilter(sender)
 				    limitAdd(sender)
 addFilter(sender)
 					break
-					case prefix+'quotesnime':
+					case 'quotesnime':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4203,9 +4203,9 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'tahta2':
-					case prefix+'harta':
-					case prefix+'hartatahta':
+                    case 'tahta2':
+					case 'harta':
+					case 'hartatahta':
 					 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4215,7 +4215,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                  case prefix+'tahta':
+                  case 'tahta':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4223,7 +4223,7 @@ addFilter(sender)
                     limitAdd(sender)
                     addFilter(sender)
 					break
-                           case prefix+'image':
+                           case 'image':
 				     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4238,7 +4238,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                    case prefix+'tebakgambar':
+                    case 'tebakgambar':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4267,7 +4267,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                case prefix+'caklontong':
+                case 'caklontong':
 				     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4291,7 +4291,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-				case prefix+'family100':
+				case 'family100':
 					  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4315,7 +4315,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                    case prefix+'watercolor':
+                    case 'watercolor':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4330,7 +4330,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                      case prefix+'groupinfo':
+                      case 'groupinfo':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4364,8 +4364,8 @@ addFilter(sender)
                 reply(`${e}`)
                 }
 					break
-                case prefix+'del':
-				case prefix+'delete':
+                case 'del':
+				case 'delete':
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
 					try {
@@ -4377,7 +4377,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                	case prefix+'watak':
+                	case 'watak':
                 	 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4388,7 +4388,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'hobby':
+				case 'hobby':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 			if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4399,7 +4399,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'upimg': case prefix+'tourl':
+                   case 'upimg': case 'tourl':
                     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -4416,14 +4416,14 @@ addFilter(sender)
           }
 addFilter(sender)
 					break
-     case prefix+'delptt':
+     case 'delptt':
      if (!isQuotedAudio) return reply( 'Reply Audionya Om', msg)
      var encmedia  = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
       var media = await caliph.downloadAndSaveMediaMessage(encmedia)
       caliph.sendMessage(from, fs.readFileSync(media), audio, { quoted: msg, mimetype: 'audio/mp4'})
       addFilter(sender)
 					break
-     case prefix+'sfire':
+     case 'sfire':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -4443,7 +4443,7 @@ addFilter(sender)
                                                 fs.unlinkSync(rano)
                                                 limitAdd(sender)
                                          })
-            case prefix+'tez':
+            case 'tez':
              nyemedia  = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
             mediasu = await caliph.downloadAndSaveMediaMessage(nyemedia)
             hamsil = await uploadimg(args.join(' '))
@@ -4451,7 +4451,7 @@ addFilter(sender)
             console.log(hamsil)
             addFilter(sender)
 					break
-           case prefix+'math':
+           case 'math':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				   if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4476,7 +4476,7 @@ addFilter(sender)
 				}
 addFilter(sender)
 					break
-           case prefix+'fitnah':
+           case 'fitnah':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4491,7 +4491,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-     case prefix+'swfitnah':
+     case 'swfitnah':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -4506,7 +4506,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'wanted':
+                case 'wanted':
                 var encmedia  = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
             var media = await caliph.downloadAndSaveMediaMessage(encmedia)
             base64 = await toBase64(media)
@@ -4515,7 +4515,7 @@ addFilter(sender)
           sendImgFromUrl(`https://leyscoders-api.herokuapp.com/api/img/wanted?url=${linkimg}&apikey=freeKeY`, '')
           addFilter(sender)
 					break
-                     case prefix+'play':
+                     case 'play':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -4536,7 +4536,7 @@ addFilter(sender)
   reply(`${e}`)}  
 addFilter(sender)
 					break
-case prefix+'yts2':
+case 'yts2':
 results = await yts(query)
 hemm = results.channels
 teks = '--------------------------\n'
@@ -4548,7 +4548,7 @@ teks += `Channel : ${i.name}\nSubs : ${h2k(i.subCount)}\nVideo : ${i.videoCount}
 sendImgFromUrl(thumb, teks.trim())
 addFilter(sender)
 					break
-                case prefix+'reminder':
+                case 'reminder':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					var gh = body.slice(10)
 					var anu = gh.split("|")[0];
@@ -4561,7 +4561,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break    
-                  case prefix+'playstore':
+                  case 'playstore':
                    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					kuji = body.slice(7)
 					reply(mess.wait)
@@ -4583,7 +4583,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-                  case prefix+'caklontong':
+                  case 'caklontong':
 					anu = await fetchJson(`https://api.vhtear.com/funkuis&apikey=ANTIGRATISNIHANJENKKK`, {method: 'get'})
 					setTimeout( () => {
 					caliph.sendMessage(from, '*� Jawaban :* '+anu.result.jawaban+'\n'+anu.result.desk, text, {quoted: msg}) // ur cods
@@ -4604,7 +4604,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                  case prefix+'tiktokstalk':
+                  case 'tiktokstalk':
                    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					try {
 						if (args.length < 1) return caliph.sendMessage(from, 'Usernamenya mana um?', text, {quoted: msg})
@@ -4623,7 +4623,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                  case prefix+'marvelogo':
+                  case 'marvelogo':
                    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					var gh = args.join(' ')
 					teks = gh.split('|')
@@ -4635,7 +4635,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'lovemake':
+				case 'lovemake':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (args.length < 1) return reply('Teksnya mana um')
 					love = body.slice(10)
@@ -4646,7 +4646,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-				case prefix+'thunder':
+				case 'thunder':
 				 if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (args.length < 1) return reply('Teksnya mana um')
 					thun = args.join(' ')
@@ -4658,7 +4658,7 @@ addFilter(sender)
 addFilter(sender)
 					break
                    
-                    case prefix+'ytkomen':
+                    case 'ytkomen':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                          if (!isUser) return reply(mess.only.userB)
                                          if (args.length < 1) return reply('teks nya mana om?')
@@ -4682,7 +4682,7 @@ addFilter(sender)
                                          limitAdd(sender)
 addFilter(sender)
 					break
-                               case prefix+'snobg':
+                               case 'snobg':
 if (!isUser) return reply(mess.only.userB)
 if (isBanned) return reply(mess.only.benned)
 				if ((isMedia && !msg.message.videoMessage || isQuotedImage) && args.length == 0) {
@@ -4702,12 +4702,12 @@ caliph.sendMessage(from, stik,  sticker, { quoted: msg})
 						}
 						addFilter(sender)
 					break
-                case prefix+'status':
+                case 'status':
                 teks = `RAM : ${ram}`
                 caliph.reply(m.chat, teks, msg)
                 break
                 
-    case prefix+'nobg':
+    case 'nobg':
                                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                         var imgbb = require('imgbb-uploader')
@@ -4730,7 +4730,7 @@ caliph.sendMessage(from, stik,  sticker, { quoted: msg})
                                         
 addFilter(sender)
 					break
-                                        case prefix+'wasted':
+                                        case 'wasted':
                                          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                         var imgbb = require('imgbb-uploader')
@@ -4758,7 +4758,7 @@ addFilter(sender)
                                              
 addFilter(sender)
 					break
-                      case prefix+'trigger':
+                      case 'trigger':
                        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                          if ((isMedia && !msg.message.videoMessage || isQuotedImage)) {
@@ -4773,7 +4773,7 @@ addFilter(sender)
                                              
 addFilter(sender)
 					break
-   case prefix+'raingif':
+   case 'raingif':
                        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                         var imgbb = require('imgbb-uploader')
@@ -4800,7 +4800,7 @@ addFilter(sender)
                                              
 addFilter(sender)
 					break
-      case prefix+'colors':
+      case 'colors':
           if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                         var imgbb = require('imgbb-uploader')
@@ -4828,7 +4828,7 @@ addFilter(sender)
                                              
 addFilter(sender)
 					break
-case prefix+'glass':
+case 'glass':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                                         if (!isUser) return reply(mess.only.userB)
                                         var imgbb = require('imgbb-uploader')
@@ -4856,7 +4856,7 @@ case prefix+'glass':
                                              
 addFilter(sender)
 					break
-                   case prefix+'brainly':
+                   case 'brainly':
 				if (!isUser) return reply(mess.only.usetB)
 				if (isBanned) return reply(mess.only.benned)
 					brien = args.join(' ')
@@ -4878,7 +4878,7 @@ addFilter(sender)
 					m.reply(`${e}`)
 					}
 					break
-   case prefix+'brainly2':
+   case 'brainly2':
     teks = encodeURIComponent(args.join(' '))
     try {
     data = await fetchJson(`https://api.vhtear.com/branly?query=${teks}&apikey=${vkey}`)
@@ -4887,7 +4887,7 @@ addFilter(sender)
     } catch {reply('Maaf Server Sedang Error!')}
     addFilter(sender)
 					break
-                    case prefix+'shortlink':
+                    case 'shortlink':
                      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
@@ -4904,7 +4904,7 @@ addFilter(sender)
  					
 addFilter(sender)
 					break
-                 case prefix+'addsticker':
+                 case 'addsticker':
                    if (!isPremium) return reply(mess.only.premi)
                     if (!isUser) return reply(mess.only.userB)
                    if (isBanned) return reply(mess.only.benned)
@@ -4919,7 +4919,7 @@ addFilter(sender)
 					fs.writeFileSync('./src/sticker.json', JSON.stringify(setiker))
                      addFilter(sender)
 					break
-                  case prefix+'stickerlist':
+                  case 'stickerlist':
 					if (!isUser) return reply(mess.only.userB)
 					teks = `*「 _STICKER LIST_ 」*\n`
 					no = 0
@@ -4932,7 +4932,7 @@ addFilter(sender)
 					
 addFilter(sender)
 					break
-                  case prefix+'getsticker':
+                  case 'getsticker':
 				    if (!isUser) return reply(mess.only.userB)
                    if (isBanned) return reply(mess.only.benned)
 				    namastc = body.slice(12)
@@ -4945,7 +4945,7 @@ addFilter(sender)
 		
 addFilter(sender)
 					break
-     case prefix+'adadu':
+     case 'adadu':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				    if (!isUser) return reply(mess.only.userB)
                    if (isBanned) return reply(mess.only.benned)
@@ -4960,7 +4960,7 @@ addFilter(sender)
 		
 addFilter(sender)
 					break
-        case prefix+'setpp': 
+        case 'setpp': 
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 if (!isUser) return reply(mess.only.userB)
                    if (isBanned) return reply(mess.only.benned)
@@ -4979,11 +4979,11 @@ if (!isUser) return reply(mess.only.userB)
                                         
 addFilter(sender)
 					break				
-					case prefix+'setnamebot':	
+					case 'setnamebot':	
 					if (!isOwner) return 
 					caliph.updateProfileName(query)
 					break
-                     case prefix+'setname':
+                     case 'setname':
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -4998,7 +4998,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'setdesc':
+                case 'setdesc':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -5012,7 +5012,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'bitly':
+                case 'bitly':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                  if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -5022,7 +5022,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-                case prefix+'infogempa':
+                case 'infogempa':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -5034,7 +5034,7 @@ addFilter(sender)
                    limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'mitos':
+               case 'mitos':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -5044,24 +5044,24 @@ addFilter(sender)
                limitAdd(sender)
 addFilter(sender)
 					break
-            case prefix+'tess':
+            case 'tess':
             if (isFiltered(from)) return reply('Kamu Terdeteksi spam\ncooldown 5 detik')
             addFilter(sender)
             addFilter(sender)
 					break
-case prefix+'fakta':
+case 'fakta':
    data = await fetchJson('https://recoders-area.caliph.repl.co/api/fakta?apikey=FreeApi')
                 reply(data.result)
                 addFilter(sender)
 					break
-  case prefix+'katabijak':
+  case 'katabijak':
   bdy = fs.readFileSync('./lib/katabijak.txt', 'utf-8')
                 splitnix = bdy.split('\n')
                 randomnix = splitnix[Math.floor(Math.random() * splitnix.length)]
                 reply(randomnix)
      addFilter(sender)
 					break
-    case prefix+'citacita':
+    case 'citacita':
     bdy = fs.readFileSync('./lib/cita-cita.txt', 'utf-8')
                 splitnix = bdy.split('\n')
                 randomnix = splitnix[Math.floor(Math.random() * splitnix.length)]
@@ -5077,15 +5077,15 @@ case prefix+'fakta':
 					})
 					addFilter(sender)
 					break
-   case prefix+'pantun':
+   case 'pantun':
    bdy = fs.readFileSync('./lib/pantun.txt', 'utf-8')
                 splitnix = bdy.split('\n')
                 randomnix = splitnix[Math.floor(Math.random() * splitnix.length)]
                 reply(randomnix.replace(/pjrx-line/g,"\n"))
                 addFilter(sender)
 					break
-               case prefix+'togif':
-               case prefix+'tovideo':
+               case 'togif':
+               case 'tovideo':
 				      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -5102,7 +5102,7 @@ case prefix+'fakta':
 					caliph.sendFile(from, buff, 'webp2gif.gif', 'Sukses Convert Sticker To Gif', msg)
 addFilter(sender)
 					break
-               case prefix+'setreply':
+               case 'setreply':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -5113,7 +5113,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-               case prefix+'hekel':
+               case 'hekel':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                	if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -5122,7 +5122,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break
-             case prefix+'spamteks':
+             case 'spamteks':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					spatek = body.trim().split('|')
 					for (let i = 0; i < spatek[1]; i++) {
@@ -5132,7 +5132,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-     case prefix+'spamchat':
+     case 'spamchat':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (args.length == 0) return reply(`Masukkan Parameter\n\ncommand : ${prefix}spamchat nomor|jumlah|teks`)
 					spatek = args.join(' ').split('|')
@@ -5144,7 +5144,7 @@ addFilter(sender)
 					limitAdd(sender)
 addFilter(sender)
 					break
-       case prefix+'spamvirtex':
+       case 'spamvirtex':
           if (!isOwner) return reply('Only Owner')
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (args.length == 0) return reply(`Masukkan Parameter\n\ncommand : ${prefix}spamvirtex nomor|jumlah`)
@@ -5158,7 +5158,7 @@ addFilter(sender)
 					caliph.deleteChat(spatek[0]+'@s.whatsapp.net')
 addFilter(sender)
 					break
-             case prefix+'holoh':
+             case 'holoh':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5179,7 +5179,7 @@ addFilter(sender)
 					}
 					addFilter(sender)
 					break
-         case prefix+'hilih':
+         case 'hilih':
           if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5194,7 +5194,7 @@ addFilter(sender)
                    }
 					addFilter(sender)
 					break
-     case prefix+'nickepep':
+     case 'nickepep':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5207,7 +5207,7 @@ addFilter(sender)
      limitAdd(sender)
 addFilter(sender)
 					break
-                 case prefix+'pastebin':
+                 case 'pastebin':
                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                  if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
@@ -5219,7 +5219,7 @@ addFilter(sender)
                     limitAdd(sender)
 addFilter(sender)
 					break
-                   case prefix+'turnoff':
+                   case 'turnoff':
                    if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
                    if (!isOwner) return reply(mess.only.ownerB)
@@ -5230,7 +5230,7 @@ addFilter(sender)
                    
 addFilter(sender)
 					break
-              case prefix+'semoji':
+              case 'semoji':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5245,7 +5245,7 @@ addFilter(sender)
 
 addFilter(sender)
 					break
-                      case prefix+'semoji2':
+                      case 'semoji2':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5277,7 +5277,7 @@ addFilter(sender)
 addFilter(sender)
 					break
       
-       case prefix+'motivasi':
+       case 'motivasi':
         if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
             fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
@@ -5293,7 +5293,7 @@ addFilter(sender)
             
 addFilter(sender)
 					break
-     case prefix+'qrread':
+     case 'qrread':
                                   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)    
                                           if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5314,12 +5314,12 @@ addFilter(sender)
                                              
 addFilter(sender)
 					break
-   case prefix+'foward':
+   case 'foward':
    caliph.sendMessage(from, body.slice(8), text, {contextInfo: { forwardingScore: 1, isForwarded: true }})
    
 addFilter(sender)
 					break
-case prefix+'kpop':
+case 'kpop':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5342,7 +5342,7 @@ if (args.length == 0) return reply(`Untuk menggunakan ${prefix}kpop\nSilahkan ke
             
 addFilter(sender)
 					break
-    case prefix+'tod':
+    case 'tod':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5350,7 +5350,7 @@ addFilter(sender)
     
 addFilter(sender)
 					break
-                           case prefix+'anime':
+                           case 'anime':
                             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                            if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5373,7 +5373,7 @@ addFilter(sender)
             
 addFilter(sender)
 					break
-                         case prefix+'fancytext':
+                         case 'fancytext':
                           if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                          if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5384,7 +5384,7 @@ addFilter(sender)
                         
 addFilter(sender)
 					break
-            case prefix+'snow':
+            case 'snow':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
             if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5396,7 +5396,7 @@ addFilter(sender)
                 limitAdd(sender)
 addFilter(sender)
 					break       
-                case prefix+'binary':
+                case 'binary':
                  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5406,7 +5406,7 @@ addFilter(sender)
                         
 addFilter(sender)
 					break
-       case prefix+'readbinary':
+       case 'readbinary':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5416,7 +5416,7 @@ addFilter(sender)
                         
 addFilter(sender)
 					break
-       case prefix+'tagme':
+       case 'tagme':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5428,7 +5428,7 @@ addFilter(sender)
     
 addFilter(sender)
 					break
-case prefix+'raw':
+case 'raw':
 if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
    if (!isOwner) return reply(mess.only.ownerB)
@@ -5445,7 +5445,7 @@ await fs.writeFileSync('raw.json', evaled)
     
 addFilter(sender)
 					break
-  case prefix+'stahta':
+  case 'stahta':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5474,7 +5474,7 @@ addFilter(sender)
 
 addFilter(sender)
 					break
- case prefix+'ttd':
+ case 'ttd':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5505,7 +5505,7 @@ addFilter(sender)
 
 addFilter(sender)
 					break
- case prefix+'ttg':
+ case 'ttg':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5525,7 +5525,7 @@ addFilter(sender)
 addFilter(sender)
 					break
 /*
- case prefix+'ttp':
+ case 'ttp':
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -5567,7 +5567,7 @@ addFilter(sender)
             })
 					addFilter(sender)
 					break*/
-					case prefix+'ttp':
+					case 'ttp':
 					if (isLimit(sender)) return
          limitAdd(sender)
          reply( mess.wait, msg)
@@ -5575,7 +5575,7 @@ addFilter(sender)
         caliph.sendMessage(from, stk, sticker, { quoted: msg })
           addFilter(sender)
 					break
-                   case prefix+'ramalpasangan':
+                   case 'ramalpasangan':
                     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
             if (isBanned) return reply(mess.only.benned)
 		   if (!isUser) return reply(mess.only.userB)
@@ -5603,8 +5603,8 @@ addFilter(sender)
             
 addFilter(sender)
 					break
-             case prefix+'caliphgroup':
-             case prefix+'caliphgrup':
+             case 'caliphgroup':
+             case 'caliphgrup':
               if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               try {
             mygroup = 'https://chat.whatsapp.com/'+await caliph.groupInviteCode("6281215199447-1614071791@g.us")
@@ -5615,7 +5615,7 @@ addFilter(sender)
             addFilter(sender)
 					break      
             
-              case prefix+'nulis': // BY MFARELS
+              case 'nulis': // BY MFARELS
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
             if (args.length < 1) return reply(`Kirim perintah *${prefix}nulis nama|kelas|teks*`)  // BY MFARELS
             inputPath = 'src/kertas/magernulis1.jpg'
@@ -5678,7 +5678,7 @@ addFilter(sender)
             })
             addFilter(sender)
 					break  // BY MFARELS
-           case prefix+'nulis2':
+           case 'nulis2':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                  console.log("writing...")
       teks = args.join` `
@@ -5711,9 +5711,9 @@ addFilter(sender)
          })
          addFilter(sender)
 					break
-        case prefix+'nulis3':
+        case 'nulis3':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
-            if (args.length < 1) return reply('Kirim perintah *'+prefix+'nulis3 [text]*')
+            if (args.length < 1) return reply('Kirim perintah *'+'nulis3 [text]*')
             diTulis = args.join` `
             await reply(mess.wait)
             panjangKalimat = diTulis.replace(/(\S+\s*){1,10}/g, '$&\n')
@@ -5740,18 +5740,18 @@ addFilter(sender)
             })
             addFilter(sender)
 					break
-            case prefix+'readmore':
+            case 'readmore':
              if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
             teks = body.slice(10).split('|')
             hasil = `${teks[0]}${readMore}${teks[1]}`
             reply(hasil)
             addFilter(sender)
 					break
-       case prefix+'img64':
+       case 'img64':
        reply(await toBase64(args[0]))
        addFilter(sender)
 					break
-        case prefix+'cr2':
+        case 'cr2':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 				if (!isGroup) return reply(mess.only.group)
@@ -5766,7 +5766,7 @@ addFilter(sender)
 					limitAdd(sender)
 					addFilter(sender)
 					break
-      case prefix+'level':
+      case 'level':
        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                 if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -5784,7 +5784,7 @@ addFilter(sender)
                     })
             addFilter(sender)
 					break
-     case prefix+'leveling':
+     case 'leveling':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)   
@@ -5807,7 +5807,7 @@ addFilter(sender)
                 }
             addFilter(sender)
 					break
-      case prefix+'mining':
+      case 'mining':
        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
       if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)   
@@ -5819,7 +5819,7 @@ addFilter(sender)
        limitAdd(sender)
        addFilter(sender)
 					break
-case prefix+'cnn':
+case 'cnn':
       if (args[0].toLowerCase() == 'nasional' || args[0].toLowerCase() == 'internasional') {
       require('axios').get(`https://www.cnnindonesia.com/${args[0].toLowerCase()}`).then(async res => {
 const $ = require('cheerio').load(res.data)
@@ -5840,7 +5840,7 @@ hasil = []
 reply('Masukkan Query nasional / internasional')
 }
 break
-     case prefix+'google':
+     case 'google':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
      if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5858,7 +5858,7 @@ break
             addFilter(sender)
 					break
               // PHOTOOXY API
-              case prefix+'pubglogo':
+              case 'pubglogo':
                if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
               if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5872,7 +5872,7 @@ break
              reply(`Error detail : ${e}`) }
               addFilter(sender)
 					break
-           case prefix+'crossfire':
+           case 'crossfire':
             if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5886,7 +5886,7 @@ break
              reply(`Detail Erorr : ${e}`) }
               addFilter(sender)
 					break
-          case prefix+'csgo':
+          case 'csgo':
            if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
           if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5900,7 +5900,7 @@ break
              reply(`Detail Erorr : ${e}`) }
               addFilter(sender)
 					break
-          case prefix+'overwatch':
+          case 'overwatch':
            if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
           if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5914,7 +5914,7 @@ break
              reply(`Detail Erorr : ${e}`) }
               addFilter(sender)
 					break
-         case prefix+'shadow':
+         case 'shadow':
           if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
          if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5928,7 +5928,7 @@ break
              reply(`Detail Erorr : ${e}`) }
               addFilter(sender)
 					break
-       case prefix+'burnpaper':
+       case 'burnpaper':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5942,7 +5942,7 @@ break
              reply(`Detail Erorr : ${e}`) }
               addFilter(sender)
 					break
-            case prefix+'setbio':
+            case 'setbio':
             if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
       if (!isOwner) return reply(mess.only.ownerB)
@@ -5957,7 +5957,7 @@ break
    }
          addFilter(sender)
 					break
-         case prefix+'repeat':
+         case 'repeat':
           if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
          if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5970,7 +5970,7 @@ break
     caliph.sendMessage(from, repeat(teks[1], teks[0]), text, { quoted: msg})
          addFilter(sender)
 					break
-case prefix+'groupmenu':
+case 'groupmenu':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -5979,35 +5979,35 @@ if (!isUser) return reply(mess.only.userB)
            reply('Note : beberapa fitur sedang perbaikan')
             addFilter(sender)
 					break
-        case prefix+'mediamenu':
+        case 'mediamenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(mediamenu(prefix))
             addFilter(sender)
 					break
-        case prefix+'funmenu':
+        case 'funmenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(funmenu(prefix))
             addFilter(sender)
 					break
-        case prefix+'animemenu':
+        case 'animemenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(animemenu(prefix))
             addFilter(sender)
 					break
-        case prefix+'kerangmenu':
+        case 'kerangmenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(kerangmenu(prefix))
             addFilter(sender)
 					break
-  case prefix+'asupan': // Update By RzkyO & ItsmecaliphXSec404
+  case 'asupan': // Update By RzkyO & ItsmecaliphXSec404
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6020,7 +6020,7 @@ if (!isUser) return reply(mess.only.userB)
 				limitAdd(sender)
 				addFilter(sender)
 					break
-					case prefix+'lolivid': // Update By Caliph71
+					case 'lolivid': // Update By Caliph71
   if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6032,21 +6032,21 @@ if (!isUser) return reply(mess.only.userB)
 				limitAdd(sender)
 				addFilter(sender)
 					break
-					case prefix+'downloadmenu':
+					case 'downloadmenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(downloadmenu(prefix))
             addFilter(sender)
 					break
-        case prefix+'othermenu':
+        case 'othermenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
             reply(othermenu(prefix))
             addFilter(sender)
 					break
-        case prefix+'ownermenu':
+        case 'ownermenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6054,14 +6054,14 @@ if (!isUser) return reply(mess.only.userB)
             reply(ownermenu(prefix))
             addFilter(sender)
 					break
-       case prefix+'snk':
+       case 'snk':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
        reply(snk())
        addFilter(sender)
 					break
-        case prefix+'nsfwmenu':
+        case 'nsfwmenu':
          if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
         if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6070,7 +6070,7 @@ if (!isUser) return reply(mess.only.userB)
             reply(nsfwmenu(prefix))
             addFilter(sender)
 					break
-    case prefix+'':
+    case '':
        if (!isStiker) return  
        if ((isMedia && !msg.message.videoMessage)) {
 						hhhh = await caliph.downloadAndSaveMediaMessage(msg)
@@ -6095,14 +6095,14 @@ if (!isUser) return reply(mess.only.userB)
 				}
 					addFilter(sender)
 					break
-                    case prefix+'ping':
+                    case 'ping':
                     if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
         old = new Date
   await caliph.reply(from, '_Testing ping..._', msg).then(() => reply((new Date - old) + ' ms'))
   addFilter(sender)
 					break
-					case prefix+'speedtest':
+					case 'speedtest':
 					if (!isOwner) return
 
 					reply('```CHECKING SERVER SPEED.....```')
@@ -6114,7 +6114,7 @@ if (!isUser) return reply(mess.only.userB)
 		           }
 	           })
 	           break
-       case prefix+'autostick':
+       case 'autostick':
         if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
        if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6125,7 +6125,7 @@ if (!isUser) return reply(mess.only.userB)
      `)
      addFilter(sender)
 					break
-  case prefix+'slow':
+  case 'slow':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 					if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)
@@ -6148,7 +6148,7 @@ if (!isUser) return reply(mess.only.userB)
 	}
 	addFilter(sender)
 					break
-case prefix+'bass':
+case 'bass':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6170,7 +6170,7 @@ case prefix+'bass':
 	}
 								addFilter(sender)
 					break
-case prefix+'earrape':
+case 'earrape':
  if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6192,7 +6192,7 @@ case prefix+'earrape':
 	}
 								addFilter(sender)
 					break
-      case prefix+'estetik':
+      case 'estetik':
        if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
       if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6201,13 +6201,13 @@ case prefix+'earrape':
       limitAdd(sender)
       addFilter(sender)
 					break
-    case prefix+'clear':
+    case 'clear':
     if (!isOwner) return reply(mess.only.ownerB)
     await exec('rm -f media/**')
     reply('sukses clear media')
     addFilter(sender)
 					break
-    case prefix+'lightext':
+    case 'lightext':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
           if (!isUser) return reply(mess.only.userB)
 	if (isBanned) return reply(mess.only.benned)
@@ -6216,7 +6216,7 @@ case prefix+'earrape':
     limitAdd(sender)
     addFilter(sender)
 					break
-   case prefix+'mycontact':
+   case 'mycontact':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.benned)
@@ -6230,7 +6230,7 @@ case prefix+'earrape':
 					limitAdd(sender)
 					addFilter(sender)
 					break
-   case prefix+'murothal':
+   case 'murothal':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.benned)
@@ -6275,7 +6275,7 @@ Juz 30 ~> http://j.mp/2bFREcc
 addFilter(sender)
 					break
     
-    case prefix+'pornhub':
+    case 'pornhub':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.benned)
@@ -6291,7 +6291,7 @@ addFilter(sender)
     addFilter(sender)
 					break
   
-   case prefix+'nhentai':
+   case 'nhentai':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.benned)
@@ -6304,7 +6304,7 @@ addFilter(sender)
     addFilter(sender)
 					break
   
-    case prefix+'googletext':
+    case 'googletext':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
    if (isBanned) return reply(mess.benned)
@@ -6320,7 +6320,7 @@ addFilter(sender)
    addFilter(sender)
 					break
    
-   case prefix+'jarak':
+   case 'jarak':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
 				if (isBanned) return reply(mess.benned)
@@ -6335,7 +6335,7 @@ addFilter(sender)
    addFilter(sender)
 					break
 
-   case prefix+'goldbutton':
+   case 'goldbutton':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
 if (isBanned) return reply(mess.benned)
@@ -6349,7 +6349,7 @@ if (isBanned) return reply(mess.benned)
    addFilter(sender)
 					break
 
-   case prefix+'narutotext':
+   case 'narutotext':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (!isUser) return reply(mess.only.userB)
    if (isBanned) return reply(mess.benned)
@@ -6362,7 +6362,7 @@ if (isBanned) return reply(mess.benned)
    reply('Error!')}
    addFilter(sender)
 					break
-    case prefix+'burning':
+    case 'burning':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -6396,7 +6396,7 @@ if (isBanned) return reply(mess.benned)
 
 addFilter(sender)
 					break
-case prefix+'sider':
+case 'sider':
       if (!isGroup) return 
       if (!m.quoted.fromMe) return reply('Reply Pesan Bot')
       infom = await caliph.messageInfo(from, m.quoted.id)
@@ -6432,7 +6432,7 @@ hiks += 1
       }
       caliph.sendMessage(from, teksx, text, { contextInfo: { mentionedJid: readdin }})
       break
-    case prefix+'restart':
+    case 'restart':
     if (!isOwner) return reply( mess.only.ownerB, msg)
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     await reply('Wait, Sedang Merestart Bot!')
@@ -6440,7 +6440,7 @@ hiks += 1
     await process.send('reset')
     addFilter(sender)
 					break
-   case prefix+'addlevel':
+   case 'addlevel':
    if (!isOwner) return reply(mess.only.ownerB)
   try {
   ngetag = `${args[0].slice(1)}@s.whatsapp.net`
@@ -6450,7 +6450,7 @@ hiks += 1
    reply('Error!')}
   addFilter(sender)
 					break
-   case prefix+'addxp':
+   case 'addxp':
    if (!isOwner) return reply(mess.only.ownerB)
   try {
   ngetag = `${args[0].slice(1)}@s.whatsapp.net`
@@ -6460,8 +6460,8 @@ hiks += 1
    reply('Error!')}
    addFilter(sender)
 					break
-   case prefix+'tag':
-   case prefix+'mention':
+   case 'tag':
+   case 'mention':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -6474,7 +6474,7 @@ hiks += 1
   })
    addFilter(sender)
 					break
-   case prefix+'profile': case prefix+'me':
+   case 'profile': case 'me':
    bio = (await caliph.getStatus(sender)).status
   pcard = 'BEGIN:VCARD\n' // metadata of the contact card
 					+ 'VERSION:3.0\n' 
@@ -6501,7 +6501,7 @@ hadeh = await caliph.sendMessage(from, pp, image, {caption: str, quoted:msg, con
 caliph.sendMessage(from, {displayname: "Caliph", vcard: pcard}, contact, { quoted: hadeh })
 addFilter(sender)
 					break
-    case prefix+'film':
+    case 'film':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 					if (!isUser) return reply(mess.only.userB)
@@ -6515,7 +6515,7 @@ addFilter(sender)
 limitAdd(sender)
 		addFilter(sender)
 					break
-    case prefix+'nightcore':
+    case 'nightcore':
 	                 if (!isQuotedAudio) return reply('Reply audio nya om')
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6529,7 +6529,7 @@ limitAdd(sender)
 					   })
 				       addFilter(sender)
 					break 
-    case prefix+'getjodoh':
+    case 'getjodoh':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 
 if (isBanned) return reply(mess.only.benned)
@@ -6549,7 +6549,7 @@ if (isBanned) return reply(mess.only.benned)
 limitAdd(sender)
                     addFilter(sender)
 					break
-    case prefix+'partytext':
+    case 'partytext':
      if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 	if (!isUser) return reply(mess.only.userB)
@@ -6558,7 +6558,7 @@ limitAdd(sender)
     limitAdd(sender)
     addFilter(sender)
 					break
-   case prefix+'galaxtext':
+   case 'galaxtext':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
@@ -6571,7 +6571,7 @@ limitAdd(sender)
 					limitAdd(sender)
 					addFilter(sender)
 					break
-     case prefix+'igvid':
+     case 'igvid':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
      try {
      data = await fetchJson(`https://api.zeks.xyz/api/ig?url=${args[0]}&apikey=${zekskey}`)
@@ -6584,7 +6584,7 @@ limitAdd(sender)
      }
      addFilter(sender)
 					break
-   case prefix+'cpu':
+   case 'cpu':
     if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
    timestamp = speed();
 latensi = speed() - timestamp
@@ -6595,7 +6595,7 @@ caliph.sendMessage(from, `*CPU!!!*\n${teks}Speed: ${latensi.toFixed(4)} _Second_
 })
 					addFilter(sender)
 					break 
-					case prefix+'limit':
+					case 'limit':
 					if (isPremium) return reply(`Sisa limit request anda tersisa : *Unlimited*\n\n_Note : Limit akan direset setiap jam 21:00!_`)
             var found = false
             limidat = JSON.parse(fs.readFileSync('./src/msgLimit.json'))
@@ -6617,7 +6617,7 @@ caliph.sendMessage(from, `*CPU!!!*\n${teks}Speed: ${latensi.toFixed(4)} _Second_
             }
             addFilter(sender)
 					break
-       case prefix+'game1':
+       case 'game1':
        buah = ['🍊','🍒','🍐'] // Versi Simpel
           satu = buah[Math.floor(Math.random() * (buah.length))]	
           dua = buah[Math.floor(Math.random() * (buah.length))]	
@@ -6636,7 +6636,7 @@ ${satu} - ${dua} - ${tiga}
 		}
 		addFilter(sender)
 					break
-case prefix+'game2':
+case 'game2':
        buah = ['✅','❌',] // Versi Simpel
           satu = buah[Math.floor(Math.random() * (buah.length))]	
           dua = buah[Math.floor(Math.random() * (buah.length))]	
@@ -6655,7 +6655,7 @@ ${satu} - ${dua} - ${tiga}
 		}
 		addFilter(sender)
 					break
-case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chatnya
+case 'leaveall': //mengeluarkan bot dari semua group serta menghapus chatnya
             if (!isOwner) return reply('Perintah ini hanya untuk Owner bot')
             for (let gclist of groupall) {
             await delay(3000)
@@ -6664,7 +6664,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
             reply('Success leave all group!')
             addFilter(sender)
 					break
-    case prefix+'fetch':
+    case 'fetch':
     var util = require('util')
     teks = args.join(' ')
     res = await fetch(teks)
@@ -6679,7 +6679,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
   }
     addFilter(sender)
 					break
-   case prefix+'waifu':
+   case 'waifu':
    if (isLimit(sender)) return 
     if (isBanned) return reply(mess.only.benned)
 	if (!isUser) return reply(mess.only.userB)
@@ -6688,8 +6688,8 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
    limitAdd(sender)
    addFilter(sender)
 					break
-  case prefix+'epep':
-  case prefix+'freefire':
+  case 'epep':
+  case 'freefire':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 	if (!isUser) return reply(mess.only.userB)
@@ -6698,7 +6698,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
   limitAdd(sender)
   addFilter(sender)
 					break
-					case prefix+'carbon':
+					case 'carbon':
       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
     if (isBanned) return reply(mess.only.benned)
 	if (!isUser) return reply(mess.only.userB)
@@ -6707,7 +6707,7 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
   limitAdd(sender)
   addFilter(sender)
 					break
-   case prefix+'translate':
+   case 'translate':
   translate(args.slice(1).join(' '), {tld: 'cn', to: args[0]}).then(res => {
             caliph.sendMessage(from, `${res.text}`, text, {quoted: msg})
             console.log(res)
@@ -6716,21 +6716,21 @@ case prefix+'leaveall': //mengeluarkan bot dari semua group serta menghapus chat
         });
    addFilter(sender)
 					break
-   case prefix+'barcode':
+   case 'barcode':
    try {
    reply(mess.wait)
    sendImgFromUrl(`https://docs-jojo.herokuapp.com/api/barcode_maker?text=${args.join(' ')}`)
    } catch {reply('Error!')}
    addFilter(sender)
 					break
-   case prefix+'tiktok2':
+   case 'tiktok2':
    data = await fetchJson(`https://api.xteam.xyz/dl/tiktok?url=${args[0]}&APIKEY=a72abb5d0420ef3e`)
    base64 = await toBase64(data.result.cover)
    teks = '*「 TIKTOK DOWNLOADER 」*\n\n'
    caliph.sendMessage(from, await getBuffer(data.result.url_nwm || data.result.url), video, { quoted: msg, thumbnail: base64, caption: teks+data.result.caption })
    addFilter(sender)
 					break
-case prefix+'buylimit':
+case 'buylimit':
 				payout = args[0]
 				koinPerlimit = 320
 				total = koinPerlimit * payout
@@ -6742,7 +6742,7 @@ case prefix+'buylimit':
 				} else {reply(`xp kamu belum mencukupi untuk membeli ${payout} limit!`)}
 				addFilter(sender)
 					break
-    case prefix+'lb':
+    case 'lb':
 				_level.sort((a, b) => (a.xp < b.xp) ? 1 : -1)
 				lb_id = []
                 leaderboardlvl = '-----[ *LEADERBOARD LEVEL* ]----\n\n'
@@ -6755,12 +6755,12 @@ case prefix+'buylimit':
                     await caliph.sendMessage(from, leaderboardlvl, text, {contextInfo: { mentionedJid: lb_id }})
 				addFilter(sender)
 					break
-      case prefix+'tahta2':
+      case 'tahta2':
       await reply(mess.wait)
       caliph.sendMessage(from, await ht(args.join(' ')), image, {quoted:msg, caption: '#Caliph Bot\nMake with ffmpeg'})
 addFilter(sender)
 					break
-     case prefix+'afk':
+     case 'afk':
 				if (!isUser) return reply(mess.only.userB)
 				if (!isGroup) return reply(mess.only.group)
 				if (isLimit(sender)) return reply('Limit lu abis tod')
@@ -6772,7 +6772,7 @@ addFilter(sender)
 				limitAdd(sender)
 				addFilter(sender)
 					break
-         case prefix+'up':
+         case 'up':
          if (!isOwner) return reply(mess.only.ownerB)
          try {
          ger = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
@@ -6784,7 +6784,7 @@ addFilter(sender)
          }
          addFilter(sender)
 					break
-         case prefix+'get':
+         case 'get':
          if (!isOwner) return reply(mess.only.ownerB)
          try {
          sendImgFromUrl('./gambar/'+args.join(' '))
@@ -6793,7 +6793,7 @@ addFilter(sender)
          }
          addFilter(sender)
 					break
-case prefix+'cekwarna':
+case 'cekwarna':
 				if (!isUser) return reply(mess.only.userB)
 				//if (isLimit(sender)) return reply(mess.limit)
 		//	if (!isOwner) return reply(mess.only.ownerB)
@@ -6805,7 +6805,7 @@ case prefix+'cekwarna':
 					//limitAdd(sender)
 					addFilter(sender)
 					break
-case prefix+'vibra':
+case 'vibra':
 					tels = body.slice(7)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6819,7 +6819,7 @@ case prefix+'vibra':
 						fs.unlinkSync(ran)
 						addFilter(sender)
 					break
-    case prefix+'addlimit':
+    case 'addlimit':
                 
 					if (!isOwner) return reply(`asu`)
                 
@@ -6854,7 +6854,7 @@ case prefix+'vibra':
                                         
                                         addFilter(sender)
 					break
-case prefix+'reverb':
+case 'reverb':
 					tels = args.join(' ')
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6868,7 +6868,7 @@ case prefix+'reverb':
 						fs.unlinkSync(ran)
 						addFilter(sender)
 					break
-                  case prefix+'nowm':
+                  case 'nowm':
                   		encmedia2 = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 						medias = await caliph.downloadAndSaveMediaMessage(encmedia2)
                           if (!isQuotedSticker) return reply('� reply stickernya um �')                      
@@ -6883,7 +6883,7 @@ case prefix+'reverb':
 					})
 							addFilter(sender)
 					break
-     case prefix+'blur':
+     case 'blur':
 					if (!isUser) return reply(mess.only.userB)
                     if (isBanned) return reply(mess.only.benned)
                  //   if (!isQuotedVideo) return reply('❌ reply videonya um ❌')
@@ -6900,7 +6900,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-				case prefix+'negativegreen':
+				case 'negativegreen':
 					if (!isUser) return reply(mess.only.userB)
                     if (isBanned) return reply(mess.only.benned)
                   //  if (!isQuotedVideo) return reply('❌ reply videonya um ❌')
@@ -6917,7 +6917,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-				case prefix+'hapusaudio':
+				case 'hapusaudio':
 					if (!isUser) return reply(mess.only.userB)
                     if (isBanned) return reply(mess.only.benned)
                    // if (!isQuotedVideo) return reply('❌ reply videonya um ❌')
@@ -6934,11 +6934,11 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-              case prefix+'speed':
+              case 'speed':
               reply(`*Speed :* ${processTime(chat.t, moment())} _second_`)
               addFilter(sender)
 					break
-              case prefix+'cbass':
+              case 'cbass':
 					bass = body.slice(7)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6952,7 +6952,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-        case prefix+'volume':
+        case 'volume':
 					tels = body.slice(8)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6966,7 +6966,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-			case prefix+'kecepatan':
+			case 'kecepatan':
 					tels = body.slice(11)
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
@@ -6980,7 +6980,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-			case prefix+'distord':
+			case 'distord':
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
 					ran = getRandom('.mp3')
@@ -6993,7 +6993,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-        case prefix+'karoke':
+        case 'karoke':
 					encmedia = JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					media = await caliph.downloadAndSaveMediaMessage(encmedia)
 					ran = getRandom('.mp3')
@@ -7006,7 +7006,7 @@ case prefix+'reverb':
 					})
 				addFilter(sender)
 					break
-    case prefix+'passed':
+    case 'passed':
 				mediaP = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
 				encmediaP = await caliph.downloadAndSaveMediaMessage(mediaP)
 				exec("convert "+encmediaP+" 'gambar/respect.png' -resize 1280x1280 -gravity Center -geometry +0+0 -composite './tmp/passed.png'")
@@ -7016,7 +7016,7 @@ case prefix+'reverb':
 					})
 					addFilter(sender)
 					break
-    case prefix+'sad':
+    case 'sad':
 				mediaP = isQuotedImage ? JSON.parse(JSON.stringify(msg).replace('quotedM','m')).message.extendedTextMessage.contextInfo : msg
 				encmediaP = await caliph.downloadAndSaveMediaMessage(mediaP)
 				exec("convert "+encmediaP+" 'gambar/sad.png' -resize 1280x1280 -gravity Center -geometry +0+0 -composite './tmp/sadded.png'")
@@ -7026,7 +7026,7 @@ case prefix+'reverb':
 					})
 					addFilter(sender)
 					break
-    case prefix+'stickmeme':
+    case 'stickmeme':
 				if (!isUser) return reply(mess.daftar)
 				if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
 				if (isBanned) return reply(mess.only.benned)
@@ -7053,7 +7053,7 @@ case prefix+'reverb':
                fs.unlinkSync(ran)
 				addFilter(sender)
 					break
-      case prefix+'tesbitly':
+      case 'tesbitly':
 
 var headers = {
     'Authorization': 'Bearer {TOKEN}',
@@ -7079,18 +7079,18 @@ ngetes = await request(options, callback);
 reply(`${JSON.stringify(await ngetes)}`)
 addFilter(sender)
 					break
-case prefix+'getses':
+case 'getses':
 				if (isOwner) return reply(mess.only.OwnerB)
 				const ses = await caliph.getSnapshot()
 				caliph.sendMessage(from, ses, image, {quoted: msg})
 				addFilter(sender)
 					break
-  case prefix+'wiki2':
+  case 'wiki2':
   data = await fetchJson(`https://id.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${args.join(' ')}`)
   reply(data.query.pages.extract)
   addFilter(sender)
 					break
-   case prefix+'laptop':
+   case 'laptop':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -7103,7 +7103,7 @@ case prefix+'getses':
            limitAdd(sender)
            addFilter(sender)
 					break
-case prefix+'gta5':
+case 'gta5':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -7116,7 +7116,7 @@ case prefix+'gta5':
            limitAdd(sender)
            addFilter(sender)
 					break
-   case prefix+'nightbeach':
+   case 'nightbeach':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
@@ -7129,7 +7129,7 @@ case prefix+'gta5':
            limitAdd(sender)
            addFilter(sender)
 					break
-      case prefix+'raindrop':
+      case 'raindrop':
    if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
            if (!isUser) return reply(mess.only.userB)
 		   if (isBanned) return reply(mess.only.benned)  
