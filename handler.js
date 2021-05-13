@@ -493,6 +493,7 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			m = simple.smsg(caliph, msg)
 			if (m.isBaileys) return
+			if (!msg.key.fromMe) return 
 			const chat = {t: msg.messageTimestamp.low}
 			const content = JSON.stringify(msg.message)
 			const from = msg.key.remoteJid
@@ -516,7 +517,7 @@ const jam = moment.tz('Asia/Jakarta').format('HH')
 			const args = body.trim().split(/ +/).slice(1)
 			const bodys = msg.message.conversation
 			const command = budy.toLowerCase().split(' ')[0] || ''
-            const prefix = /^[°•π÷×¶∆£¢€¥®™✓=|~`,*zxcv!?@#$%^&.\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓=|~`,*zxcv!?@#$%^&.\/\\©^]/gi) : '-'
+            const prefix = ''
             const isCmd = body.startsWith(prefix)
 			const truth =[
         'menurut kamu crush kamu sekarang itu cocok gak sama kamu?',
