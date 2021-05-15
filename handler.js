@@ -1245,7 +1245,7 @@ addFilter(sender)
               if (!isPremium) return reply('Hanya User Premium yang dapat invite bot ke grup')
               if (args.length == 0) return reply('Linknya mana su')
               if (!isUrl(args[0]) && !args[0].includes('https://chat.whatsapp.com/')) return reply('Linknya Invalid Tod')
-              fak = await caliph.joinvialink(args[0].replace('https://chat.whatsapp.com/', ''))
+              fak = await caliph.joinvialink(args[0]))
               hemhe = await caliph.groupMetadata(fak.gid)
               reply('Berhasil Masuk Grup : '+hemhe.subject)
               break
