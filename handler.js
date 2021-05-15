@@ -492,8 +492,6 @@ const toBase64 = (gambar) => new Promise(async (resolve, reject) => {
             msg.message = (Object.keys(msg.message)[0] === 'ephemeralMessage') ? msg.message.ephemeralMessage.message : msg.message
 			if (msg.key && msg.key.remoteJid == 'status@broadcast') return 
 			m = simple.smsg(caliph, msg)
-			if (m.isBaileys) return
-			if (!msg.key.fromMe) return 
 			const chat = {t: msg.messageTimestamp.low}
 			const content = JSON.stringify(msg.message)
 			const from = msg.key.remoteJid
@@ -517,7 +515,8 @@ const jam = moment.tz('Asia/Jakarta').format('HH')
 			const args = body.trim().split(/ +/).slice(1)
 			const bodys = msg.message.conversation
 			const command = budy.toLowerCase().split(' ')[0] || ''
-            const prefix = '#'
+            const cmd = (type === 'conversation' && msg.message.conversation) ? msg.message.conversation : (type == 'imageMessage') && msg.message.imageMessage.caption ? msg.message.imageMessage.caption : (type == 'videoMessage') && msg.message.videoMessage.caption ? msg.message.videoMessage.caption : (type == 'extendedTextMessage') && msg.message.extendedTextMessage.text ? msg.message.extendedTextMessage.text : ''.slice(1).trim().split(/ +/).shift().toLowerCase()
+            const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(cmd) ? cmd.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*,;]/gi) : '-'
             const isCmd = body.startsWith(prefix)
 			const truth =[
         'menurut kamu crush kamu sekarang itu cocok gak sama kamu?',
