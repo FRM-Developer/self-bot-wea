@@ -4127,7 +4127,7 @@ addFilter(sender)
                       if (isLimit(sender)) return reply(`Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik ${prefix}limit Untuk Mengecek Kuota Limit Kamu`)
                      if (!isUser) return reply(mess.only.userB)
 					if (isBanned) return reply(mess.only.benned)  
-					rawd = await axios.get(`https://api.zeks.xyz/api/ig?url=${args[0]}&apikey=apivinz`)
+					rawd = await axios.get(`https://api.zeks.xyz/api/ig?url=${args[0]}&apikey=caliph_71`)
 					if (rawd.data.message) return reply(rawd.data.message)
 					caliph.sendFile(from, rawd.data.result[0].url, 'ig', rawd.data.caption, msg)
 					limitAdd(sender)
@@ -4763,7 +4763,7 @@ addFilter(sender)
                                          if ((isMedia && !msg.message.videoMessage || isQuotedImage)) {
                                          ger = isQuotedImage ? m.quoted : m
                                          reply(mess.wait)
-                                         sads = await stc.sticker(false, `https://api.zeks.xyz/api/triger?img=${await uploadimg(await ger.download(), '')}&apikey=apivinz`, "", "")
+                                         sads = await stc.sticker(false, `https://api.zeks.xyz/api/triger?img=${await uploadimg(await ger.download(), '')}&apikey=caliph_71`, "", "")
 
                                          caliph.sendMessage(from, sads, sticker)
                                              } else {
